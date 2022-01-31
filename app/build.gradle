@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
     id 'kotlin-kapt'
 }
 
@@ -58,8 +59,10 @@ dependencies {
     implementation "androidx.activity:activity-compose:1.4.0"
 
     // Maps
-    implementation "com.google.android.libraries.maps:maps:3.1.0-beta"
-    implementation "com.google.maps.android:maps-v3-ktx:2.2.0"
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
+    implementation 'com.google.maps.android:maps-ktx:3.2.1'
+    implementation 'com.google.maps.android:maps-utils-ktx:3.2.1'
+    implementation 'com.google.maps.android:android-maps-utils:2.3.0'
 
     // Ktor networking
     implementation 'io.ktor:ktor-client-android:1.6.3'
@@ -69,10 +72,17 @@ dependencies {
     implementation "androidx.paging:paging-compose:1.0.0-alpha14"
 
     // Room db
-    def roomVersion = "2.4.1"
-    implementation "androidx.room:room-runtime:$roomVersion"
-    annotationProcessor "androidx.room:room-compiler:$roomVersion"
-    kapt "androidx.room:room-compiler:$roomVersion"
-    implementation "androidx.room:room-ktx:$roomVersion"
-    implementation "androidx.room:room-paging:$roomVersion"
+    def room_version = "2.4.1"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    implementation "androidx.room:room-paging:$room_version"
+
+    // Koin dependency injection
+    def koin_version= "3.1.5"
+    implementation "io.insert-koin:koin-core:$koin_version"
+    implementation "io.insert-koin:koin-android:$koin_version"
+    implementation "io.insert-koin:koin-androidx-compose:$koin_version"
+    implementation "io.insert-koin:koin-ktor:$koin_version"
 }
