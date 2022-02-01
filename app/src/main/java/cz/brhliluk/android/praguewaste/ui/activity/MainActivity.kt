@@ -1,8 +1,10 @@
 package cz.brhliluk.android.praguewaste.ui.activity
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
+import android.os.Looper
+import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,57 +21,120 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.content.ContextCompat
-import androidx.core.content.PermissionChecker.PERMISSION_DENIED
-import androidx.core.content.PermissionChecker.PERMISSION_GRANTED
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import com.google.android.gms.location.LocationServices
+import com.afollestad.materialdialogs.MaterialDialog
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.model.LatLng
 import cz.brhliluk.android.praguewaste.R
 import cz.brhliluk.android.praguewaste.ui.theme.ComposeMapsTheme
+import cz.brhliluk.android.praguewaste.utils.hasPermissions
+import cz.brhliluk.android.praguewaste.utils.withPermission
+import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.time.Duration.Companion.seconds
 
 class MainActivity : ComponentActivity() {
+
+    private val vm: MainViewModel by viewModel()
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationRequest: LocationRequest
+    private lateinit var locationCallback: LocationCallback
+    private val hasLocationAccess get() = this@MainActivity.hasPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
+
+    private val settingsResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (hasLocationAccess) startLocationUpdates()
+        else showLocationRequiredDialog()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            ComposeMapsTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    GoogleMaps()
+        getLocationUpdates()
+        applicationContext.withPermission(Manifest.permission.ACCESS_FINE_LOCATION,
+            onDenied = { showLocationRequiredDialog() },
+            onGranted = {
+                if (hasLocationAccess) {
+                    startLocationUpdates()
+                    setMapsContent()
                 }
+                else showLocationRequiredDialog()
             }
-        }
-        val locationPermissionRequest = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            when {
-                permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-                    // Precise location access granted.
-                }
-                permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-                    // Only approximate location access granted.
-                } else -> {
-                // No location access granted.
-                Toast.makeText(this@MainActivity, R.string.no_location, Toast.LENGTH_SHORT).show()
-                }
+        )
+    }
+
+    private fun setMapsContent() = setContent {
+        ComposeMapsTheme {
+            // A surface container using the 'background' color from the theme
+            Surface(color = MaterialTheme.colors.background) {
+                GoogleMaps()
             }
-        }
-        when (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_FINE_LOCATION)) {
-            PERMISSION_GRANTED -> {}
-            PERMISSION_DENIED -> locationPermissionRequest.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
         }
     }
 
-    fun getUserLocation() {
-        val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+    override fun onResume() {
+        super.onResume()
+        startLocationUpdates()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        fusedLocationClient.removeLocationUpdates(locationCallback)
+    }
+
+    private fun getLocationUpdates() {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        locationRequest = LocationRequest.create().apply {
+            interval = 5.seconds.inWholeMilliseconds
+            fastestInterval = 0.5.seconds.inWholeMilliseconds
+            priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+            maxWaitTime = 10.seconds.inWholeMilliseconds
+            smallestDisplacement = 170f // 170m
+        }
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                if (locationResult.locations.isNotEmpty()) {
+                    // get latest location
+                    val location = locationResult.lastLocation
+                    vm.currentUserLocation.value = LatLng(location.latitude, location.longitude)
+                }
+            }
+        }
+    }
+
+    private fun startLocationUpdates() {
+        //noinspection MissingPermission
+        fusedLocationClient.requestLocationUpdates(locationRequest,
+            locationCallback,
+            Looper.getMainLooper())
+    }
+
+    private fun showLocationRequiredDialog() {
+        MaterialDialog(this).show {
+            title(R.string.no_location_title)
+            message(R.string.location_required_dialog)
+            cancelable(false)
+            negativeButton(R.string.exit) { finishAffinity() }
+            positiveButton(R.string.turn_on) {
+                this@MainActivity.withPermission(Manifest.permission.ACCESS_FINE_LOCATION,
+                    onDenied = { showLocationRequiredDialog() },
+                    onGranted = {
+                        if (this@MainActivity.hasPermissions(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                            startLocationUpdates()
+                            setMapsContent()
+                        }
+                        else settingsResult.launch(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                    }
+                )
+            }
+        }
     }
 }
 
-@Preview
 @Composable
 fun GoogleMaps() {
     val mapView = rememberMapViewWithLifeCycle()
@@ -81,9 +146,12 @@ fun GoogleMaps() {
         ) {
             AndroidView({ mapView }) { mapView ->
                 CoroutineScope(Dispatchers.Main).launch {
+                    //noinspection MissingPermission
                     mapView.getMapAsync {
                         it.mapType = 1
                         it.uiSettings.isZoomControlsEnabled = true
+                        it.uiSettings.isMyLocationButtonEnabled = true
+                        it.isMyLocationEnabled = true
                     }
                 }
             }

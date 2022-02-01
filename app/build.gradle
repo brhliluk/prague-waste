@@ -69,7 +69,7 @@ dependencies {
     implementation "androidx.compose.material:material-icons-core:$compose_version"
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
     implementation "androidx.activity:activity-compose:1.4.0"
-    implementation "androidx.compose.ui:ui-tooling:$compose_version"
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
 
     // Maps
     implementation 'com.google.android.gms:play-services-maps:18.0.2'
@@ -98,4 +98,10 @@ dependencies {
     implementation "io.insert-koin:koin-android:$koin_version"
     implementation "io.insert-koin:koin-androidx-compose:$koin_version"
     implementation "io.insert-koin:koin-ktor:$koin_version"
+
+    // Material dialog
+    implementation 'com.afollestad.material-dialogs:core:3.3.0'
+
+    // Permissions
+    implementation 'com.karumi:dexter:6.2.3'
 }
