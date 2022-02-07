@@ -26,7 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
-fun GoogleMaps(location: LatLng) {
+fun GoogleMaps() {
     val mapView = rememberMapViewWithLifeCycle()
     Box {
         Column(
@@ -46,7 +46,6 @@ fun GoogleMaps(location: LatLng) {
                 }
             }
         }
-        LocationPill(location = location)
     }
 }
 
@@ -84,16 +83,3 @@ fun rememberMapLifecycleObserver(mapView: MapView): LifecycleEventObserver =
             }
         }
     }
-
-@Composable
-fun LocationPill(location: LatLng) {
-    Card() {
-        Snackbar(backgroundColor = Color.LightGray) {
-            Column() {
-                Text(text = "Latitude: ${location.latitude}", color = Color.DarkGray)
-                Text(text = "Longitude: ${location.longitude}", color = Color.DarkGray)
-            }
-        }
-
-    }
-}
