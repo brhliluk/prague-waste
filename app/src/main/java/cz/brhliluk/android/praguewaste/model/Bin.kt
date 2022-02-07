@@ -6,12 +6,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Bin(
     @SerialName("latitude")
-    val latitude: Float,
+    val latitude: Double,
     @SerialName("longitude")
-    val longitude: Float,
+    val longitude: Double,
     @SerialName("address")
     val address: String,
-    @SerialName("sortTypes")
+    @SerialName("trash_types")
     val totalStars: Array<Int>,
 ) {
     override fun equals(other: Any?): Boolean {

@@ -16,11 +16,10 @@ import androidx.lifecycle.LifecycleEventObserver
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.MapProperties
-import com.google.maps.android.compose.MapUiSettings
-import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.*
 import cz.brhliluk.android.praguewaste.R
+import cz.brhliluk.android.praguewaste.model.Bin
+import cz.brhliluk.android.praguewaste.utils.location
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -101,28 +100,37 @@ fun WasteGoogleMap(vm: MainViewModel) {
         )
     }
 
-    LaunchedEffect(vm) {
-        snapshotFlow { currentLocation }
-            .collect {
-                cameraPositionState.position = CameraPosition.fromLatLngZoom(
-                    LatLng(
-                        currentLocation.latitude,
-                        currentLocation.longitude
-                    ), 15f
-                )
-            }
-    }
+    // Allows camera to follow user
+//    LaunchedEffect(vm) {
+//        snapshotFlow { currentLocation }
+//            .collect {
+//                cameraPositionState.position = CameraPosition.fromLatLngZoom(
+//                    LatLng(
+//                        currentLocation.latitude,
+//                        currentLocation.longitude
+//                    ), 15f
+//                )
+//            }
+//    }
+//
+//    LaunchedEffect(vm) {
+//        snapshotFlow { cameraPositionState.position }
+//            .collect {
+//                vm.location.value = LatLng(it.target.latitude, it.target.longitude)
+//            }
+//    }
 
-    LaunchedEffect(vm) {
-        snapshotFlow { cameraPositionState.position }
-            .collect {
-                vm.location.value = LatLng(it.target.latitude, it.target.longitude)
-            }
-    }
+    val currentBins by vm.currentBins.collectAsState()
 
     GoogleMap(
         properties = mapProperties,
         uiSettings = uiSettings,
         cameraPositionState = cameraPositionState,
-    )
+        modifier = Modifier.fillMaxSize()
+    ) {
+        currentBins.forEach { bin ->
+            // TODO icon, onclick
+            Marker(position = bin.location, title = bin.address, )
+        }
+    }
 }

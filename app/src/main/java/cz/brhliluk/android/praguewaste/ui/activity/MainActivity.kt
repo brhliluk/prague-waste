@@ -49,11 +49,14 @@ class MainActivity : ComponentActivity() {
         )
     }
 
-    private fun setMapsContent() = setContent {
-        ComposeMapsTheme {
-            // A surface container using the 'background' color from the theme
-            Surface(color = MaterialTheme.colors.background) {
-                WasteGoogleMap(vm)
+    private fun setMapsContent() {
+        vm.getNearestBins()
+        setContent {
+            ComposeMapsTheme {
+                // A surface container using the 'background' color from the theme
+                Surface(color = MaterialTheme.colors.background) {
+                    WasteGoogleMap(vm)
+                }
             }
         }
     }
