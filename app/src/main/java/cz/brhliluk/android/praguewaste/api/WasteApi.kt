@@ -12,7 +12,7 @@ class WasteApi(private val client: HttpClient) {
         allRequired: Boolean,
         page: Int,
         perPage: Int
-    ): Bin = client.get(API_URL) {
+    ): List<Bin> = client.get(API_URL) {
         parameter("query", query)
         parameter("filter", filter)
         parameter("allRequired", allRequired)
@@ -27,7 +27,7 @@ class WasteApi(private val client: HttpClient) {
         allRequired: Boolean,
         page: Int,
         perPage: Int
-    ): Bin = client.get(API_URL) {
+    ): List<Bin> = client.get(API_URL) {
         parameter("lat", location.latitude)
         parameter("long", location.longitude)
         parameter("radius", radius)

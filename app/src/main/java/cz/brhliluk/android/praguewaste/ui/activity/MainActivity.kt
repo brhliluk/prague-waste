@@ -2,7 +2,6 @@ package cz.brhliluk.android.praguewaste.ui.activity
 
 import android.Manifest
 import android.content.Intent
-import android.location.Location
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
@@ -11,14 +10,12 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import cz.brhliluk.android.praguewaste.R
 import cz.brhliluk.android.praguewaste.ui.theme.ComposeMapsTheme
-import cz.brhliluk.android.praguewaste.ui.view.GoogleMaps
+import cz.brhliluk.android.praguewaste.ui.view.WasteGoogleMap
 import cz.brhliluk.android.praguewaste.utils.hasPermissions
 import cz.brhliluk.android.praguewaste.utils.withPermission
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
@@ -31,7 +28,6 @@ class MainActivity : ComponentActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
-    private val hasLocationAccess get() = this@MainActivity.hasPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
 
     private val settingsResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -41,7 +37,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getLocationUpdates()
+        setupLocationUpdates()
         applicationContext.withPermission(Manifest.permission.ACCESS_FINE_LOCATION,
             onDenied = { showLocationRequiredDialog() },
             onGranted = {
@@ -57,8 +53,7 @@ class MainActivity : ComponentActivity() {
         ComposeMapsTheme {
             // A surface container using the 'background' color from the theme
             Surface(color = MaterialTheme.colors.background) {
-                val locationState by vm.currentUserLocation.observeAsState()
-                GoogleMaps()
+                WasteGoogleMap(vm)
             }
         }
     }
@@ -73,7 +68,7 @@ class MainActivity : ComponentActivity() {
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
-    private fun getLocationUpdates() {
+    private fun setupLocationUpdates() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         locationRequest = LocationRequest.create().apply {
             interval = 5.seconds.inWholeMilliseconds
@@ -86,7 +81,7 @@ class MainActivity : ComponentActivity() {
                 if (locationResult.locations.isNotEmpty()) {
                     // get latest location
                     val location = locationResult.lastLocation
-                    vm.currentUserLocation.value = LatLng(location.latitude, location.longitude)
+                    vm.location.value = LatLng(location.latitude, location.longitude)
                 }
             }
         }
@@ -120,5 +115,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    private val hasLocationAccess get() = this@MainActivity.hasPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
 }
 
