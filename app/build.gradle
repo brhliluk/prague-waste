@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
     id 'kotlin-kapt'
+    id 'kotlinx-serialization'
 }
 
 android {
@@ -79,6 +80,9 @@ dependencies {
 
     // Ktor networking
     implementation 'io.ktor:ktor-client-android:1.6.3'
+    implementation 'io.ktor:ktor-client-serialization:1.6.3'
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1'
+    implementation 'io.ktor:ktor-client-logging-jvm:1.6.3'
 
     // Paging library
     implementation "androidx.paging:paging-runtime:3.1.0"
