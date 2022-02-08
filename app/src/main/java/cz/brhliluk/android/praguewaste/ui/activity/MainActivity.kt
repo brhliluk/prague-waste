@@ -15,6 +15,7 @@ import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import cz.brhliluk.android.praguewaste.R
 import cz.brhliluk.android.praguewaste.ui.theme.ComposeMapsTheme
+import cz.brhliluk.android.praguewaste.ui.view.GoogleMaps
 import cz.brhliluk.android.praguewaste.ui.view.WasteGoogleMap
 import cz.brhliluk.android.praguewaste.utils.hasPermissions
 import cz.brhliluk.android.praguewaste.utils.withPermission
@@ -28,12 +29,6 @@ class MainActivity : ComponentActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
-
-    private val settingsResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (hasLocationAccess) startLocationUpdates()
-            else showLocationRequiredDialog()
-        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +50,7 @@ class MainActivity : ComponentActivity() {
             ComposeMapsTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    WasteGoogleMap(vm)
+                    GoogleMaps(vm)
                 }
             }
         }
@@ -77,7 +72,7 @@ class MainActivity : ComponentActivity() {
             interval = 5.seconds.inWholeMilliseconds
             fastestInterval = 0.5.seconds.inWholeMilliseconds
             priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
-            smallestDisplacement = 10f
+            smallestDisplacement = 10f // 10m
         }
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
@@ -120,5 +115,11 @@ class MainActivity : ComponentActivity() {
     }
 
     private val hasLocationAccess get() = this@MainActivity.hasPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
+
+    private val settingsResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (hasLocationAccess) startLocationUpdates()
+            else showLocationRequiredDialog()
+        }
 }
 

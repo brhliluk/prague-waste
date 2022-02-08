@@ -1,5 +1,8 @@
 package cz.brhliluk.android.praguewaste.model
 
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.clustering.ClusterItem
+import cz.brhliluk.android.praguewaste.utils.location
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -13,7 +16,7 @@ data class Bin(
     val address: String,
     @SerialName("trash_types")
     val totalStars: Array<Int>,
-) {
+) : ClusterItem {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -35,4 +38,10 @@ data class Bin(
         result = 31 * result + totalStars.contentHashCode()
         return result
     }
+
+    override fun getPosition(): LatLng = location
+
+    override fun getTitle(): String = address
+
+    override fun getSnippet(): String? = null
 }
