@@ -36,11 +36,16 @@ class MainViewModel : ViewModel(), KoinComponent {
     var allParamsRequired by mutableStateOf(false)
     var filter by mutableStateOf(Bin.TrashType.all)
     var searchQuery by mutableStateOf("")
-    var radius by mutableStateOf(20F)
+    var radius by mutableStateOf(500F)
+    var activeBottomSheet by mutableStateOf(BottomSheet.NONE)
 
     val currentBins = MutableStateFlow<List<Bin>>(listOf())
 
     fun getNearestBins() = viewModelScope.launch {
         currentBins.value = api.getBins(location.value)
     }
+}
+
+enum class BottomSheet {
+    NONE, SEARCH, NEAR;
 }

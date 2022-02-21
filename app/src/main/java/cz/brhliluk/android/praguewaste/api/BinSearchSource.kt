@@ -23,6 +23,7 @@ class BinSearchSource(
         }
     }
 
+    // TODO: only 2 pages load
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Bin> {
         return try {
             val nextPage = params.key ?: 1
@@ -30,7 +31,7 @@ class BinSearchSource(
             LoadResult.Page(
                 data = binList,
                 prevKey = if (nextPage == 1) null else nextPage - 1,
-                nextKey = nextPage + 1
+                nextKey = if (binList.isEmpty()) null else nextPage + 1
             )
         } catch (exception: IOException) {
             return LoadResult.Error(exception)

@@ -1,13 +1,7 @@
 package cz.brhliluk.android.praguewaste.ui.view
 
 import android.os.Bundle
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
@@ -42,27 +36,19 @@ fun GoogleMaps(vm: MainViewModel) {
     }
 
     val currentBins by vm.currentBins.collectAsState()
-    Box {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White)
-        ) {
-            AndroidView({ mapView }) { mapView ->
-                CoroutineScope(Dispatchers.Main).launch {
-                    //noinspection MissingPermission
-                    mapView.getMapAsync { it.isMyLocationEnabled = true }
+    AndroidView({ mapView }) { mapView ->
+        CoroutineScope(Dispatchers.Main).launch {
+            //noinspection MissingPermission
+            mapView.getMapAsync { it.isMyLocationEnabled = true }
 
-                    mapView.awaitMap().apply {
-                        val clusterManager = ClusterManager<Bin>(localContext, this)
+            mapView.awaitMap().apply {
+                val clusterManager = ClusterManager<Bin>(localContext, this)
 
-                        this.setOnCameraIdleListener(clusterManager)
+                this.setOnCameraIdleListener(clusterManager)
 
-                        clusterManager.addItems(currentBins)
+                clusterManager.addItems(currentBins)
 
-                        clusterManager.cluster()
-                    }
-                }
+                clusterManager.cluster()
             }
         }
     }

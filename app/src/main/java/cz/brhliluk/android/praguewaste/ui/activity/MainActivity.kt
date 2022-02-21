@@ -15,7 +15,7 @@ import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import cz.brhliluk.android.praguewaste.R
 import cz.brhliluk.android.praguewaste.ui.theme.ComposeMapsTheme
-import cz.brhliluk.android.praguewaste.ui.view.GoogleMaps
+import cz.brhliluk.android.praguewaste.ui.view.MainView
 import cz.brhliluk.android.praguewaste.utils.hasPermissions
 import cz.brhliluk.android.praguewaste.utils.withPermission
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
             ComposeMapsTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    GoogleMaps(vm)
+                    MainView(vm)
                 }
             }
         }
