@@ -4,8 +4,7 @@ import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,8 +15,9 @@ import cz.brhliluk.android.praguewaste.ui.activity.SettingsActivity
 import cz.brhliluk.android.praguewaste.viewmodel.BottomSheet
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun BottomNavBar(vm: MainViewModel) {
+fun BottomNavBar(vm: MainViewModel, sheetState: ModalBottomSheetState) {
     val context = LocalContext.current
 
     Row (Modifier
