@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cz.brhliluk.android.praguewaste.viewmodel.BottomSheet
@@ -16,16 +15,16 @@ fun MainView(vm: MainViewModel) {
 
     ModalBottomSheetLayout(
         sheetContent = { when (vm.activeBottomSheet) {
-            BottomSheet.NONE -> Box(Modifier.defaultMinSize(minHeight = 1.dp))
+            BottomSheet.NONE -> Box(Modifier.defaultMinSize(minHeight = 1.dp)) // crashes with null passed
             BottomSheet.SEARCH -> BottomSearchView(vm)
             BottomSheet.NEAR -> BottomNearView(vm)
         } }
     ) {
-        Box(Modifier.fillMaxSize()) {
-            GoogleMaps(vm)
-            Row(Modifier.align(Alignment.BottomCenter)) {
-                BottomNavBar(vm)
+        Column(Modifier.fillMaxSize()) {
+            Row(Modifier.weight(1f)) {
+                GoogleMaps(vm)
             }
+            BottomNavBar(vm)
         }
     }
 }

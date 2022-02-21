@@ -2,6 +2,7 @@ package cz.brhliluk.android.praguewaste.ui.view
 
 import android.os.Bundle
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView

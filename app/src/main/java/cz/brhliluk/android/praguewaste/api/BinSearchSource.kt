@@ -4,6 +4,7 @@ package cz.brhliluk.android.praguewaste.api
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import cz.brhliluk.android.praguewaste.model.Bin
+import io.ktor.client.features.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.IOException
@@ -41,6 +42,10 @@ class BinSearchSource(
             )
         } catch (exception: IOException) {
             return LoadResult.Error(exception)
+        } catch (e: ClientRequestException) {
+            return LoadResult.Error(e)
+        } catch (e: ServerResponseException) {
+            return LoadResult.Error(e)
         }
     }
 }

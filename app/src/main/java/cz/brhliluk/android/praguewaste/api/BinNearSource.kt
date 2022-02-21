@@ -5,6 +5,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.google.android.gms.maps.model.LatLng
 import cz.brhliluk.android.praguewaste.model.Bin
+import io.ktor.client.features.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.IOException
@@ -43,6 +44,10 @@ class BinNearSource(
             )
         } catch (exception: IOException) {
             return LoadResult.Error(exception)
+        } catch (e: ClientRequestException) {
+            return LoadResult.Error(e)
+        } catch (e: ServerResponseException) {
+            return LoadResult.Error(e)
         }
     }
 
