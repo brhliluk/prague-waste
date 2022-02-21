@@ -21,8 +21,8 @@ import cz.brhliluk.android.praguewaste.model.Bin
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 
 @Composable
-fun BottomSearchView(vm: MainViewModel) {
-    val binListItems: LazyPagingItems<Bin> = vm.bin.collectAsLazyPagingItems()
+fun BottomNearView(vm: MainViewModel) {
+    val binListItems: LazyPagingItems<Bin> = vm.searchBins.collectAsLazyPagingItems()
     var listVisible by remember { mutableStateOf(false) }
 
     Column() {

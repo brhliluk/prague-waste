@@ -10,7 +10,8 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.google.android.gms.maps.model.LatLng
-import cz.brhliluk.android.praguewaste.api.BinSource
+import cz.brhliluk.android.praguewaste.api.BinNearSource
+import cz.brhliluk.android.praguewaste.api.BinSearchSource
 import cz.brhliluk.android.praguewaste.api.WasteApi
 import cz.brhliluk.android.praguewaste.model.Bin
 import kotlinx.coroutines.flow.Flow
@@ -22,15 +23,20 @@ import org.koin.core.component.inject
 class MainViewModel : ViewModel(), KoinComponent {
     private val api: WasteApi by inject()
 
-    val bin: Flow<PagingData<Bin>> = Pager(PagingConfig(pageSize = 15)) {
-        BinSource(searchQuery, filter, allParamsRequired)
+    val searchBins: Flow<PagingData<Bin>> = Pager(PagingConfig(pageSize = 15)) {
+        BinSearchSource(searchQuery, filter, allParamsRequired)
+    }.flow.cachedIn(viewModelScope)
+
+    val nearBins: Flow<PagingData<Bin>> = Pager(PagingConfig(pageSize = 15)) {
+        BinNearSource(location.value, radius, filter, allParamsRequired)
     }.flow.cachedIn(viewModelScope)
 
     private val centrePrague = LatLng(50.073658, 14.418540)
     val location = MutableStateFlow(centrePrague)
-    val allParamsRequired by mutableStateOf(false)
-    val filter by mutableStateOf(Bin.TrashType.all)
+    var allParamsRequired by mutableStateOf(false)
+    var filter by mutableStateOf(Bin.TrashType.all)
     var searchQuery by mutableStateOf("")
+    var radius by mutableStateOf(20F)
 
     val currentBins = MutableStateFlow<List<Bin>>(listOf())
 

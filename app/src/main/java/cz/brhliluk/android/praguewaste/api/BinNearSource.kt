@@ -3,13 +3,15 @@ package cz.brhliluk.android.praguewaste.api
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.google.android.gms.maps.model.LatLng
 import cz.brhliluk.android.praguewaste.model.Bin
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.IOException
 
-class BinSource(
-    private val query: String,
+class BinNearSource(
+    private val location: LatLng,
+    private val radius: Float,
     private val filter: List<Bin.TrashType>,
     private val allRequired: Boolean,
 ) : PagingSource<Int, Bin>(), KoinComponent {
@@ -26,7 +28,7 @@ class BinSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Bin> {
         return try {
             val nextPage = params.key ?: 1
-            val binList = api.getBins(query, filter, allRequired, nextPage)
+            val binList = api.getBins(location, radius, filter, allRequired, nextPage)
             LoadResult.Page(
                 data = binList,
                 prevKey = if (nextPage == 1) null else nextPage - 1,
