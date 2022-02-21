@@ -64,13 +64,13 @@ class WasteApi : KoinComponent {
 
     suspend fun getBins(
         query: String,
-        filter: Array<Int>,
-        allRequired: Boolean,
-        page: Int,
-        perPage: Int
+        filter: List<Bin.TrashType>? = null,
+        allRequired: Boolean? = null,
+        page: Int? = null,
+        perPage: Int? = null
     ): List<Bin> = ktorClient.get(path = "bins-search") {
         parameter("query", query)
-        parameter("filter", filter)
+        parameter("filter", filter?.map { it.id })
         parameter("allRequired", allRequired)
         parameter("page", page)
         parameter("perPage", perPage)
@@ -79,16 +79,15 @@ class WasteApi : KoinComponent {
     suspend fun getBins(
         location: LatLng,
         radius: Float? = null,
-        filter: Array<Int>? = null,
+        filter: List<Bin.TrashType>? = null,
         allRequired: Boolean? = null,
         page: Int? = null,
         perPage: Int? = null
     ): List<Bin> = ktorClient.get(path = "bins") {
-        // TODO fix API
-        parameter("lat", location.longitude)
-        parameter("long", location.latitude)
+        parameter("lat", location.latitude)
+        parameter("long", location.longitude)
         parameter("radius", radius)
-        parameter("filter", filter)
+        parameter("filter", filter?.map { it.id })
         parameter("allRequired", allRequired)
         parameter("page", page)
         parameter("perPage", perPage)

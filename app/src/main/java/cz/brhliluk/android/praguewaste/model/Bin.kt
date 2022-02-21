@@ -15,7 +15,7 @@ data class Bin(
     @SerialName("address")
     val address: String,
     @SerialName("trash_types")
-    val totalStars: Array<Int>,
+    val trashTypes: Array<Int>,
 ) : ClusterItem {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -26,7 +26,7 @@ data class Bin(
         if (latitude != other.latitude) return false
         if (longitude != other.longitude) return false
         if (address != other.address) return false
-        if (!totalStars.contentEquals(other.totalStars)) return false
+        if (!trashTypes.contentEquals(other.trashTypes)) return false
 
         return true
     }
@@ -35,7 +35,7 @@ data class Bin(
         var result = latitude.hashCode()
         result = 31 * result + longitude.hashCode()
         result = 31 * result + address.hashCode()
-        result = 31 * result + totalStars.contentHashCode()
+        result = 31 * result + trashTypes.contentHashCode()
         return result
     }
 
@@ -44,4 +44,20 @@ data class Bin(
     override fun getTitle(): String = address
 
     override fun getSnippet(): String? = null
+
+    val namedTrashTypes = trashTypes.map { TrashType.byId(it) }
+
+    enum class TrashType(val id: Int) {
+        PAPER(0),
+        PLASTIC(1),
+        BEVERAGE_CARTONS(2),
+        COLORED_GLASS(3),
+        CLEAR_GLASS(4),
+        METAL(5);
+
+        companion object {
+            fun byId(id: Int) = values().firstOrNull { it.id == id }
+            val all = listOf(PAPER, PLASTIC, BEVERAGE_CARTONS, COLORED_GLASS, CLEAR_GLASS, METAL)
+        }
+    }
 }
