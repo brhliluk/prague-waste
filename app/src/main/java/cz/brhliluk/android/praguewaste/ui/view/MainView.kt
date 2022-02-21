@@ -17,8 +17,8 @@ fun MainView(vm: MainViewModel) {
     ModalBottomSheetLayout(
         sheetContent = { when (vm.activeBottomSheet) {
             BottomSheet.NONE -> Box(Modifier.defaultMinSize(minHeight = 1.dp))
-            BottomSheet.SEARCH -> BottomNearView(vm)
-            BottomSheet.NEAR -> BottomSearchView(vm)
+            BottomSheet.SEARCH -> BottomSearchView(vm)
+            BottomSheet.NEAR -> BottomNearView(vm)
         } }
     ) {
         Box(Modifier.fillMaxSize()) {

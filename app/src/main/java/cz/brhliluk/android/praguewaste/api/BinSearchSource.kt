@@ -23,15 +23,21 @@ class BinSearchSource(
         }
     }
 
-    // TODO: only 2 pages load
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Bin> {
+        val nextPage = params.key ?: 1
         return try {
-            val nextPage = params.key ?: 1
             val binList = api.getBins(query, filter, allRequired, nextPage)
+            val nextKey = if (binList.isEmpty()) {
+                null
+            } else {
+                // initial load size = 3 * NETWORK_PAGE_SIZE
+                // ensure we're not requesting duplicating items, at the 2nd request
+                nextPage + (params.loadSize / BinNearSource.NETWORK_PAGE_SIZE)
+            }
             LoadResult.Page(
                 data = binList,
                 prevKey = if (nextPage == 1) null else nextPage - 1,
-                nextKey = if (binList.isEmpty()) null else nextPage + 1
+                nextKey = nextKey
             )
         } catch (exception: IOException) {
             return LoadResult.Error(exception)
