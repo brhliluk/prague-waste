@@ -22,7 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
-fun GoogleMaps(vm: MainViewModel) {
+fun GoogleMaps(vm: MainViewModel, modifier: Modifier?) {
     val mapView = rememberMapViewWithLifeCycle()
     val localContext = LocalContext.current
 
@@ -37,7 +37,7 @@ fun GoogleMaps(vm: MainViewModel) {
     }
 
     val currentBins by vm.currentBins.collectAsState()
-    AndroidView({ mapView }) { mapView ->
+    AndroidView({ mapView }, modifier ?: Modifier) { mapView ->
         CoroutineScope(Dispatchers.Main).launch {
             //noinspection MissingPermission
             mapView.getMapAsync { it.isMyLocationEnabled = true }

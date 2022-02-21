@@ -21,9 +21,7 @@ fun MainView(vm: MainViewModel) {
         } }
     ) {
         Column(Modifier.fillMaxSize()) {
-            Row(Modifier.weight(1f)) {
-                GoogleMaps(vm)
-            }
+            GoogleMaps(vm, Modifier.weight(1f))
             BottomNavBar(vm)
         }
     }
