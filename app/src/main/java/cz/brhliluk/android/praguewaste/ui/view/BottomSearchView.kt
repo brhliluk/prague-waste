@@ -3,6 +3,7 @@ package cz.brhliluk.android.praguewaste.ui.view
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -35,11 +36,18 @@ fun BottomSearchView(vm: MainViewModel) {
                 Icon(
                     painter = painterResource(R.drawable.ic_search),
                     contentDescription = null,
-                    Modifier.clickable { listVisible = true }
+                    Modifier.clickable {
+                        listVisible = true
+                        binListItems.refresh()
+                    }
                 )
             },
-            keyboardActions = KeyboardActions(onDone = { listVisible = true }),
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search)
+            keyboardActions = KeyboardActions(onDone = {
+                listVisible = true
+                binListItems.refresh()
+            }),
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+            modifier = Modifier.fillMaxWidth()
         )
         if (listVisible) {
             LazyColumn(modifier = Modifier.fillMaxHeight()) {
@@ -49,6 +57,7 @@ fun BottomSearchView(vm: MainViewModel) {
                         Text(text = item.address)
                     }
                 }
+                // Handle Error and Loading states
                 binListItems.apply {
                     when {
                         loadState.refresh is LoadState.Loading -> {

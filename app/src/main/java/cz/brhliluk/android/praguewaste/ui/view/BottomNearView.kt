@@ -18,7 +18,7 @@ import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 fun BottomNearView(vm: MainViewModel) {
     val binListItems: LazyPagingItems<Bin> = vm.nearBins.collectAsLazyPagingItems()
 
-    Column() {
+    Column {
         Slider(value = vm.radius, onValueChange = { vm.radius = it })
         LazyColumn(modifier = Modifier.fillMaxHeight()) {
             items(binListItems) { item ->
@@ -27,6 +27,7 @@ fun BottomNearView(vm: MainViewModel) {
                     Text(text = item.address)
                 }
             }
+            // Handle Error and Loading states
             binListItems.apply {
                 when {
                     loadState.refresh is LoadState.Loading -> {

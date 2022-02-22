@@ -69,7 +69,7 @@ class WasteApi : KoinComponent {
         page: Int? = null,
         perPage: Int? = null
     ): List<Bin> = ktorClient.get(path = "bins-search") {
-        parameter("query", query)
+        parameter("searchQuery", query)
         parameter("filter", filter?.map { it.id })
         parameter("allRequired", allRequired)
         parameter("page", page)
