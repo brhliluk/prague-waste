@@ -8,24 +8,27 @@ import androidx.compose.ui.unit.dp
 import cz.brhliluk.android.praguewaste.viewmodel.BottomSheet
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 
-@OptIn(ExperimentalMaterialApi::class)
+@ExperimentalMaterialApi
 @Composable
 fun MainView(vm: MainViewModel) {
 
     // TODO: state changes
     val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
 
-    ModalBottomSheetLayout(
-        sheetContent = { when (vm.activeBottomSheet) {
-            BottomSheet.NONE -> Box(Modifier.defaultMinSize(minHeight = 1.dp)) // crashes with null passed
-            BottomSheet.SEARCH -> BottomSearchView(vm)
-            BottomSheet.NEAR -> BottomNearView(vm)
-        } },
-        sheetState = sheetState
-    ) {
-        Column(Modifier.fillMaxSize()) {
-            GoogleMaps(vm, Modifier.weight(1f))
-            BottomNavBar(vm, sheetState)
+    Column(Modifier.fillMaxSize()) {
+        ModalBottomSheetLayout(
+            sheetContent = {
+                when (vm.activeBottomSheet) {
+                    BottomSheet.NONE -> Box(Modifier.defaultMinSize(minHeight = 1.dp)) // crashes with null passed
+                    BottomSheet.SEARCH -> BottomSearchView(vm)
+                    BottomSheet.NEAR -> BottomNearView(vm)
+                }
+            },
+            sheetState = sheetState,
+            modifier = Modifier.weight(1f)
+        ) {
+            GoogleMaps(vm)
         }
+        BottomNavBar(vm, sheetState)
     }
 }
