@@ -7,6 +7,7 @@ import androidx.compose.material.Slider
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
@@ -24,6 +25,35 @@ fun BottomNearView(vm: MainViewModel) {
                 item?.let {
                     // TODO: some sort of nicer card with distance etc
                     Text(text = item.address)
+                }
+            }
+            binListItems.apply {
+                when {
+                    loadState.refresh is LoadState.Loading -> {
+                        item { LoadingView(modifier = Modifier.fillParentMaxSize()) }
+                    }
+                    loadState.append is LoadState.Loading -> {
+                        item { LoadingItem() }
+                    }
+                    loadState.refresh is LoadState.Error -> {
+                        val e = binListItems.loadState.refresh as LoadState.Error
+                        item {
+                            ErrorItem(
+                                message = e.error.localizedMessage!!,
+                                modifier = Modifier.fillParentMaxSize(),
+                                onClickRetry = { retry() }
+                            )
+                        }
+                    }
+                    loadState.append is LoadState.Error -> {
+                        val e = binListItems.loadState.append as LoadState.Error
+                        item {
+                            ErrorItem(
+                                message = e.error.localizedMessage!!,
+                                onClickRetry = { retry() }
+                            )
+                        }
+                    }
                 }
             }
         }
