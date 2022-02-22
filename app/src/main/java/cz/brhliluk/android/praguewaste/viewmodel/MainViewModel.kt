@@ -14,6 +14,7 @@ import cz.brhliluk.android.praguewaste.api.BinNearSource
 import cz.brhliluk.android.praguewaste.api.BinSearchSource
 import cz.brhliluk.android.praguewaste.api.WasteApi
 import cz.brhliluk.android.praguewaste.model.Bin
+import cz.brhliluk.android.praguewaste.utils.load
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -31,6 +32,7 @@ class MainViewModel : ViewModel(), KoinComponent {
         BinNearSource(location.value, radius, filter, allParamsRequired)
     }.flow.cachedIn(viewModelScope)
 
+    val loading = mutableStateOf(false)
     private val centrePrague = LatLng(50.073658, 14.418540)
     val location = MutableStateFlow(centrePrague)
     var allParamsRequired by mutableStateOf(false)
@@ -39,10 +41,12 @@ class MainViewModel : ViewModel(), KoinComponent {
     var radius by mutableStateOf(500F)
     var activeBottomSheet by mutableStateOf(BottomSheet.NONE)
 
-    val currentBins = MutableStateFlow<List<Bin>>(listOf())
+    var currentBins = mutableStateOf<List<Bin>>(listOf())
 
-    fun getNearestBins() = viewModelScope.launch {
-        currentBins.value = api.getBins(location.value)
+    fun fetchAllBins() = loading.load {
+        viewModelScope.launch {
+            currentBins.value = api.getAllBins()
+        }
     }
 }
 

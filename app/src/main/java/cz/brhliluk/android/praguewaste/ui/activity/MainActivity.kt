@@ -8,6 +8,7 @@ import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import com.afollestad.materialdialogs.MaterialDialog
@@ -22,6 +23,7 @@ import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.time.Duration.Companion.seconds
 
+@ExperimentalMaterialApi
 class MainActivity : ComponentActivity() {
 
     private val vm: MainViewModel by viewModel()
@@ -44,7 +46,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun setMapsContent() {
-        vm.getNearestBins()
+        vm.fetchAllBins()
         setContent {
             ComposeMapsTheme {
                 // A surface container using the 'background' color from the theme

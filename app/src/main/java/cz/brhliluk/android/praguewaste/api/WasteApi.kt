@@ -92,4 +92,7 @@ class WasteApi : KoinComponent {
         parameter("page", page)
         parameter("perPage", perPage)
     }
+
+    suspend fun getAllBins(): List<Bin> = ktorClient.get(path = "bins-all")
+
 }

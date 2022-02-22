@@ -2,6 +2,7 @@ package cz.brhliluk.android.praguewaste.utils
 
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
+import androidx.compose.runtime.MutableState
 import com.google.android.gms.maps.model.LatLng
 import cz.brhliluk.android.praguewaste.model.Bin
 import cz.brhliluk.android.praguewaste.viewmodel.BottomSheet
@@ -46,3 +47,13 @@ val BottomSheet.instance: BottomSheet
         BottomSheet.SEARCH -> BottomSheet.SEARCH
         BottomSheet.NEAR -> BottomSheet.NEAR
     }
+
+inline fun <T> MutableState<Boolean>.load(
+    block: () -> T
+) : T? {
+    value = true
+    try { return block() }
+    finally {
+        value = false
+    }
+}

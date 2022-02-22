@@ -8,6 +8,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -36,16 +37,18 @@ fun GoogleMaps(vm: MainViewModel) {
         )
     }
 
-    val currentBins by vm.currentBins.collectAsState()
-    AndroidView({ mapView }) { mapView ->
+    AndroidView({ mapView }) { map ->
+        // Reading bins so that AndroidView recomposes when it changes.
+        val currentBins = vm.currentBins.value
+
         CoroutineScope(Dispatchers.Main).launch {
             //noinspection MissingPermission
-            mapView.getMapAsync { it.isMyLocationEnabled = true }
+            map.getMapAsync { it.isMyLocationEnabled = true }
 
-            mapView.awaitMap().apply {
+            map.awaitMap().apply {
                 val clusterManager = ClusterManager<Bin>(localContext, this)
 
-                this.setOnCameraIdleListener(clusterManager)
+                setOnCameraIdleListener(clusterManager)
 
                 clusterManager.addItems(currentBins)
 
