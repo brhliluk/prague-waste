@@ -12,6 +12,7 @@ import java.lang.IllegalStateException
 val Bin.location: LatLng get() = LatLng(latitude, longitude)
 
 @ExperimentalMaterialApi
+// TODO: ModalBottomSheet can get hidden itself - can result in double times hide
 fun BottomSheet.onClick(clicked: BottomSheet, coroutineScope: CoroutineScope, sheetState: ModalBottomSheetState): BottomSheet {
     val resultSheet = when (this) {
         BottomSheet.NONE -> clicked.instance
