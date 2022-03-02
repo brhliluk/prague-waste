@@ -15,30 +15,8 @@ data class Bin(
     @SerialName("address")
     val address: String,
     @SerialName("trash_types")
-    val trashTypes: Array<Int>,
+    val trashTypes: List<Int>,
 ) : ClusterItem {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as Bin
-
-        if (latitude != other.latitude) return false
-        if (longitude != other.longitude) return false
-        if (address != other.address) return false
-        if (!trashTypes.contentEquals(other.trashTypes)) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = latitude.hashCode()
-        result = 31 * result + longitude.hashCode()
-        result = 31 * result + address.hashCode()
-        result = 31 * result + trashTypes.contentHashCode()
-        return result
-    }
-
     override fun getPosition(): LatLng = location
 
     override fun getTitle(): String = address
