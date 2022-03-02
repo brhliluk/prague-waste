@@ -11,15 +11,17 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.lifecycle.lifecycleScope
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import cz.brhliluk.android.praguewaste.R
 import cz.brhliluk.android.praguewaste.ui.theme.ComposeMapsTheme
 import cz.brhliluk.android.praguewaste.ui.view.MainView
-import cz.brhliluk.android.praguewaste.utils.hasPermissions
-import cz.brhliluk.android.praguewaste.utils.withPermission
+import cz.brhliluk.android.praguewaste.utils.*
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
+import kotlinx.coroutines.flow.single
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.time.Duration.Companion.seconds
 
@@ -33,23 +35,23 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setupLocationUpdates()
-        applicationContext.withPermission(Manifest.permission.ACCESS_FINE_LOCATION,
-            onDenied = { showLocationRequiredDialog() },
-            onGranted = {
-                if (hasLocationAccess) {
+        lifecycleScope.launchWhenCreated {
+            setupLocationUpdates()
+            applicationContext.withPermission(Manifest.permission.ACCESS_FINE_LOCATION,
+                onDenied = { launch { setLocationEnabled(false) } },
+                onGranted = { if (hasLocationPermission) {
+                    launch { setLocationEnabled(true) }
                     startLocationUpdates()
-                    setMapsContent()
-                } else showLocationRequiredDialog()
-            }
-        )
+                } }
+            )
+            setMapsContent()
+        }
     }
 
     private fun setMapsContent() {
         vm.fetchAllBins()
         setContent {
             ComposeMapsTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     MainView(vm)
                 }
@@ -88,39 +90,11 @@ class MainActivity : ComponentActivity() {
 
     private fun startLocationUpdates() {
         //noinspection MissingPermission
-        fusedLocationClient.requestLocationUpdates(
+        if (hasLocationPermission) fusedLocationClient.requestLocationUpdates(
             locationRequest,
             locationCallback,
             Looper.getMainLooper()
         )
     }
-
-    private fun showLocationRequiredDialog() {
-        MaterialDialog(this).show {
-            title(R.string.no_location_title)
-            message(R.string.location_required_dialog)
-            cancelable(false)
-            negativeButton(R.string.exit) { finishAffinity() }
-            positiveButton(R.string.turn_on) {
-                this@MainActivity.withPermission(Manifest.permission.ACCESS_FINE_LOCATION,
-                    onDenied = { showLocationRequiredDialog() },
-                    onGranted = {
-                        if (this@MainActivity.hasPermissions(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                            startLocationUpdates()
-                            setMapsContent()
-                        } else settingsResult.launch(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-                    }
-                )
-            }
-        }
-    }
-
-    private val hasLocationAccess get() = this@MainActivity.hasPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
-
-    private val settingsResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (hasLocationAccess) startLocationUpdates()
-            else showLocationRequiredDialog()
-        }
 }
 

@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import dev.burnoo.compose.rememberpreference.rememberBooleanPreference
 
@@ -27,6 +25,5 @@ fun SettingsView() {
             Text(text = "Use dark mode:")
             Switch(checked = darkTheme, onCheckedChange = { darkTheme = !darkTheme })
         }
-
     }
 }

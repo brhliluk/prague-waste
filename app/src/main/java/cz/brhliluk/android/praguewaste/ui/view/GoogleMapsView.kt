@@ -17,6 +17,7 @@ import com.google.maps.android.compose.*
 import com.google.maps.android.ktx.awaitMap
 import cz.brhliluk.android.praguewaste.R
 import cz.brhliluk.android.praguewaste.model.Bin
+import cz.brhliluk.android.praguewaste.utils.hasLocationPermission
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,13 +38,17 @@ fun GoogleMaps(vm: MainViewModel) {
         )
     }
 
+    val locationEnabled by remember { mutableStateOf(localContext.hasLocationPermission) }
+
     AndroidView({ mapView }) { map ->
-        // Reading bins so that AndroidView recomposes when it changes.
+        // Reading values so that AndroidView recomposes when it changes.
         val currentBins = vm.currentBins.value
+        val locationEnabledLocal = locationEnabled
 
         CoroutineScope(Dispatchers.Main).launch {
+            print("Recomposed locationEnabled: $locationEnabledLocal")
             //noinspection MissingPermission
-            map.getMapAsync { it.isMyLocationEnabled = true }
+            map.getMapAsync { it.isMyLocationEnabled = locationEnabledLocal }
 
             map.awaitMap().apply {
                 val clusterManager = ClusterManager<Bin>(localContext, this)
