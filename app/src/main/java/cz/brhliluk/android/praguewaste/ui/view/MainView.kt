@@ -1,6 +1,7 @@
 package cz.brhliluk.android.praguewaste.ui.view
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,11 +14,12 @@ import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 @Composable
 fun MainView(vm: MainViewModel) {
 
-    // TODO: state changes
-    val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+    val scaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
+    )
 
     Column(Modifier.fillMaxSize()) {
-        ModalBottomSheetLayout(
+        BottomSheetScaffold(
             sheetContent = {
                 when (vm.activeBottomSheet) {
                     BottomSheet.NONE -> Box(Modifier.defaultMinSize(minHeight = 1.dp)) // crashes with null passed
@@ -25,8 +27,11 @@ fun MainView(vm: MainViewModel) {
                     BottomSheet.NEAR -> BottomNearView(vm)
                 }
             },
-            sheetState = sheetState,
-            modifier = Modifier.weight(1f)
+            topBar = {},
+            sheetShape = RoundedCornerShape(50.dp, 50.dp),
+            scaffoldState = scaffoldState ,
+            modifier = Modifier.weight(1f),
+            sheetPeekHeight = 0.dp,
         ) {
             Box {
                 if (vm.loading.value) {
@@ -40,6 +45,6 @@ fun MainView(vm: MainViewModel) {
                 GoogleMaps(vm)
             }
         }
-        BottomNavBar(vm, sheetState)
+        BottomNavBar(vm, scaffoldState)
     }
 }

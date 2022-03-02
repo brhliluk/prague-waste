@@ -1,26 +1,20 @@
 package cz.brhliluk.android.praguewaste.ui.activity
 
 import android.Manifest
-import android.content.Intent
 import android.os.Bundle
 import android.os.Looper
-import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.lifecycle.lifecycleScope
-import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
-import cz.brhliluk.android.praguewaste.R
 import cz.brhliluk.android.praguewaste.ui.theme.ComposeMapsTheme
 import cz.brhliluk.android.praguewaste.ui.view.MainView
 import cz.brhliluk.android.praguewaste.utils.*
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
-import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.time.Duration.Companion.seconds
