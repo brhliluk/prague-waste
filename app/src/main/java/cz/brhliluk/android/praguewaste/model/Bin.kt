@@ -1,8 +1,8 @@
 package cz.brhliluk.android.praguewaste.model
 
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.SphericalUtil
 import com.google.maps.android.clustering.ClusterItem
-import cz.brhliluk.android.praguewaste.utils.location
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -31,11 +31,16 @@ data class Bin(
         BEVERAGE_CARTONS(2),
         COLORED_GLASS(3),
         CLEAR_GLASS(4),
-        METAL(5);
+        METAL(5),
+        EWASTE(6);
 
         companion object {
             fun byId(id: Int) = values().firstOrNull { it.id == id }
-            val all = listOf(PAPER, PLASTIC, BEVERAGE_CARTONS, COLORED_GLASS, CLEAR_GLASS, METAL)
+            val all = listOf(PAPER, PLASTIC, BEVERAGE_CARTONS, COLORED_GLASS, CLEAR_GLASS, METAL, EWASTE)
         }
     }
+
+    val location: LatLng get() = LatLng(latitude, longitude)
+
+    fun distanceFrom(location: LatLng) = SphericalUtil.computeDistanceBetween(location, this.location)
 }

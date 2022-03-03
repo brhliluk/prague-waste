@@ -7,4 +7,5 @@
     <string name="location_required_dialog">Služba určování polohy je potřebná k provozu této aplikace. Zapněte ji pokud si přejete pokračovat.</string>
     <string name="turn_on">Zapnout</string>
     <string name="exit">Odejít</string>
+    <string name="proximity">Vzdálenost</string>
 </resources>

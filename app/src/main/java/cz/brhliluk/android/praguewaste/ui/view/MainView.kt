@@ -27,7 +27,6 @@ fun MainView(vm: MainViewModel) {
                     BottomSheet.NEAR -> BottomNearView(vm)
                 }
             },
-            topBar = {},
             sheetShape = RoundedCornerShape(50.dp, 50.dp),
             scaffoldState = scaffoldState ,
             modifier = Modifier.weight(1f),

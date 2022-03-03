@@ -10,3 +10,4 @@ val Teal200 = Color(0xFF03DAC5)
 
 val VeryLightGray = Color(0xFFe3e3e3)
 val BottomSheetBackground = Color(0xFFecf0f3)
+val Orange = Color (0xFFf78900)

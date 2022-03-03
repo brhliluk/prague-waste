@@ -4,14 +4,10 @@ import androidx.compose.material.BottomSheetScaffoldState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.runtime.MutableState
-import com.google.android.gms.maps.model.LatLng
-import cz.brhliluk.android.praguewaste.model.Bin
 import cz.brhliluk.android.praguewaste.viewmodel.BottomSheet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.lang.IllegalStateException
-
-val Bin.location: LatLng get() = LatLng(latitude, longitude)
 
 @ExperimentalMaterialApi
 // TODO: ModalBottomSheet can get hidden itself - can result in double times hide
