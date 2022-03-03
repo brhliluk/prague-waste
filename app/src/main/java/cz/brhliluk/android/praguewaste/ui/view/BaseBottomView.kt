@@ -31,7 +31,7 @@ fun <T : Any> BaseBottomView(items: LazyPagingItems<T>, listVisible: Boolean = t
         )
         content()
         if (listVisible) {
-            LazyColumn(modifier = Modifier.height(200.dp)) {
+            LazyColumn(modifier = Modifier.height(300.dp)) {
                 items(items) { item ->
                     item?.let {
                         itemView(it)

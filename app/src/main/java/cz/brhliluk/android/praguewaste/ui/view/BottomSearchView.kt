@@ -26,7 +26,7 @@ fun BottomSearchView(vm: MainViewModel) {
     val userLocation = vm.location.collectAsState()
 
     BaseBottomView(
-        items = vm.searchBins.collectAsLazyPagingItems(),
+        items = binListItems,
         listVisible = listVisible,
         itemView = { item -> BinItemView(userLocation = userLocation.value, bin = item) }
     ) {

@@ -13,17 +13,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import cz.brhliluk.android.praguewaste.R
+import cz.brhliluk.android.praguewaste.model.Bin
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 
 @Composable
 fun BottomNearView(vm: MainViewModel) {
 
+    val binListItems: LazyPagingItems<Bin> = vm.nearBins.collectAsLazyPagingItems()
     val userLocation = vm.location.collectAsState()
 
     BaseBottomView(
-        items = vm.nearBins.collectAsLazyPagingItems(),
+        items = binListItems,
         itemView = { item -> BinItemView(userLocation = userLocation.value, bin = item) }
     ) {
         Row(Modifier.fillMaxWidth()) {
@@ -32,7 +35,10 @@ fun BottomNearView(vm: MainViewModel) {
             Text("+${vm.radius}km")
         }
         Slider(
-            value = vm.radius, onValueChange = { vm.radius = it }, colors = SliderDefaults.colors(
+            value = vm.radius, onValueChange = {
+                vm.radius = it
+                binListItems.refresh()
+            }, colors = SliderDefaults.colors(
                 thumbColor = Color.LightGray,
                 activeTrackColor = Color.LightGray
             )
