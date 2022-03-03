@@ -23,11 +23,11 @@ fun <T : Any> BaseBottomView(items: LazyPagingItems<T>, itemView: @Composable (T
     ) {
         Box(
             Modifier
-                .width(25.dp)
-                .height(2.dp)
-                .background(Color.Black)
+                .padding(top = 10.dp, bottom = 20.dp)
+                .width(40.dp)
+                .height(5.dp)
                 .clip(RoundedCornerShape(10.dp))
-                .padding(top = 40.dp, bottom = 20.dp)
+                .background(Color.LightGray)
         )
         content()
         LazyColumn(modifier = Modifier.height(200.dp)) {
