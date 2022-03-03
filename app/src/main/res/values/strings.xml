@@ -8,4 +8,13 @@
     <string name="turn_on">Zapnout</string>
     <string name="exit">Odejít</string>
     <string name="proximity">Vzdálenost</string>
+    <string name="use_dark_mode">Použít tmavý režim:</string>
+    <string name="paper">Papír</string>
+    <string name="plastic">Plast</string>
+    <string name="beverage_cartons">Nápojové kartony</string>
+    <string name="colored_glass">Barevné sklo</string>
+    <string name="clear_glass">Čiré sklo</string>
+    <string name="metal">Kovy</string>
+    <string name="e_waste">Elektroodpad</string>
+    <string name="legend">Legenda</string>
 </resources>

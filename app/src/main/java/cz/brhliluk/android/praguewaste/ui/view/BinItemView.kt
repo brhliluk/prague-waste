@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.LatLng
 import cz.brhliluk.android.praguewaste.R
 import cz.brhliluk.android.praguewaste.model.Bin
-import cz.brhliluk.android.praguewaste.ui.theme.Orange
 
 @Composable
 fun BinItemView(userLocation: LatLng, bin: Bin) {
@@ -46,18 +45,7 @@ fun BinItemView(userLocation: LatLng, bin: Bin) {
                         .padding(5.dp)
                         .size(10.dp)
                         .clip(CircleShape)
-                        .background(
-                            when (trashType) {
-                                Bin.TrashType.PAPER -> Color.Blue
-                                Bin.TrashType.PLASTIC -> Color.Yellow
-                                Bin.TrashType.BEVERAGE_CARTONS -> Orange
-                                Bin.TrashType.COLORED_GLASS -> Color.Green
-                                Bin.TrashType.CLEAR_GLASS -> Color.White
-                                Bin.TrashType.METAL -> Color.Black
-                                Bin.TrashType.EWASTE -> Color.Red
-                                null -> Color.Transparent
-                            }
-                        )
+                        .background(trashType?.color ?: Color.Transparent)
                 )
             })
         }
