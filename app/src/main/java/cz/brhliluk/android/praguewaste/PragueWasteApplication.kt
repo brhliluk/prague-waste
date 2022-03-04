@@ -1,8 +1,12 @@
 package cz.brhliluk.android.praguewaste
 
 import android.app.Application
+import androidx.room.Room
 import cz.brhliluk.android.praguewaste.api.WasteApi
+import cz.brhliluk.android.praguewaste.database.BinDatabase
+import cz.brhliluk.android.praguewaste.repository.BinRepository
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
+import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -16,6 +20,11 @@ class PragueWasteApplication: Application() {
         // ViewModel for Detail View
         viewModel { MainViewModel() }
         single { WasteApi() }
+        // Room Database
+        single { Room.databaseBuilder(androidApplication(), BinDatabase::class.java, "bin-db").build() }
+        // BirdsDAO
+        single { get<BinDatabase>().binDao() }
+        single { BinRepository(binDao = get()) }
     })
 
     override fun onCreate() {

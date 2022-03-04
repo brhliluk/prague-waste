@@ -2,6 +2,7 @@ package cz.brhliluk.android.praguewaste.model
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
+import androidx.room.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.SphericalUtil
 import com.google.maps.android.clustering.ClusterItem
@@ -9,16 +10,20 @@ import cz.brhliluk.android.praguewaste.R
 import cz.brhliluk.android.praguewaste.ui.theme.Orange
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 @Serializable
+@TypeConverters(Converters::class)
+@Entity(tableName = "bins_table")
 data class Bin(
-    @SerialName("latitude")
+    @PrimaryKey val id: Int,
     val latitude: Double,
-    @SerialName("longitude")
     val longitude: Double,
-    @SerialName("address")
     val address: String,
     @SerialName("trash_types")
+    @ColumnInfo(name = "trash_types")
     val trashTypes: List<Int>,
 ) : ClusterItem {
     override fun getPosition(): LatLng = location
@@ -27,7 +32,7 @@ data class Bin(
 
     override fun getSnippet(): String? = null
 
-    val namedTrashTypes = trashTypes.map { TrashType.byId(it) }
+    @Ignore val namedTrashTypes = trashTypes.map { TrashType.byId(it) }
 
     enum class TrashType(val id: Int,val color: Color, @StringRes val title: Int) {
         PAPER(0, Color.Blue, R.string.paper),
@@ -47,4 +52,13 @@ data class Bin(
     val location: LatLng get() = LatLng(latitude, longitude)
 
     fun distanceFrom(location: LatLng) = SphericalUtil.computeDistanceBetween(location, this.location)
+}
+
+class Converters {
+
+    @TypeConverter
+    fun listToJsonString(value: List<Int>?): String = Json.encodeToString(value)
+
+    @TypeConverter
+    fun jsonStringToList(value: String): List<Int> = Json.decodeFromString(value)
 }

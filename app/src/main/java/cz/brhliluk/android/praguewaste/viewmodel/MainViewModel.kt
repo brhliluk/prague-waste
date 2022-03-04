@@ -14,6 +14,7 @@ import cz.brhliluk.android.praguewaste.api.BinNearSource
 import cz.brhliluk.android.praguewaste.api.BinSearchSource
 import cz.brhliluk.android.praguewaste.api.WasteApi
 import cz.brhliluk.android.praguewaste.model.Bin
+import cz.brhliluk.android.praguewaste.repository.BinRepository
 import cz.brhliluk.android.praguewaste.utils.load
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +24,7 @@ import org.koin.core.component.inject
 
 class MainViewModel : ViewModel(), KoinComponent {
     private val api: WasteApi by inject()
+    private val binRepository: BinRepository by inject()
 
     val searchBins: Flow<PagingData<Bin>> = Pager(PagingConfig(pageSize = 15)) {
         BinSearchSource(searchQuery, filter, allParamsRequired)
@@ -45,7 +47,10 @@ class MainViewModel : ViewModel(), KoinComponent {
 
     fun fetchAllBins() = loading.load {
         viewModelScope.launch {
-            currentBins.value = api.getAllBins()
+            with(binRepository.getListAsync()) {
+                if (this.isNotEmpty()) currentBins.value = this
+                else binRepository.insertDataAsync(api.getAllBins())
+            }
         }
     }
 }
