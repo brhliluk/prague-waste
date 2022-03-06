@@ -14,17 +14,21 @@ import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import org.koin.dsl.module
 
-class PragueWasteApplication: Application() {
+class PragueWasteApplication : Application() {
 
     val appModules = listOf(module {
         // ViewModel for Detail View
         viewModel { MainViewModel() }
         single { WasteApi() }
         // Room Database
-        single { Room.databaseBuilder(androidApplication(), BinDatabase::class.java, "bin-db").build() }
+        single {
+            Room.databaseBuilder(androidApplication(), BinDatabase::class.java, "bin-db")
+                .fallbackToDestructiveMigration().build()
+        }
         // BirdsDAO
         single { get<BinDatabase>().binDao() }
-        single { BinRepository(binDao = get()) }
+        single { get<BinDatabase>().binFtsDao() }
+        single { BinRepository(binDao = get(), binFtsDao = get()) }
     })
 
     override fun onCreate() {

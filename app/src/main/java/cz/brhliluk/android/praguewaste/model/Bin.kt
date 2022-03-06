@@ -15,7 +15,6 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 @Serializable
-@TypeConverters(Converters::class)
 @Entity(tableName = "bins_table")
 data class Bin(
     @PrimaryKey val id: Int,
@@ -62,3 +61,12 @@ class Converters {
     @TypeConverter
     fun jsonStringToList(value: String): List<Int> = Json.decodeFromString(value)
 }
+
+@Fts4(contentEntity = Bin::class)
+@Entity(tableName = "bins_fts_table")
+class BinFts(
+    @ColumnInfo(name = "rowid")
+    @PrimaryKey val id: Int,
+    @ColumnInfo(name = "trash_types")
+    val trashTypes: String,
+)
