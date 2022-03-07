@@ -10,7 +10,7 @@ import cz.brhliluk.android.praguewaste.model.Bin
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-
+// TODO - delete this all
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 const val LOCATION_PREFS_KEY = "use_location"

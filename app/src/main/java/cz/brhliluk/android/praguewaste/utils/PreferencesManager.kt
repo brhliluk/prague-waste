@@ -18,6 +18,7 @@ class PreferencesManager(private val context: Context) : KoinComponent {
             preferences[booleanPreferencesKey(trashType.name)] ?: true
         }
 
+    // TODO: This might help alot - https://amir-raza.medium.com/preference-datastore-android-an-implementation-guide-610645153696
 //    suspend fun getEnabled(trashType: Bin.TrashType): Boolean {
 //        val preferences = context.settingsDatastore.data.first()
 //        return preferences[booleanPreferencesKey(trashType.name)] ?: true

@@ -32,6 +32,7 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launchWhenCreated {
             setupLocationUpdates()
             applicationContext.withPermission(Manifest.permission.ACCESS_FINE_LOCATION,
+                // TODO - update this
 //                onDenied = { launch { setLocationEnabled(false) } },
                 onGranted = { if (hasLocationPermission) {
 //                    launch { setLocationEnabled(true) }
