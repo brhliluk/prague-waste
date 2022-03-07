@@ -5,6 +5,7 @@ import androidx.room.Room
 import cz.brhliluk.android.praguewaste.api.WasteApi
 import cz.brhliluk.android.praguewaste.database.BinDatabase
 import cz.brhliluk.android.praguewaste.repository.BinRepository
+import cz.brhliluk.android.praguewaste.utils.PreferencesManager
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
@@ -29,6 +30,8 @@ class PragueWasteApplication : Application() {
         single { get<BinDatabase>().binDao() }
         single { get<BinDatabase>().binFtsDao() }
         single { BinRepository(binDao = get(), binFtsDao = get()) }
+        // Prefs
+        single { PreferencesManager(get()) }
     })
 
     override fun onCreate() {

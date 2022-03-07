@@ -33,7 +33,7 @@ data class Bin(
 
     @Ignore val namedTrashTypes = trashTypes.map { TrashType.byId(it) }
 
-    enum class TrashType(val id: Int,val color: Color, @StringRes val title: Int) {
+    enum class TrashType(val id: Int, val color: Color, @StringRes val title: Int) {
         PAPER(0, Color.Blue, R.string.paper),
         PLASTIC(1, Color.Yellow, R.string.plastic),
         BEVERAGE_CARTONS(2, Orange, R.string.beverage_cartons),

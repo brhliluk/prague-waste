@@ -17,4 +17,6 @@
     <string name="metal">Kovy</string>
     <string name="e_waste">Elektroodpad</string>
     <string name="legend">Legenda</string>
+    <string name="trash_type_selection">Výběr druhů odpadu</string>
+    <string name="ok">OK</string>
 </resources>
