@@ -44,12 +44,13 @@ class MainViewModel : ViewModel(), KoinComponent {
     var searchQuery by mutableStateOf("")
     var radius by mutableStateOf(500F)
     var activeBottomSheet by mutableStateOf(BottomSheet.NONE)
+    // TODO: add TrashType filters
 
     var currentBins = mutableStateOf<List<Bin>>(listOf())
 
     fun fetchAllBins() = loading.load {
         viewModelScope.launch {
-            with(binRepository.getFilteredBins(listOf(Bin.TrashType.METAL, Bin.TrashType.E_WASTE), false)) {
+            with(binRepository.getFilteredBins(listOf(Bin.TrashType.METAL, Bin.TrashType.E_WASTE), true)) {
                 if (this.isNotEmpty()) currentBins.value = this
                 else {
                     binRepository.insertDataAsync(api.getAllBins())
