@@ -1,7 +1,6 @@
 package cz.brhliluk.android.praguewaste.viewmodel
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -16,7 +15,6 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.ktx.awaitMap
-import com.google.maps.android.ktx.model.cameraPosition
 import cz.brhliluk.android.praguewaste.api.BinNearSource
 import cz.brhliluk.android.praguewaste.api.BinSearchSource
 import cz.brhliluk.android.praguewaste.api.WasteApi
@@ -35,36 +33,44 @@ class MainViewModel : ViewModel(), KoinComponent {
     private val binRepository: BinRepository by inject()
     private val preferencesManager: PreferencesManager by inject()
 
+    // Paging data sources
     val searchBins: Flow<PagingData<Bin>> = Pager(PagingConfig(pageSize = 15)) {
-        BinSearchSource(searchQuery, filter, allParamsRequired)
+        BinSearchSource(searchQuery, trashTypesFilter, allParamsRequired)
     }.flow.cachedIn(viewModelScope)
 
     val nearBins: Flow<PagingData<Bin>> = Pager(PagingConfig(pageSize = 15)) {
-        BinNearSource(location.value, radius, filter, allParamsRequired)
+        BinNearSource(location.value, radius, trashTypesFilter, allParamsRequired)
     }.flow.cachedIn(viewModelScope)
 
+    // Loading progress bar
     val loading = mutableStateOf(false)
-    private val centrePrague = LatLng(50.073658, 14.418540)
+
+    // Current users location
     val location = MutableStateFlow(centrePrague)
+
+    // Bins filtering
     var allParamsRequired by mutableStateOf(false)
-    var filter by mutableStateOf(Bin.TrashType.all)
-    var searchQuery by mutableStateOf("")
-    var radius by mutableStateOf(500F)
-    var activeBottomSheet by mutableStateOf(BottomSheet.NONE)
-    var trashTypesFilterOpen by mutableStateOf(false)
     var trashTypesFilter by mutableStateOf(Bin.TrashType.all)
     var currentBins = mutableStateOf<List<Bin>>(listOf())
 
-    // Might look weird, but solves clustering and map issues
+    // API params connected to UI
+    var searchQuery by mutableStateOf("")
+    var radius by mutableStateOf(500F)
+
+    // UI states
+    var activeBottomSheet by mutableStateOf(BottomSheet.NONE)
+    var trashTypesFilterOpen by mutableStateOf(false)
+
+    // Might look weird, but solves clustering and map issues related to lifecycle
+    // and unnecessary recompositions
     // Does not leak
     lateinit var clusterManager: ClusterManager<Bin>
     lateinit var map: GoogleMap
     private var mapViewHashCode = 0
 
     suspend fun initGoogleMaps(context: Context, mapView: MapView) {
-        if (mapView.hashCode() == mapViewHashCode){
-            return
-        }
+        // No unnecessary new initializations
+        if (mapView.hashCode() == mapViewHashCode) return
         mapViewHashCode = mapView.hashCode()
         map = mapView.awaitMap()
         clusterManager = ClusterManager(context, map)
@@ -75,32 +81,31 @@ class MainViewModel : ViewModel(), KoinComponent {
         map.isMyLocationEnabled = true
     }
 
-    fun updateFilter() = loading.load {
+    fun updateFilters() = loading.load {
         viewModelScope.launch {
             trashTypesFilter = preferencesManager.getTrashTypeEnabled(Bin.TrashType.all)
             allParamsRequired = preferencesManager.getUseAllEnabled()
-            Log.d("ViewModel" ,"Updated filters: ${currentBins.value.size}")
             updateDisplayBins()
         }
     }
 
     private suspend fun updateDisplayBins() {
         currentBins.value = binRepository.getFilteredBins(trashTypesFilter, allParamsRequired)
-        Log.d("ViewModel" ,"Updated currentBins: ${currentBins.value.size}")
         if (currentBins.value.isEmpty()) {
             binRepository.insertDataAsync(api.getAllBins())
             currentBins.value = binRepository.getFilteredBins(trashTypesFilter, allParamsRequired)
         }
     }
 
-    fun isTrashTypeEnabledFlow(type: Bin.TrashType) =
-        preferencesManager.getTrashTypeEnabledAsFlow(type)
-
-    suspend fun setTrashTypeEnabled(type: Bin.TrashType, enabled: Boolean) =
-        preferencesManager.setTrashType(type, enabled)
-
+    // Access to prefs through manager
+    fun isTrashTypeEnabledFlow(type: Bin.TrashType) = preferencesManager.getTrashTypeEnabledAsFlow(type)
+    suspend fun setTrashTypeEnabled(type: Bin.TrashType, enabled: Boolean) = preferencesManager.setTrashType(type, enabled)
     fun isAllRequiredEnabledFlow() = preferencesManager.getUseAllEnabledAsFlow()
     suspend fun setAllRequiredEnabled(enabled: Boolean) = preferencesManager.setUseAll(enabled)
+
+    companion object {
+        val centrePrague = LatLng(50.073658, 14.418540)
+    }
 }
 
 enum class BottomSheet {

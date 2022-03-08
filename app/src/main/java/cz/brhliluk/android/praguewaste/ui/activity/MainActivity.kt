@@ -13,9 +13,9 @@ import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import cz.brhliluk.android.praguewaste.ui.theme.ComposeMapsTheme
 import cz.brhliluk.android.praguewaste.ui.view.MainView
-import cz.brhliluk.android.praguewaste.utils.*
+import cz.brhliluk.android.praguewaste.utils.hasLocationPermission
+import cz.brhliluk.android.praguewaste.utils.withPermission
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.time.Duration.Companion.seconds
 
@@ -34,24 +34,20 @@ class MainActivity : ComponentActivity() {
             applicationContext.withPermission(Manifest.permission.ACCESS_FINE_LOCATION,
                 // TODO - update this
 //                onDenied = { launch { setLocationEnabled(false) } },
-                onGranted = { if (hasLocationPermission) {
+                onGranted = {
+                    if (hasLocationPermission) {
 //                    launch { setLocationEnabled(true) }
-                    startLocationUpdates()
-                } }
+                        startLocationUpdates()
+                    }
+                }
             )
             setMapsContent()
         }
     }
 
     private fun setMapsContent() {
-        vm.updateFilter()
-        setContent {
-            ComposeMapsTheme {
-                Surface(color = MaterialTheme.colors.background) {
-                    MainView(vm)
-                }
-            }
-        }
+        vm.updateFilters()
+        setContent { ComposeMapsTheme { Surface(color = MaterialTheme.colors.background) { MainView(vm) } } }
     }
 
     override fun onResume() {

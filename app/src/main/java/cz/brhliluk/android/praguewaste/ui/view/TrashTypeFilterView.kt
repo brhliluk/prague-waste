@@ -1,6 +1,5 @@
 package cz.brhliluk.android.praguewaste.ui.view
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -26,14 +25,13 @@ fun TrashTypeFilterView(vm: MainViewModel) {
     val coroutineScope = rememberCoroutineScope()
     val allRequired = vm.isAllRequiredEnabledFlow().collectAsState(initial = false).value
 
+    // Update markers only after filter is closed
     fun onClose() {
-        vm.updateFilter()
+        vm.updateFilters()
         vm.trashTypesFilterOpen = false
-        Log.d("FILTER_WINDOW" ,"Closed trashTypesFilter: ${vm.trashTypesFilterOpen}")
     }
 
     if (vm.trashTypesFilterOpen) {
-        Log.d("FILTER_WINDOW" ,"Opened trashTypesFilter: ${vm.trashTypesFilterOpen}")
         AlertDialog(
             onDismissRequest = { onClose() },
             title = { Text(stringResource(R.string.trash_type_selection)) },
