@@ -48,16 +48,7 @@ fun MainView(vm: MainViewModel) {
                 ) {
                     Icon(Icons.Filled.FilterAlt, "Filter icon")
                 }
-                TrashTypeFilterView(
-                    vm = vm,
-                    // TODO: refactor this
-                    open = vm.trashTypesFilterOpen,
-                    onDismiss = { vm.trashTypesFilterOpen = !vm.trashTypesFilterOpen },
-                    onConfirm = {
-                        vm.trashTypesFilterOpen = !vm.trashTypesFilterOpen
-                        vm.updateFilter()
-                    },
-                )
+                TrashTypeFilterView(vm = vm)
                 if (vm.loading.value) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,

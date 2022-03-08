@@ -2,19 +2,16 @@ package cz.brhliluk.android.praguewaste.ui.view
 
 import android.os.Bundle
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterManager
-import com.google.maps.android.compose.*
-import com.google.maps.android.ktx.awaitMap
+import com.google.maps.android.compose.rememberCameraPositionState
 import cz.brhliluk.android.praguewaste.R
 import cz.brhliluk.android.praguewaste.model.Bin
 import cz.brhliluk.android.praguewaste.utils.hasLocationPermission
@@ -50,13 +47,12 @@ fun GoogleMaps(vm: MainViewModel) {
             //noinspection MissingPermission
             map.getMapAsync { it.isMyLocationEnabled = locationEnabledLocal }
 
-            map.awaitMap().apply {
-                val clusterManager = ClusterManager<Bin>(localContext, this)
-
-                setOnCameraIdleListener(clusterManager)
-
+            map.getMapAsync {
+                val clusterManager = ClusterManager<Bin>(localContext, it)
+                it.setOnCameraIdleListener(clusterManager)
+                clusterManager.clearItems()
+                it.clear()
                 clusterManager.addItems(currentBins)
-
                 clusterManager.cluster()
             }
         }

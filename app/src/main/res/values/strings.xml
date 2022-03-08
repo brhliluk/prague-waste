@@ -19,4 +19,5 @@
     <string name="legend">Legenda</string>
     <string name="trash_type_selection">Výběr druhů odpadu</string>
     <string name="ok">OK</string>
+    <string name="all_selected_required">Místo musí obsahovat\nvšechny vybrané</string>
 </resources>

@@ -28,8 +28,14 @@ class MainViewModel : ViewModel(), KoinComponent {
     private val binRepository: BinRepository by inject()
     private val preferencesManager: PreferencesManager by inject()
 
-    fun isTrashTypeEnabled(type: Bin.TrashType) = preferencesManager.getEnabled(type)
-    suspend fun setTrashTypeEnabled(type: Bin.TrashType, enabled: Boolean) = preferencesManager.setEnabled(type, enabled)
+    fun isTrashTypeEnabledFlow(type: Bin.TrashType) =
+        preferencesManager.getTrashTypeEnabledAsFlow(type)
+
+    suspend fun setTrashTypeEnabled(type: Bin.TrashType, enabled: Boolean) =
+        preferencesManager.setTrashType(type, enabled)
+
+    fun isAllRequiredEnabledFlow() = preferencesManager.getUseAllEnabledAsFlow()
+    suspend fun setAllRequiredEnabled(enabled: Boolean) = preferencesManager.setUseAll(enabled)
 
     val searchBins: Flow<PagingData<Bin>> = Pager(PagingConfig(pageSize = 15)) {
         BinSearchSource(searchQuery, filter, allParamsRequired)
@@ -50,29 +56,21 @@ class MainViewModel : ViewModel(), KoinComponent {
     var trashTypesFilterOpen by mutableStateOf(false)
     var trashTypesFilter by mutableStateOf(Bin.TrashType.all)
 
-    fun updateFilter() = viewModelScope.launch {
-        trashTypesFilter = preferencesManager.getEnabled(Bin.TrashType.all)
-        updateDisplayBins()
+    fun updateFilter() = loading.load {
+        viewModelScope.launch {
+            trashTypesFilter = preferencesManager.getTrashTypeEnabled(Bin.TrashType.all)
+            allParamsRequired = preferencesManager.getUseAllEnabled()
+            updateDisplayBins()
+        }
     }
 
     var currentBins = mutableStateOf<List<Bin>>(listOf())
 
-    fun updateDisplayBins() = loading.load {
-        viewModelScope.launch {
-            currentBins.value = binRepository.getFilteredBins(trashTypesFilter, true)
-        }
-    }
-
-    fun fetchAllBins() = loading.load {
-        viewModelScope.launch {
-            with(binRepository.getFilteredBins(trashTypesFilter, true)) {
-                if (this.isNotEmpty()) currentBins.value = this
-                else {
-                    binRepository.insertDataAsync(api.getAllBins())
-                    currentBins.value =
-                        binRepository.getFilteredBins(listOf(Bin.TrashType.E_WASTE), false)
-                }
-            }
+    private suspend fun updateDisplayBins() {
+        currentBins.value = binRepository.getFilteredBins(trashTypesFilter, allParamsRequired)
+        if (currentBins.value.isEmpty()) {
+            binRepository.insertDataAsync(api.getAllBins())
+            currentBins.value = binRepository.getFilteredBins(trashTypesFilter, allParamsRequired)
         }
     }
 }

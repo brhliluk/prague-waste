@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun setMapsContent() {
-        vm.fetchAllBins()
+        vm.updateFilter()
         setContent {
             ComposeMapsTheme {
                 Surface(color = MaterialTheme.colors.background) {

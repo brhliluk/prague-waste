@@ -18,15 +18,15 @@ import kotlinx.coroutines.launch
 @Composable
 fun TrashTypeFilterItemView(vm: MainViewModel, trashType: Bin.TrashType) {
     val coroutineScope = rememberCoroutineScope()
-    val trashTypeState = vm.isTrashTypeEnabled(trashType).collectAsState(initial = true).value
+    val trashTypeState = vm.isTrashTypeEnabledFlow(trashType).collectAsState(initial = true).value
 
     Row(verticalAlignment = Alignment.CenterVertically) {
+        Text(stringResource(trashType.title))
+        Spacer(modifier = Modifier.weight(1f))
         Checkbox(
             checked = trashTypeState,
             onCheckedChange = { coroutineScope.launch { vm.setTrashTypeEnabled(trashType, it) } },
             colors = CheckboxDefaults.colors(checkedColor = trashType.color),
         )
-        Spacer(modifier = Modifier.weight(1f))
-        Text(stringResource(trashType.title))
     }
 }
