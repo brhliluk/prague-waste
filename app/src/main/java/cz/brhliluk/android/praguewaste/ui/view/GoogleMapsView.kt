@@ -10,20 +10,17 @@ import androidx.lifecycle.LifecycleEventObserver
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.compose.rememberCameraPositionState
 import cz.brhliluk.android.praguewaste.R
-import cz.brhliluk.android.praguewaste.model.Bin
 import cz.brhliluk.android.praguewaste.utils.hasLocationPermission
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
 fun GoogleMaps(vm: MainViewModel) {
     val mapView = rememberMapViewWithLifeCycle()
     val localContext = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     val currentLocation by vm.location.collectAsState()
     val cameraPositionState = rememberCameraPositionState {
@@ -37,24 +34,15 @@ fun GoogleMaps(vm: MainViewModel) {
 
     val locationEnabled by remember { mutableStateOf(localContext.hasLocationPermission) }
 
-    AndroidView({ mapView }) { map ->
-        // Reading values so that AndroidView recomposes when it changes.
+    AndroidView({ mapView }) {
         val currentBins = vm.currentBins.value
         val locationEnabledLocal = locationEnabled
 
-        CoroutineScope(Dispatchers.Main).launch {
-            print("Recomposed locationEnabled: $locationEnabledLocal")
-            //noinspection MissingPermission
-            map.getMapAsync { it.isMyLocationEnabled = locationEnabledLocal }
-
-            map.getMapAsync {
-                val clusterManager = ClusterManager<Bin>(localContext, it)
-                it.setOnCameraIdleListener(clusterManager)
-                clusterManager.clearItems()
-                it.clear()
-                clusterManager.addItems(currentBins)
-                clusterManager.cluster()
-            }
+        coroutineScope.launch {
+            vm.initGoogleMaps(localContext, mapView)
+            vm.clusterManager.clearItems()
+            vm.clusterManager.addItems(currentBins)
+            vm.clusterManager.cluster()
         }
     }
 }
