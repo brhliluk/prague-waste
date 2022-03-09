@@ -20,8 +20,9 @@ fun MainView(vm: MainViewModel) {
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberBottomSheetState(
             initialValue = BottomSheetValue.Collapsed,
-            confirmStateChange = { bottomSheetValue ->
-                true.also { if (bottomSheetValue == BottomSheetValue.Collapsed) vm.activeBottomSheet = BottomSheet.NONE }
+            confirmStateChange = {
+                if (it == BottomSheetValue.Collapsed) vm.activeBottomSheet = BottomSheet.NONE
+                true
             }
         )
     )
