@@ -1,6 +1,7 @@
 package cz.brhliluk.android.praguewaste.ui.view
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -19,8 +20,10 @@ import cz.brhliluk.android.praguewaste.R
 import cz.brhliluk.android.praguewaste.model.Bin
 
 @Composable
-fun BinItemView(userLocation: LatLng, bin: Bin) {
-    Column {
+fun BinItemView(userLocation: LatLng, bin: Bin, onClick: (Bin) -> Unit) {
+    Column (Modifier.clickable {
+        onClick(bin)
+    }) {
         Row(
             Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically

@@ -10,6 +10,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
@@ -97,6 +98,12 @@ class MainViewModel : ViewModel(), KoinComponent {
             binRepository.insertDataAsync(api.getAllBins())
             currentBins.value = binRepository.getFilteredBins(trashTypesFilter, allParamsRequired)
         }
+    }
+
+    // TODO: collapse bottom bar
+    fun selectBin(bin: Bin) {
+        clusterManager.markerCollection.markers.find { it.position == bin.position }?.showInfoWindow()
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(bin.position, 15.0f))
     }
 
     // Access to prefs through manager

@@ -28,7 +28,7 @@ fun BottomSearchView(vm: MainViewModel) {
     BaseBottomView(
         items = binListItems,
         listVisible = listVisible,
-        itemView = { item -> BinItemView(userLocation = userLocation.value, bin = item) }
+        itemView = { item -> BinItemView(userLocation = userLocation.value, bin = item, onClick = { vm.selectBin(item) }) }
     ) {
         TextField(
             value = vm.searchQuery,
@@ -44,10 +44,12 @@ fun BottomSearchView(vm: MainViewModel) {
                     }
                 )
             },
-            keyboardActions = KeyboardActions(onDone = {
-                listVisible = true
-                binListItems.refresh()
-            }),
+            keyboardActions = KeyboardActions(
+                onSearch = {
+                    listVisible = true
+                    binListItems.refresh()
+                },
+            ),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             modifier = Modifier
                 .fillMaxWidth()

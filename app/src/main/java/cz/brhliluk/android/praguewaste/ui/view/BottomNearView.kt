@@ -27,7 +27,7 @@ fun BottomNearView(vm: MainViewModel) {
 
     BaseBottomView(
         items = binListItems,
-        itemView = { item -> BinItemView(userLocation = userLocation.value, bin = item) }
+        itemView = { item -> BinItemView(userLocation = userLocation.value, bin = item, onClick = { vm.selectBin(item) }) }
     ) {
         Row(Modifier.fillMaxWidth()) {
             Text(stringResource(R.string.proximity), fontSize = 15.sp, fontWeight = FontWeight.Bold)
