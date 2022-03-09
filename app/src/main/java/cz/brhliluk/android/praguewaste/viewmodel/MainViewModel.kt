@@ -81,7 +81,12 @@ class MainViewModel : ViewModel(), KoinComponent {
         map = mapView.awaitMap()
         clusterManager = ClusterManager(context, map)
         map.setOnCameraIdleListener(clusterManager)
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(centrePrague, 10f))
         clusterManager.markerCollection.setInfoWindowAdapter(infoWindowAdapter)
+        clusterManager.setOnClusterClickListener {
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(it.position, map.cameraPosition.zoom + 1), 500, null)
+            true
+        }
         // TODO: Update by users preference
         //noinspection MissingPermission
         map.isMyLocationEnabled = true
@@ -106,9 +111,9 @@ class MainViewModel : ViewModel(), KoinComponent {
     // TODO: collapse bottom bar
     fun selectBin(bin: Bin) {
         viewModelScope.launch {
-            map.awaitAnimateCamera(CameraUpdateFactory.newLatLngZoom(bin.position, 20.0f), 1000)
+            map.awaitAnimateCamera(CameraUpdateFactory.newLatLngZoom(bin.position, 20.0f), 1.seconds.inWholeMilliseconds.toInt())
             // Give clusterManager time to load in all the markers if too far away
-            if (clusterManager.markerCollection.markers.isEmpty()) delay(200)
+            if (clusterManager.markerCollection.markers.isEmpty()) delay((1 / 5).seconds.inWholeMilliseconds)
             clusterManager.markerCollection.markers.find { it.position == bin.position }?.showInfoWindow()
         }
     }
