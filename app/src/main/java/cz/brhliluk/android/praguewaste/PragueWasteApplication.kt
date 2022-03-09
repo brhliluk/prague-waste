@@ -5,6 +5,7 @@ import androidx.room.Room
 import cz.brhliluk.android.praguewaste.api.WasteApi
 import cz.brhliluk.android.praguewaste.database.BinDatabase
 import cz.brhliluk.android.praguewaste.repository.BinRepository
+import cz.brhliluk.android.praguewaste.utils.InfoWindowAdapter
 import cz.brhliluk.android.praguewaste.utils.PreferencesManager
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 import org.koin.android.ext.koin.androidApplication
@@ -32,6 +33,8 @@ class PragueWasteApplication : Application() {
         single { BinRepository(binDao = get(), binFtsDao = get()) }
         // Prefs
         single { PreferencesManager(get()) }
+        // Google maps
+        single { InfoWindowAdapter(get()) }
     })
 
     override fun onCreate() {

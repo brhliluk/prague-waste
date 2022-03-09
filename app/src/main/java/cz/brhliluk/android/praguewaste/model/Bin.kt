@@ -29,7 +29,7 @@ data class Bin(
 
     override fun getTitle(): String = address
 
-    override fun getSnippet(): String? = null
+    override fun getSnippet(): String = Json.encodeToString(trashTypes)
 
     @Ignore val namedTrashTypes = trashTypes.map { TrashType.byId(it) }
 

@@ -20,6 +20,7 @@ import cz.brhliluk.android.praguewaste.api.BinSearchSource
 import cz.brhliluk.android.praguewaste.api.WasteApi
 import cz.brhliluk.android.praguewaste.model.Bin
 import cz.brhliluk.android.praguewaste.repository.BinRepository
+import cz.brhliluk.android.praguewaste.utils.InfoWindowAdapter
 import cz.brhliluk.android.praguewaste.utils.PreferencesManager
 import cz.brhliluk.android.praguewaste.utils.load
 import kotlinx.coroutines.flow.Flow
@@ -32,6 +33,7 @@ class MainViewModel : ViewModel(), KoinComponent {
     private val api: WasteApi by inject()
     private val binRepository: BinRepository by inject()
     private val preferencesManager: PreferencesManager by inject()
+    private val infoWindowAdapter: InfoWindowAdapter by inject()
 
     // Paging data sources
     val searchBins: Flow<PagingData<Bin>> = Pager(PagingConfig(pageSize = 15)) {
@@ -75,7 +77,7 @@ class MainViewModel : ViewModel(), KoinComponent {
         map = mapView.awaitMap()
         clusterManager = ClusterManager(context, map)
         map.setOnCameraIdleListener(clusterManager)
-
+        clusterManager.markerCollection.setInfoWindowAdapter(infoWindowAdapter)
         // TODO: Update by users preference
         //noinspection MissingPermission
         map.isMyLocationEnabled = true
