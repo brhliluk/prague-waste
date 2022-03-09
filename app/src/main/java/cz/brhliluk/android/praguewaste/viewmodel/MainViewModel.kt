@@ -15,6 +15,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterManager
+import com.google.maps.android.ktx.awaitAnimateCamera
 import com.google.maps.android.ktx.awaitMap
 import cz.brhliluk.android.praguewaste.api.BinNearSource
 import cz.brhliluk.android.praguewaste.api.BinSearchSource
@@ -24,11 +25,13 @@ import cz.brhliluk.android.praguewaste.repository.BinRepository
 import cz.brhliluk.android.praguewaste.utils.InfoWindowAdapter
 import cz.brhliluk.android.praguewaste.utils.PreferencesManager
 import cz.brhliluk.android.praguewaste.utils.load
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import kotlin.time.Duration.Companion.seconds
 
 class MainViewModel : ViewModel(), KoinComponent {
     private val api: WasteApi by inject()
@@ -102,8 +105,12 @@ class MainViewModel : ViewModel(), KoinComponent {
 
     // TODO: collapse bottom bar
     fun selectBin(bin: Bin) {
-        clusterManager.markerCollection.markers.find { it.position == bin.position }?.showInfoWindow()
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(bin.position, 15.0f))
+        viewModelScope.launch {
+            map.awaitAnimateCamera(CameraUpdateFactory.newLatLngZoom(bin.position, 20.0f), 1000)
+            // Give clusterManager time to load in all the markers if too far away
+            if (clusterManager.markerCollection.markers.isEmpty()) delay(200)
+            clusterManager.markerCollection.markers.find { it.position == bin.position }?.showInfoWindow()
+        }
     }
 
     // Access to prefs through manager
