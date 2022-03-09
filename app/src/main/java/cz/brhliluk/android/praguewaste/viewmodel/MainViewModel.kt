@@ -71,7 +71,7 @@ class MainViewModel : ViewModel(), KoinComponent {
     // and unnecessary recompositions
     // Does not leak
     lateinit var clusterManager: ClusterManager<Bin>
-    lateinit var map: GoogleMap
+    private lateinit var map: GoogleMap
     private var mapViewHashCode = 0
 
     suspend fun initGoogleMaps(context: Context, mapView: MapView) {

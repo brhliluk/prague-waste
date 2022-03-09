@@ -5,7 +5,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FilterAlt
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,7 +18,12 @@ import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 fun MainView(vm: MainViewModel) {
 
     val scaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
+        bottomSheetState = rememberBottomSheetState(
+            initialValue = BottomSheetValue.Collapsed,
+            confirmStateChange = { bottomSheetValue ->
+                true.also { if (bottomSheetValue == BottomSheetValue.Collapsed) vm.activeBottomSheet = BottomSheet.NONE }
+            }
+        )
     )
 
     Column(Modifier.fillMaxSize()) {

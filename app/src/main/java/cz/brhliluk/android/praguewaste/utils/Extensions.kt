@@ -11,35 +11,6 @@ import java.lang.IllegalStateException
 
 @ExperimentalMaterialApi
 // TODO: ModalBottomSheet can get hidden itself - can result in double times hide
-fun BottomSheet.onClick(clicked: BottomSheet, coroutineScope: CoroutineScope, sheetState: ModalBottomSheetState): BottomSheet {
-    val resultSheet = when (this) {
-        BottomSheet.NONE -> clicked.instance
-        // Search is shown
-        BottomSheet.SEARCH -> {
-            // Button clicked on
-            when (clicked) {
-                BottomSheet.NONE -> throw IllegalStateException("None is not part of bottom navigation")
-                BottomSheet.SEARCH -> BottomSheet.NONE
-                BottomSheet.NEAR -> BottomSheet.NEAR
-            }
-        }
-        BottomSheet.NEAR -> {
-            when (clicked) {
-                BottomSheet.NONE -> throw IllegalStateException("None is not part of bottom navigation")
-                BottomSheet.SEARCH -> BottomSheet.SEARCH
-                BottomSheet.NEAR -> BottomSheet.NONE
-            }
-        }
-    }
-    when (resultSheet) {
-        BottomSheet.NONE -> coroutineScope.launch { sheetState.hide() }
-        BottomSheet.SEARCH, BottomSheet.NEAR -> coroutineScope.launch { sheetState.show() }
-    }
-    return resultSheet
-}
-
-@ExperimentalMaterialApi
-// TODO: ModalBottomSheet can get hidden itself - can result in double times hide
 fun BottomSheet.onClick(clicked: BottomSheet, coroutineScope: CoroutineScope, sheetScaffoldState: BottomSheetScaffoldState): BottomSheet {
     val resultSheet = when (this) {
         BottomSheet.NONE -> clicked.instance
@@ -47,14 +18,14 @@ fun BottomSheet.onClick(clicked: BottomSheet, coroutineScope: CoroutineScope, sh
         BottomSheet.SEARCH -> {
             // Button clicked on
             when (clicked) {
-                BottomSheet.NONE -> throw IllegalStateException("None is not part of bottom navigation")
+                BottomSheet.NONE -> error("None is not part of bottom navigation")
                 BottomSheet.SEARCH -> BottomSheet.NONE
                 BottomSheet.NEAR -> BottomSheet.NEAR
             }
         }
         BottomSheet.NEAR -> {
             when (clicked) {
-                BottomSheet.NONE -> throw IllegalStateException("None is not part of bottom navigation")
+                BottomSheet.NONE -> error("None is not part of bottom navigation")
                 BottomSheet.SEARCH -> BottomSheet.SEARCH
                 BottomSheet.NEAR -> BottomSheet.NONE
             }
