@@ -75,13 +75,13 @@ class MainViewModel : ViewModel(), KoinComponent {
     private var mapViewHashCode = 0
 
     suspend fun initGoogleMaps(context: Context, mapView: MapView) {
-        // No unnecessary new initializations
+        // No unnecessary new initializations on recomposition
         if (mapView.hashCode() == mapViewHashCode) return
         mapViewHashCode = mapView.hashCode()
         map = mapView.awaitMap()
         clusterManager = ClusterManager(context, map)
         map.setOnCameraIdleListener(clusterManager)
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(centrePrague, 10f))
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(centrePrague, 10f))
         clusterManager.markerCollection.setInfoWindowAdapter(infoWindowAdapter)
         clusterManager.setOnClusterClickListener {
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(it.position, map.cameraPosition.zoom + 1), 500, null)
