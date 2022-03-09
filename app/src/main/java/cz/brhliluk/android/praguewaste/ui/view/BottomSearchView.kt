@@ -25,6 +25,8 @@ fun BottomSearchView(vm: MainViewModel) {
 
     val userLocation = vm.location.collectAsState()
 
+    LaunchedEffect(vm.trashTypesFilter, vm.allParamsRequired, userLocation) { binListItems.refresh() }
+
     BaseBottomView(
         items = binListItems,
         listVisible = listVisible,

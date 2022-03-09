@@ -7,6 +7,7 @@ import androidx.compose.material.Slider
 import androidx.compose.material.SliderDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,6 +25,8 @@ fun BottomNearView(vm: MainViewModel) {
 
     val binListItems: LazyPagingItems<Bin> = vm.nearBins.collectAsLazyPagingItems()
     val userLocation = vm.location.collectAsState()
+
+    LaunchedEffect(vm.trashTypesFilter, vm.allParamsRequired, userLocation) { binListItems.refresh() }
 
     BaseBottomView(
         items = binListItems,
