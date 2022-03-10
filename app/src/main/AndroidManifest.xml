@@ -19,7 +19,7 @@
             android:name=".ui.activity.MainActivity"
             android:fitsSystemWindows="true"
             android:exported="true"
-            android:theme="@style/Theme.PragueWaste"
+            android:theme="@style/Theme.PragueWaste.FullScreen"
             android:windowSoftInputMode="adjustResize" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +27,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activity.SettingsActivity" />
+        <activity
+            android:name=".ui.activity.SettingsActivity"
+            android:theme="@style/Theme.PragueWaste"
+            />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />

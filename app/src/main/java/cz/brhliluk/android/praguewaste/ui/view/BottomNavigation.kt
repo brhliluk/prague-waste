@@ -22,6 +22,7 @@ import cz.brhliluk.android.praguewaste.utils.onClick
 import cz.brhliluk.android.praguewaste.viewmodel.BottomSheet
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 
+
 @Composable
 fun BottomNavIcon(@DrawableRes icon: Int, modifier: Modifier, onIconClick: () -> Unit) {
     IconButton(
