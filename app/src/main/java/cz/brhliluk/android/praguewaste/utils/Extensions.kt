@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 import java.lang.IllegalStateException
 
 @ExperimentalMaterialApi
-// TODO: ModalBottomSheet can get hidden itself - can result in double times hide
 fun BottomSheet.onClick(clicked: BottomSheet, coroutineScope: CoroutineScope, sheetScaffoldState: BottomSheetScaffoldState): BottomSheet {
     val resultSheet = when (this) {
         BottomSheet.NONE -> clicked.instance

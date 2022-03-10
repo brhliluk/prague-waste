@@ -20,6 +20,9 @@ import cz.brhliluk.android.praguewaste.model.Bin
 import cz.brhliluk.android.praguewaste.viewmodel.SettingsViewModel
 
 @Composable
+// TODO: add nominatim mention
+// TODO: add reference to Prague center
+// TODO: add fontAwesome mention
 fun SettingsView(vm: SettingsViewModel) {
 
     val locationEnabled = vm.isLocationEnabledAsFlow().collectAsState(initial = true)
