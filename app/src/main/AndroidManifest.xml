@@ -17,6 +17,7 @@
         android:name=".PragueWasteApplication">
         <activity
             android:name=".ui.activity.MainActivity"
+            android:fitsSystemWindows="true"
             android:exported="true"
             android:theme="@style/Theme.PragueWaste"
             android:windowSoftInputMode="adjustResize" >

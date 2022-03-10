@@ -46,7 +46,7 @@ fun MainView(vm: MainViewModel) {
                 FloatingActionButton(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(top = 60.dp, end = 12.dp)
+                        .padding(top = 90.dp, end = 12.dp)
                         .size(40.dp),
                     onClick = { vm.trashTypesFilterOpen = !vm.trashTypesFilterOpen },
                     backgroundColor = Color.Blue, // TODO: colors

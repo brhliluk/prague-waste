@@ -81,6 +81,7 @@ class MainViewModel : ViewModel(), KoinComponent {
         if (mapView.hashCode() == mapViewHashCode) return
         mapViewHashCode = mapView.hashCode()
         map = mapView.awaitMap()
+        map.setPadding(0,100, 0, 0)
         clusterManager = ClusterManager(context, map)
         map.setOnCameraIdleListener(clusterManager)
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(centrePrague, 10f))
