@@ -22,4 +22,5 @@
     <string name="ok">OK</string>
     <string name="all_selected_required">Místo musí obsahovat\nvšechny vybrané</string>
     <string name="use_location">Používat polohu</string>
+    <string name="settings">Nastavení</string>
 </resources>
