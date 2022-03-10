@@ -1,7 +1,7 @@
 package cz.brhliluk.android.praguewaste.ui.view
 
 import android.content.Intent
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -32,13 +32,18 @@ import cz.brhliluk.android.praguewaste.viewmodel.BottomSheet
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 
 
+@ExperimentalAnimationApi
 @Composable
 fun BottomNavIcon(icon: ImageVector, selectedIcon: ImageVector, modifier: Modifier, selected: Boolean, onIconClick: () -> Unit) {
     Box(
         modifier,
         contentAlignment = Alignment.Center
     ) {
-        AnimatedVisibility(selected) {
+        AnimatedVisibility(
+            visible = selected,
+            enter = fadeIn() + scaleIn(),
+            exit = fadeOut() + scaleOut()
+        ) {
             Box(
                 modifier = Modifier
                     .width(icon.viewportWidth.dp + 40.dp)
@@ -61,6 +66,7 @@ fun BottomNavIcon(icon: ImageVector, selectedIcon: ImageVector, modifier: Modifi
 }
 
 @ExperimentalMaterialApi
+@ExperimentalAnimationApi
 @Composable
 fun BottomNavBar(vm: MainViewModel, sheetScaffoldState: BottomSheetScaffoldState) {
     val context = LocalContext.current
