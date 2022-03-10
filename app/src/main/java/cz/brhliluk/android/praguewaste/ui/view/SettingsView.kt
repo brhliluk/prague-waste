@@ -20,7 +20,7 @@ import cz.brhliluk.android.praguewaste.viewmodel.SettingsViewModel
 @Composable
 fun SettingsView(vm: SettingsViewModel) {
 
-    val locationEnabled = vm.isLocationEnabledAsFlow().collectAsState(initial = false)
+    val locationEnabled = vm.isLocationEnabledAsFlow().collectAsState(initial = true)
 
     Scaffold {
         Column(

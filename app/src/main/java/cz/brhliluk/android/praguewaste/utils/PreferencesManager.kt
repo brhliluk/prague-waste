@@ -41,8 +41,8 @@ class PreferencesManager(private val context: Context) : KoinComponent {
     suspend fun getUseAllEnabled() = getKey(allRequiredKey, true)
     suspend fun setUseAll(enabled: Boolean) = setKey(allRequiredKey, enabled)
 
-    fun getLocationEnabledAsFlow() = getKeyAsFlow(locationEnabledKey, false)
-    suspend fun getLocationEnabled() = getKey(locationEnabledKey, false)
+    fun getLocationEnabledAsFlow() = getKeyAsFlow(locationEnabledKey, true)
+    suspend fun getLocationEnabled() = getKey(locationEnabledKey, true)
     suspend fun setLocationEnabled(enabled: Boolean) = setKey(locationEnabledKey, enabled)
 
     val hasLocationPermission get() =
