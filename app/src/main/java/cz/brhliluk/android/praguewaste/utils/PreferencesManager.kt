@@ -1,6 +1,10 @@
 package cz.brhliluk.android.praguewaste.utils
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import androidx.core.content.ContextCompat
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
@@ -12,43 +16,42 @@ import org.koin.core.component.KoinComponent
 
 class PreferencesManager(private val context: Context) : KoinComponent {
 
-    fun getTrashTypeEnabledAsFlow(trashType: Bin.TrashType): Flow<Boolean> =
+    private fun <T> getKeyAsFlow(key: Preferences.Key<T>, default: T): Flow<T> =
         context.settingsDatastore.data.map { preferences ->
-            preferences[booleanPreferencesKey(trashType.name)] ?: true
+            preferences[key] ?: default
         }
 
-    suspend fun getTrashTypeEnabled(trashType: Bin.TrashType): Boolean {
+    private suspend fun <T> getKey(key: Preferences.Key<T>, default: T): T {
         val preferences = context.settingsDatastore.data.first()
-        return preferences[booleanPreferencesKey(trashType.name)] ?: true
+        return preferences[key] ?: default
     }
 
-    suspend fun getTrashTypeEnabled(trashTypes: List<Bin.TrashType>) =
-        trashTypes.filter { getTrashTypeEnabled(it) }
-
-    suspend fun setTrashType(trashType: Bin.TrashType, enabled: Boolean) {
+    private suspend fun <T> setKey(key: Preferences.Key<T>, value: T) {
         context.settingsDatastore.edit { settings ->
-            settings[booleanPreferencesKey(trashType.name)] = enabled
+            settings[key] = value
         }
     }
 
-    suspend fun getUseAllEnabled(): Boolean {
-        val preferences = context.settingsDatastore.data.first()
-        return preferences[allRequiredKey] ?: false
-    }
+    fun getTrashTypeEnabledAsFlow(trashType: Bin.TrashType) = getKeyAsFlow(booleanPreferencesKey(trashType.name), true)
+    suspend fun getTrashTypeEnabled(trashType: Bin.TrashType) = getKey(booleanPreferencesKey(trashType.name), true)
+    suspend fun getTrashTypeEnabled(trashTypes: List<Bin.TrashType>) = trashTypes.filter { getTrashTypeEnabled(it) }
+    suspend fun setTrashType(trashType: Bin.TrashType, enabled: Boolean) = setKey(booleanPreferencesKey(trashType.name), enabled)
 
-    suspend fun setUseAll(enabled: Boolean) {
-        context.settingsDatastore.edit { settings ->
-            settings[allRequiredKey] = enabled
-        }
-    }
+    fun getUseAllEnabledAsFlow() = getKeyAsFlow(allRequiredKey, true)
+    suspend fun getUseAllEnabled() = getKey(allRequiredKey, true)
+    suspend fun setUseAll(enabled: Boolean) = setKey(allRequiredKey, enabled)
 
-    fun getUseAllEnabledAsFlow(): Flow<Boolean> =
-        context.settingsDatastore.data.map { preferences ->
-            preferences[allRequiredKey] ?: true
-        }
+    fun getLocationEnabledAsFlow() = getKeyAsFlow(locationEnabledKey, false)
+    suspend fun getLocationEnabled() = getKey(locationEnabledKey, false)
+    suspend fun setLocationEnabled(enabled: Boolean) = setKey(locationEnabledKey, enabled)
+
+    val hasLocationPermission get() =
+        ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+        ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
 
     companion object {
         private val Context.settingsDatastore by preferencesDataStore(name = "settings")
         val allRequiredKey = booleanPreferencesKey("all_required")
+        val locationEnabledKey = booleanPreferencesKey("location_enabled")
     }
 }

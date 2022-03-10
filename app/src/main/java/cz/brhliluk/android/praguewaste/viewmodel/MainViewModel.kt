@@ -25,10 +25,12 @@ import cz.brhliluk.android.praguewaste.repository.BinRepository
 import cz.brhliluk.android.praguewaste.utils.InfoWindowAdapter
 import cz.brhliluk.android.praguewaste.utils.PreferencesManager
 import cz.brhliluk.android.praguewaste.utils.load
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.time.Duration.Companion.seconds
@@ -87,9 +89,13 @@ class MainViewModel : ViewModel(), KoinComponent {
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(it.position, map.cameraPosition.zoom + 1), 500, null)
             true
         }
-        // TODO: Update by users preference
-        //noinspection MissingPermission
-        map.isMyLocationEnabled = true
+    }
+
+    fun setMyLocationEnabled() {
+        if (this::map.isInitialized) viewModelScope.launch {
+            //noinspection MissingPermission
+            map.isMyLocationEnabled = preferencesManager.getLocationEnabled() && preferencesManager.hasLocationPermission
+        }
     }
 
     fun updateFilters() = loading.load {
@@ -123,6 +129,11 @@ class MainViewModel : ViewModel(), KoinComponent {
     suspend fun setTrashTypeEnabled(type: Bin.TrashType, enabled: Boolean) = preferencesManager.setTrashType(type, enabled)
     fun isAllRequiredEnabledFlow() = preferencesManager.getUseAllEnabledAsFlow()
     suspend fun setAllRequiredEnabled(enabled: Boolean) = preferencesManager.setUseAll(enabled)
+    suspend fun isLocationEnabled() = preferencesManager.getLocationEnabled()
+    fun isLocationEnabledFlow() = preferencesManager.getLocationEnabledAsFlow()
+    fun setLocationEnabled(enabled: Boolean) = viewModelScope.launch { preferencesManager.setLocationEnabled(enabled) }
+
+    val isLocationEnabled get() = runBlocking { isLocationEnabled() }
 
     companion object {
         val centrePrague = LatLng(50.073658, 14.418540)

@@ -21,6 +21,7 @@ fun GoogleMaps(vm: MainViewModel) {
     val mapView = rememberMapViewWithLifeCycle()
     val localContext = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
+    val locationEnabled = vm.isLocationEnabledFlow().collectAsState(initial = false)
 
     val currentLocation by vm.location.collectAsState()
     val cameraPositionState = rememberCameraPositionState {
@@ -32,14 +33,13 @@ fun GoogleMaps(vm: MainViewModel) {
         )
     }
 
-    val locationEnabled by remember { mutableStateOf(localContext.hasLocationPermission) }
-
     AndroidView({ mapView }) {
         val currentBins = vm.currentBins.value
-        val locationEnabledLocal = locationEnabled
+        val localLocationEnabled = locationEnabled.value
 
         coroutineScope.launch {
             vm.initGoogleMaps(localContext, mapView)
+            vm.setMyLocationEnabled()
             vm.clusterManager.clearItems()
             vm.clusterManager.addItems(currentBins)
             vm.clusterManager.cluster()

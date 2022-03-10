@@ -8,6 +8,7 @@ import cz.brhliluk.android.praguewaste.repository.BinRepository
 import cz.brhliluk.android.praguewaste.utils.InfoWindowAdapter
 import cz.brhliluk.android.praguewaste.utils.PreferencesManager
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
+import cz.brhliluk.android.praguewaste.viewmodel.SettingsViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -21,6 +22,7 @@ class PragueWasteApplication : Application() {
     val appModules = listOf(module {
         // ViewModel for Detail View
         viewModel { MainViewModel() }
+        viewModel { SettingsViewModel() }
         single { WasteApi() }
         // Room Database
         single {

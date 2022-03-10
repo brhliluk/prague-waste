@@ -1,16 +1,24 @@
 package cz.brhliluk.android.praguewaste.ui.activity
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
 import android.os.Looper
+import android.provider.Settings
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.lifecycle.lifecycleScope
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
+import cz.brhliluk.android.praguewaste.R
 import cz.brhliluk.android.praguewaste.ui.theme.ComposeMapsTheme
 import cz.brhliluk.android.praguewaste.ui.view.MainView
 import cz.brhliluk.android.praguewaste.utils.hasLocationPermission
@@ -29,20 +37,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        lifecycleScope.launchWhenCreated {
-            setupLocationUpdates()
-            applicationContext.withPermission(Manifest.permission.ACCESS_FINE_LOCATION,
-                // TODO - update this
-//                onDenied = { launch { setLocationEnabled(false) } },
-                onGranted = {
-                    if (hasLocationPermission) {
-//                    launch { setLocationEnabled(true) }
-                        startLocationUpdates()
-                    }
-                }
-            )
-            setMapsContent()
-        }
+        setupLocationUpdates()
+        setMapsContent()
     }
 
     private fun setMapsContent() {
@@ -50,9 +46,14 @@ class MainActivity : ComponentActivity() {
         setContent { ComposeMapsTheme { Surface(color = MaterialTheme.colors.background) { MainView(vm) } } }
     }
 
+    private var isRequestRequired = true
     override fun onResume() {
         super.onResume()
-        startLocationUpdates()
+        lifecycleScope.launchWhenCreated {
+            if (vm.isLocationEnabled() && isRequestRequired) {
+                askForLocationPermission()
+            }
+        }
     }
 
     override fun onPause() {
@@ -87,5 +88,56 @@ class MainActivity : ComponentActivity() {
             Looper.getMainLooper()
         )
     }
+
+    private fun askForLocationPermission() {
+        isRequestRequired = false
+        applicationContext.withPermission(Manifest.permission.ACCESS_FINE_LOCATION,
+            onDenied = {
+                Log.d("Location permission:", "denied")
+                if (vm.isLocationEnabled) {
+                    askForLocationDialog()
+                }
+            },
+            onGranted = {
+                Log.d("Location permission:", "granted")
+                if (hasLocationPermission) {
+                    vm.setMyLocationEnabled()
+                    startLocationUpdates()
+                }
+            }
+        )
+    }
+
+    private var locationDialogShown = false
+    private fun askForLocationDialog() {
+        if (locationDialogShown) return
+        MaterialDialog(this).show {
+            Log.d("Location dialog:", "shown")
+            locationDialogShown = true
+            title(R.string.no_location_title)
+            message(R.string.location_required_dialog)
+            onDismiss { locationDialogShown = false }
+            cancelable(false)
+            positiveButton(R.string.turn_on) {
+                resultLauncher.launch(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                isRequestRequired = true
+                locationDialogShown = false
+            }
+            negativeButton(R.string.location_cancel) {
+                vm.setLocationEnabled(false)
+                isRequestRequired = true
+                locationDialogShown = false
+            }
+        }
+    }
+
+    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (hasLocationPermission) {
+            startLocationUpdates()
+        } else {
+            Toast.makeText(this, "Location permission not granted", Toast.LENGTH_SHORT)
+        }
+    }
+
 }
 
