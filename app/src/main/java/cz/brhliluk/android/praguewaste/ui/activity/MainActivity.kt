@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -28,6 +29,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.time.Duration.Companion.seconds
 
 @ExperimentalMaterialApi
+@ExperimentalAnimationApi
 class MainActivity : ComponentActivity() {
 
     private val vm: MainViewModel by viewModel()

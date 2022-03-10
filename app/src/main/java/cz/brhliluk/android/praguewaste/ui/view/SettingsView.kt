@@ -30,11 +30,14 @@ fun SettingsView(vm: SettingsViewModel) {
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(stringResource(R.string.settings)) }, navigationIcon = {
-                IconButton(onClick = { dispatcher.onBackPressed() }) {
-                    Icon(Icons.Filled.ArrowBack, "backIcon")
-                }
-            })
+            TopAppBar(
+                title = { Text(stringResource(R.string.settings)) },
+                navigationIcon = {
+                    IconButton(onClick = { dispatcher.onBackPressed() }) {
+                        Icon(Icons.Filled.ArrowBack, "backIcon")
+                    }
+                },
+            )
         }
     ) {
         Column(
