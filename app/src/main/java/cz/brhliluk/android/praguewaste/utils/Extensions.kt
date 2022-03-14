@@ -2,12 +2,12 @@ package cz.brhliluk.android.praguewaste.utils
 
 import androidx.compose.material.BottomSheetScaffoldState
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.runtime.MutableState
+import com.google.android.gms.maps.model.LatLng
+import cz.brhliluk.android.praguewaste.model.Bin
 import cz.brhliluk.android.praguewaste.viewmodel.BottomSheet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.lang.IllegalStateException
 
 @ExperimentalMaterialApi
 fun BottomSheet.onClick(clicked: BottomSheet, coroutineScope: CoroutineScope, sheetScaffoldState: BottomSheetScaffoldState): BottomSheet {
@@ -43,6 +43,9 @@ val BottomSheet.instance: BottomSheet
         BottomSheet.SEARCH -> BottomSheet.SEARCH
         BottomSheet.NEAR -> BottomSheet.NEAR
     }
+
+val Bin.offsetLocation: LatLng
+    get() = LatLng(position.latitude-0.00012, position.longitude)
 
 inline fun <T> MutableState<Boolean>.load(
     block: () -> T

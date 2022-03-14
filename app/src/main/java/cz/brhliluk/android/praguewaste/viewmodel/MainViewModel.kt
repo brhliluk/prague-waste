@@ -25,6 +25,7 @@ import cz.brhliluk.android.praguewaste.repository.BinRepository
 import cz.brhliluk.android.praguewaste.utils.InfoWindowAdapter
 import cz.brhliluk.android.praguewaste.utils.PreferencesManager
 import cz.brhliluk.android.praguewaste.utils.load
+import cz.brhliluk.android.praguewaste.utils.offsetLocation
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -113,10 +114,9 @@ class MainViewModel : ViewModel(), KoinComponent {
         }
     }
 
-    // TODO: collapse bottom bar
     fun selectBin(bin: Bin) {
         viewModelScope.launch {
-            map.awaitAnimateCamera(CameraUpdateFactory.newLatLngZoom(bin.position, 20.0f), 1000)
+            map.awaitAnimateCamera(CameraUpdateFactory.newLatLngZoom(bin.offsetLocation, 20.0f), 1000)
             // Give clusterManager time to load in all the markers if too far away
             if (clusterManager.markerCollection.markers.isEmpty()) delay(300)
             clusterManager.markerCollection.markers.find { it.position == bin.position }?.showInfoWindow()
