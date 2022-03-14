@@ -35,10 +35,10 @@ fun BottomNearView(vm: MainViewModel) {
         Row(Modifier.fillMaxWidth()) {
             Text(stringResource(R.string.proximity), fontSize = 15.sp, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.weight(1f))
-            Text("+${vm.radius}km")
+            Text("+${String.format("%.1f", vm.radius)}km")
         }
         Slider(
-            value = vm.radius, onValueChange = {
+            value = vm.radius, valueRange = 0.2f..30.0f, onValueChange = {
                 vm.radius = it
                 binListItems.refresh()
             }, colors = SliderDefaults.colors(

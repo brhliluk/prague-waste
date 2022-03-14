@@ -64,7 +64,7 @@ class MainViewModel : ViewModel(), KoinComponent {
 
     // API params connected to UI
     var searchQuery by mutableStateOf("")
-    var radius by mutableStateOf(500F)
+    var radius by mutableStateOf(30F)
 
     // UI states
     var activeBottomSheet by mutableStateOf(BottomSheet.NONE)
