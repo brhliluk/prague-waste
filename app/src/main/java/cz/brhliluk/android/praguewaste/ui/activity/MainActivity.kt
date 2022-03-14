@@ -14,6 +14,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import com.afollestad.materialdialogs.MaterialDialog
@@ -32,6 +33,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
+@ExperimentalMaterial3Api
 class MainActivity : ComponentActivity() {
 
     private val vm: MainViewModel by viewModel()

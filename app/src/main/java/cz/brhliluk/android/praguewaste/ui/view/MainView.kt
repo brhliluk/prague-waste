@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FilterAlt
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +19,7 @@ import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
+@ExperimentalMaterial3Api
 @Composable
 fun MainView(vm: MainViewModel) {
 

@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -67,6 +68,7 @@ fun BottomNavIcon(icon: ImageVector, selectedIcon: ImageVector, modifier: Modifi
 
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
+@ExperimentalMaterial3Api
 @Composable
 fun BottomNavBar(vm: MainViewModel, sheetScaffoldState: BottomSheetScaffoldState) {
     val context = LocalContext.current
