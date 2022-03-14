@@ -34,7 +34,8 @@ fun MainView(vm: MainViewModel) {
         Column(
             Modifier
                 .fillMaxSize()
-                .navigationBarsWithImePadding()) {
+                .navigationBarsWithImePadding()
+        ) {
             BottomSheetScaffold(
                 sheetContent = {
                     when (vm.activeBottomSheet) {
