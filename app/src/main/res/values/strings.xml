@@ -23,4 +23,10 @@
     <string name="all_selected_required">Místo musí obsahovat\nvšechny vybrané</string>
     <string name="use_location">Používat polohu</string>
     <string name="settings">Nastavení</string>
+    <string name="nominatim_attribution">Adresy kontejnerových míst jsou extrahovány z otevřených dat hl. města Prahy pomocí služby Nominatim</string>
+    <string name="data_source">Zdroj dat</string>
+    <string name="font_awesome">FontAwesome</string>
+    <string name="fontawesome_license">Pro text licence viz https://fontawesome.com/license/free</string>
+    <string name="prague_centre_default">Pokud nechcete využívat vaši polohu, bude jako referenční bod použito centrum Prahy (50.073658, 14.418540)</string>
+    <string name="location">Poloha</string>
 </resources>

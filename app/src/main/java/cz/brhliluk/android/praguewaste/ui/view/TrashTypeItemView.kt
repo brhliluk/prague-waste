@@ -21,7 +21,7 @@ fun TrashTypeItemView(trashType: Bin.TrashType) {
         Box(
             modifier = Modifier
                 .padding(vertical = 5.dp)
-                .padding(end = 5.dp)
+                .padding(end = 12.dp)
                 .size(20.dp)
                 .clip(CircleShape)
                 .background(trashType.color)
