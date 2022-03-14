@@ -59,7 +59,7 @@
             android:layout_height="12dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/circle"
-            android:backgroundTint="@color/light_gray" />
+            android:backgroundTint="@color/glass_gray" />
 
         <ImageView
             android:id="@+id/metal"
@@ -67,7 +67,7 @@
             android:layout_height="12dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/circle"
-            android:backgroundTint="@color/black" />
+            android:backgroundTint="@color/brown" />
 
         <ImageView
             android:id="@+id/eWaste"

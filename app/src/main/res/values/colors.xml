@@ -8,9 +8,12 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="light_gray">#FFF8FFFF</color>
-    <color name="blue">#FF0000FF</color>
-    <color name="yellow">#FFFFFF00</color>
-    <color name="orange">#FFf78900</color>
-    <color name="green">#FF00FF00</color>
-    <color name="red">#FFFF0000</color>
+    <color name="dark_gray">#FF444444</color>
+    <color name="blue">#FF219EBC</color>
+    <color name="yellow">#FFFFB703</color>
+    <color name="orange">#FFff7900</color>
+    <color name="green">#FF038b03</color>
+    <color name="red">#FFfd3535</color>
+    <color name="brown">#FFbc8038</color>
+    <color name="glass_gray">#FFb2b2b2</color>
 </resources>

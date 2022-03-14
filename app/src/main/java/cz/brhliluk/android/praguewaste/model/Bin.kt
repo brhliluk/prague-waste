@@ -7,7 +7,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.SphericalUtil
 import com.google.maps.android.clustering.ClusterItem
 import cz.brhliluk.android.praguewaste.R
-import cz.brhliluk.android.praguewaste.ui.theme.Orange
+import cz.brhliluk.android.praguewaste.ui.theme.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
@@ -31,16 +31,16 @@ data class Bin(
 
     override fun getSnippet(): String = Json.encodeToString(trashTypes)
 
-    @Ignore val namedTrashTypes = trashTypes.map { TrashType.byId(it) }
+    @Ignore val namedTrashTypes = trashTypes.map { TrashType.byId(it) }.sortedBy { it?.id }
 
     enum class TrashType(val id: Int, val color: Color, @StringRes val title: Int) {
-        PAPER(0, Color.Blue, R.string.paper),
-        PLASTIC(1, Color.Yellow, R.string.plastic),
-        BEVERAGE_CARTONS(2, Orange, R.string.beverage_cartons),
-        COLORED_GLASS(3, Color.Green, R.string.colored_glass),
-        CLEAR_GLASS(4, Color.White, R.string.clear_glass),
-        METAL(5, Color.Black, R.string.metal),
-        E_WASTE(6, Color.Red, R.string.e_waste);
+        PAPER(0, PaperBlue, R.string.paper),
+        PLASTIC(1, PlasticYellow, R.string.plastic),
+        BEVERAGE_CARTONS(2, CartonsOrange, R.string.beverage_cartons),
+        COLORED_GLASS(3, GlassGreen, R.string.colored_glass),
+        CLEAR_GLASS(4, GlassGray, R.string.clear_glass),
+        METAL(5, MetalBrown, R.string.metal),
+        E_WASTE(6, EWasteRed, R.string.e_waste);
 
         companion object {
             fun byId(id: Int) = values().firstOrNull { it.id == id }

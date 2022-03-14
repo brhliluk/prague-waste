@@ -64,7 +64,7 @@ fun MainView(vm: MainViewModel) {
                     ) {
                         Icon(Icons.Filled.FilterAlt, "Filter icon")
                     }
-                    TrashTypeFilterView(vm = vm)
+                    TrashTypeFilterView(vm)
                     if (vm.loading.value) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
