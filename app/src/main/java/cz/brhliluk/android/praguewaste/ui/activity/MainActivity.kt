@@ -14,9 +14,11 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onDismiss
+import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import cz.brhliluk.android.praguewaste.R
@@ -39,13 +41,18 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setupLocationUpdates()
         setMapsContent()
     }
 
     private fun setMapsContent() {
         vm.updateFilters()
-        setContent { ComposeMapsTheme { Surface(color = MaterialTheme.colors.background) { MainView(vm) } } }
+        setContent {
+            ProvideWindowInsets {
+                ComposeMapsTheme { Surface(color = MaterialTheme.colors.background) { MainView(vm) } }
+            }
+        }
     }
 
     private var isRequestRequired = true

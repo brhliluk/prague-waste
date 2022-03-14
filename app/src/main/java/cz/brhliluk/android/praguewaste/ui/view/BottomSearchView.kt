@@ -7,6 +7,8 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.TextField
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -38,7 +40,7 @@ fun BottomSearchView(vm: MainViewModel) {
             singleLine = true,
             trailingIcon = {
                 Icon(
-                    painter = painterResource(R.drawable.ic_search),
+                    imageVector = Icons.Filled.Search,
                     contentDescription = null,
                     Modifier.clickable {
                         listVisible = true

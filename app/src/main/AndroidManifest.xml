@@ -8,19 +8,19 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".PragueWasteApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.PragueWaste"
-        android:name=".PragueWasteApplication">
+        android:theme="@style/Theme.PragueWaste">
         <activity
             android:name=".ui.activity.MainActivity"
-            android:fitsSystemWindows="true"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:exported="true"
+            android:fitsSystemWindows="true"
             android:theme="@style/Theme.PragueWaste.FullScreen"
-            android:windowSoftInputMode="adjustResize" >
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -29,8 +29,9 @@
 
         <activity
             android:name=".ui.activity.SettingsActivity"
-            android:theme="@style/Theme.PragueWaste"
-            />
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:theme="@style/Theme.PragueWaste" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />

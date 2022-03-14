@@ -69,9 +69,7 @@ class MainViewModel : ViewModel(), KoinComponent {
     var activeBottomSheet by mutableStateOf(BottomSheet.NONE)
     var trashTypesFilterOpen by mutableStateOf(false)
 
-    // Might look weird, but solves clustering and map issues related to lifecycle
-    // and unnecessary recompositions
-    // Does not leak
+    // Solves clustering and map issues related to lifecycle and unnecessary recompositions
     lateinit var clusterManager: ClusterManager<Bin>
     private lateinit var map: GoogleMap
     private var mapViewHashCode = 0
@@ -118,9 +116,9 @@ class MainViewModel : ViewModel(), KoinComponent {
     // TODO: collapse bottom bar
     fun selectBin(bin: Bin) {
         viewModelScope.launch {
-            map.awaitAnimateCamera(CameraUpdateFactory.newLatLngZoom(bin.position, 20.0f), 1.seconds.inWholeMilliseconds.toInt())
+            map.awaitAnimateCamera(CameraUpdateFactory.newLatLngZoom(bin.position, 20.0f), 1000)
             // Give clusterManager time to load in all the markers if too far away
-            if (clusterManager.markerCollection.markers.isEmpty()) delay((1 / 5).seconds.inWholeMilliseconds)
+            if (clusterManager.markerCollection.markers.isEmpty()) delay(300)
             clusterManager.markerCollection.markers.find { it.position == bin.position }?.showInfoWindow()
         }
     }
