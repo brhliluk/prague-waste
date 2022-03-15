@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.navigationBarsWithImePadding
+import cz.brhliluk.android.praguewaste.ui.theme.PaperBlue
 import cz.brhliluk.android.praguewaste.viewmodel.BottomSheet
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 
@@ -59,8 +60,8 @@ fun MainView(vm: MainViewModel) {
                             .padding(top = 90.dp, end = 12.dp)
                             .size(40.dp),
                         onClick = { vm.trashTypesFilterOpen = !vm.trashTypesFilterOpen },
-                        backgroundColor = Color.Blue, // TODO: colors
-                        contentColor = Color.White // TODO: colors
+                        backgroundColor = PaperBlue,
+                        contentColor = Color.White
                     ) {
                         Icon(Icons.Filled.FilterAlt, "Filter icon")
                     }
