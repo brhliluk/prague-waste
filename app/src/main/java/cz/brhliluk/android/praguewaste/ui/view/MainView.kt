@@ -23,7 +23,6 @@ import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 @ExperimentalMaterial3Api
 @Composable
 fun MainView(vm: MainViewModel) {
-
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberBottomSheetState(
             initialValue = BottomSheetValue.Collapsed,
@@ -33,50 +32,61 @@ fun MainView(vm: MainViewModel) {
             }
         )
     )
+
     ProvideWindowInsets(windowInsetsAnimationsEnabled = true) {
-        Column(
-            Modifier
-                .fillMaxSize()
-                .navigationBarsWithImePadding()
+        Scaffold(
+            bottomBar = {
+                Navigation(
+                    Modifier
+                        .navigationBarsWithImePadding()
+                        .statusBarsPadding(),
+                    vm,
+                    scaffoldState
+                )
+            }
         ) {
-            BottomSheetScaffold(
-                sheetContent = {
-                    when (vm.activeBottomSheet) {
-                        BottomSheet.NONE -> Box(Modifier.defaultMinSize(minHeight = 1.dp)) // crashes with null passed
-                        BottomSheet.SEARCH -> BottomSearchView(vm)
-                        BottomSheet.NEAR -> BottomNearView(vm)
-                    }
-                },
-                sheetShape = RoundedCornerShape(50.dp, 50.dp),
-                scaffoldState = scaffoldState,
-                modifier = Modifier.weight(1f),
-                sheetPeekHeight = 0.dp,
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .navigationBarsWithImePadding()
             ) {
-                Box {
-                    GoogleMaps(vm)
-                    FloatingActionButton(
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .padding(top = 90.dp, end = 12.dp)
-                            .size(40.dp),
-                        onClick = { vm.trashTypesFilterOpen = !vm.trashTypesFilterOpen },
-                        backgroundColor = PaperBlue,
-                        contentColor = Color.White
-                    ) {
-                        Icon(Icons.Filled.FilterAlt, "Filter icon")
-                    }
-                    TrashTypeFilterView(vm)
-                    if (vm.loading.value) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
+                BottomSheetScaffold(
+                    sheetContent = {
+                        when (vm.activeBottomSheet) {
+                            BottomSheet.NONE -> Box(Modifier.defaultMinSize(minHeight = 1.dp)) // crashes with null passed
+                            BottomSheet.SEARCH -> BottomSearchView(vm)
+                            BottomSheet.NEAR -> BottomNearView(vm)
+                        }
+                    },
+                    sheetShape = RoundedCornerShape(50.dp, 50.dp),
+                    scaffoldState = scaffoldState,
+                    sheetPeekHeight = 0.dp,
+                ) {
+                    Box {
+                        GoogleMaps(vm)
+                        FloatingActionButton(
+                            modifier = Modifier
+                                .align(Alignment.TopEnd)
+                                .padding(top = 90.dp, end = 12.dp)
+                                .size(40.dp),
+                            onClick = { vm.trashTypesFilterOpen = !vm.trashTypesFilterOpen },
+                            backgroundColor = PaperBlue,
+                            contentColor = Color.White
                         ) {
-                            CircularProgressIndicator()
+                            Icon(Icons.Filled.FilterAlt, "Filter icon")
+                        }
+                        TrashTypeFilterView(vm)
+                        if (vm.loading.value) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                CircularProgressIndicator()
+                            }
                         }
                     }
                 }
             }
-            BottomNavBar(vm, scaffoldState)
         }
     }
 }

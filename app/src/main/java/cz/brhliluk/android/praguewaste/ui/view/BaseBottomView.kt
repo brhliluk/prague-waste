@@ -1,5 +1,6 @@
 package cz.brhliluk.android.praguewaste.ui.view
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,16 +10,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 
 @Composable
-fun <T : Any> BaseBottomView(items: LazyPagingItems<T>, listVisible: Boolean = true, itemView: @Composable (T) -> Unit, content: @Composable () -> Unit) {
+fun <T : Any> BaseBottomView(
+    items: LazyPagingItems<T>,
+    listVisible: Boolean = true,
+    itemView: @Composable (T) -> Unit,
+    content: @Composable () -> Unit
+) {
+    val configuration = LocalConfiguration.current
 
     Column(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 15.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 15.dp)
+            .padding(bottom = if (configuration.orientation != Configuration.ORIENTATION_LANDSCAPE) 80.dp else 0.dp)
+        ,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(

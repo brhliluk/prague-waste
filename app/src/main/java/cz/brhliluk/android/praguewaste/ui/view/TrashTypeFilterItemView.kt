@@ -21,7 +21,7 @@ fun TrashTypeFilterItemView(vm: MainViewModel, trashType: Bin.TrashType) {
     val trashTypeState = vm.isTrashTypeEnabledFlow(trashType).collectAsState(initial = true).value
 
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(stringResource(trashType.title))
+        androidx.compose.material3.Text(stringResource(trashType.title))
         Spacer(modifier = Modifier.weight(1f))
         Checkbox(
             checked = trashTypeState,

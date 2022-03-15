@@ -29,4 +29,6 @@
     <string name="fontawesome_license">Pro text licence viz https://fontawesome.com/license/free</string>
     <string name="prague_centre_default">Pokud nechcete využívat vaši polohu, bude jako referenční bod použito centrum Prahy (50.073658, 14.418540)</string>
     <string name="location">Poloha</string>
+    <string name="search">Vyhledat</string>
+    <string name="near">Nejbližší</string>
 </resources>
