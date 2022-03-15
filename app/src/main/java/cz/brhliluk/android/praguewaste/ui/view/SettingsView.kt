@@ -10,7 +10,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MediumTopAppBar
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -43,7 +42,7 @@ fun SettingsView(vm: SettingsViewModel) {
             .fillMaxSize(),
         topBar = {
             MediumTopAppBar(
-                title = { Text(stringResource(R.string.settings)) },
+                title = { androidx.compose.material3.Text(stringResource(R.string.settings)) },
                 navigationIcon = {
                     IconButton(onClick = { dispatcher.onBackPressed() }) {
                         Icon(Icons.Filled.ArrowBack, "backIcon", tint = Color.White)
@@ -62,7 +61,7 @@ fun SettingsView(vm: SettingsViewModel) {
                 .padding(12.dp)
                 .verticalScroll(rememberScrollState())
         ) {
-            Text(stringResource(R.string.legend), color = Color.White, modifier = Modifier.padding(bottom = 12.dp), fontSize = 20.sp)
+            Text(stringResource(R.string.legend), modifier = Modifier.padding(bottom = 12.dp), fontSize = 20.sp)
             Column(Modifier.padding(bottom = 12.dp)) {
                 Bin.TrashType.all.forEach { trashType ->
                     TrashTypeItemView(trashType)
@@ -72,34 +71,31 @@ fun SettingsView(vm: SettingsViewModel) {
             Divider(Modifier.padding(bottom = 12.dp))
             Text(
                 stringResource(R.string.location),
-                color = Color.White,
                 modifier = Modifier.padding(bottom = 6.dp),
                 fontSize = 20.sp
             )
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(bottom = 6.dp)) {
-                Text(text = stringResource(R.string.use_location), color = Color.White)
+                Text(text = stringResource(R.string.use_location))
                 Spacer(modifier = Modifier.weight(1f))
                 Switch(checked = locationEnabled.value, onCheckedChange = { vm.setLocationEnabled(it) })
             }
-            Text(stringResource(R.string.prague_centre_default), modifier = Modifier.padding(bottom = 12.dp), color = Color.White)
+            Text(stringResource(R.string.prague_centre_default), modifier = Modifier.padding(bottom = 12.dp))
 
             Divider(Modifier.padding(bottom = 12.dp))
             Text(
                 stringResource(R.string.data_source),
-                color = Color.White,
                 modifier = Modifier.padding(bottom = 6.dp),
                 fontSize = 20.sp
             )
-            Text(stringResource(R.string.nominatim_attribution), modifier = Modifier.padding(bottom = 12.dp), color = Color.White)
+            Text(stringResource(R.string.nominatim_attribution), modifier = Modifier.padding(bottom = 12.dp))
 
             Divider(Modifier.padding(bottom = 12.dp))
             Text(
                 stringResource(R.string.font_awesome),
-                color = Color.White,
                 modifier = Modifier.padding(bottom = 6.dp),
                 fontSize = 20.sp
             )
-            Text(stringResource(R.string.fontawesome_license), modifier = Modifier.padding(bottom = 12.dp), color = Color.White)
+            Text(stringResource(R.string.fontawesome_license), modifier = Modifier.padding(bottom = 12.dp))
         }
     }
 }
