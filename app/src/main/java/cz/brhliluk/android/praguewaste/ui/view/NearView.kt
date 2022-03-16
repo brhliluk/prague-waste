@@ -41,10 +41,7 @@ fun NearView(vm: MainViewModel) {
             value = vm.radius, valueRange = 0.2f..30.0f, onValueChange = {
                 vm.radius = it
                 binListItems.refresh()
-            }, colors = SliderDefaults.colors(
-                thumbColor = Color.LightGray,
-                activeTrackColor = Color.LightGray
-            )
+            }
         )
     }
 }

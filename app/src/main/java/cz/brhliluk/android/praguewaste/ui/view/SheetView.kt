@@ -9,15 +9,14 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.BottomSheetScaffold
+import androidx.compose.material.BottomSheetScaffoldState
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.ProvideWindowInsets
 import cz.brhliluk.android.praguewaste.viewmodel.BottomSheet
@@ -58,19 +57,38 @@ fun SecondSideSheet(vm: MainViewModel, content: @Composable () -> Unit) {
     ProvideWindowInsets(windowInsetsAnimationsEnabled = true) {
         Box {
             content()
-            Column(Modifier.align(Alignment.TopEnd).fillMaxHeight().background(Color.Gray).statusBarsPadding()) {
-                when (vm.activeBottomSheet) {
-                    BottomSheet.NONE -> {}
-                    BottomSheet.SEARCH -> AnimatedVisibility(
-                        visible = vm.activeBottomSheet == BottomSheet.SEARCH,
-                        enter = slideInHorizontally(initialOffsetX = { -300 },),
-                        exit = slideOutHorizontally(targetOffsetX = { -300 },)
-                    ) { SearchView(vm) }
-                    BottomSheet.NEAR -> if (vm.activeBottomSheet == BottomSheet.NEAR) {
-                        NearView(vm)
+            Column(Modifier.align(Alignment.TopEnd).background(Color.LightGray)) {
+                AnimatedVisibility(
+                    visible = vm.activeBottomSheet == BottomSheet.SEARCH || vm.activeBottomSheet == BottomSheet.NEAR,
+                    enter = slideInHorizontally(
+                        initialOffsetX = { 300 }, // small slide 300px
+                        animationSpec = tween(
+                            durationMillis = 300,
+                            easing = LinearEasing // interpolator
+                        )
+                    ),
+                    exit = slideOutHorizontally(
+                        targetOffsetX = { 300 }, // small slide 300px
+                        animationSpec = tween(
+                            durationMillis = 300,
+                            easing = LinearEasing // interpolator
+                        )
+                    )
+                ) {
+                    Column(
+                        Modifier
+                            .fillMaxHeight()
+                            .statusBarsPadding()
+                    ) {
+                        when (vm.activeBottomSheet) {
+                            BottomSheet.NONE -> {}
+                            BottomSheet.SEARCH -> SearchView(vm)
+                            BottomSheet.NEAR -> NearView(vm)
+                        }
                     }
                 }
             }
+
         }
     }
 }
