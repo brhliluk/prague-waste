@@ -21,18 +21,18 @@ import cz.brhliluk.android.praguewaste.model.Bin
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 
 @Composable
-fun BottomNearView(vm: MainViewModel) {
+fun NearView(vm: MainViewModel) {
 
     val binListItems: LazyPagingItems<Bin> = vm.nearBins.collectAsLazyPagingItems()
     val userLocation = vm.location.collectAsState()
 
     LaunchedEffect(vm.trashTypesFilter, vm.allParamsRequired, userLocation) { binListItems.refresh() }
 
-    BaseBottomView(
+    BottomOrSheetView(
         items = binListItems,
         itemView = { item -> BinItemView(userLocation = userLocation.value, bin = item, onClick = { vm.selectBin(item) }) }
     ) {
-        Row(Modifier.fillMaxWidth()) {
+        Row() {
             Text(stringResource(R.string.proximity), fontSize = 15.sp, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.weight(1f))
             Text("+${String.format("%.1f", vm.radius)}km")

@@ -1,6 +1,7 @@
 package cz.brhliluk.android.praguewaste.utils
 
 import androidx.compose.material.BottomSheetScaffoldState
+import androidx.compose.material.DrawerState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.MutableState
 import com.google.android.gms.maps.model.LatLng
@@ -36,6 +37,31 @@ fun BottomSheet.onClick(clicked: BottomSheet, coroutineScope: CoroutineScope, sh
     }
     return resultSheet
 }
+
+@ExperimentalMaterialApi
+fun BottomSheet.onClick(clicked: BottomSheet, coroutineScope: CoroutineScope, drawerState: DrawerState): BottomSheet {
+    val resultSheet = when (this) {
+        BottomSheet.NONE -> clicked.instance
+        // Search is shown
+        BottomSheet.SEARCH -> {
+            // Button clicked on
+            when (clicked) {
+                BottomSheet.NONE -> error("None is not part of bottom navigation")
+                BottomSheet.SEARCH -> BottomSheet.NONE
+                BottomSheet.NEAR -> BottomSheet.NEAR
+            }
+        }
+        BottomSheet.NEAR -> {
+            when (clicked) {
+                BottomSheet.NONE -> error("None is not part of bottom navigation")
+                BottomSheet.SEARCH -> BottomSheet.SEARCH
+                BottomSheet.NEAR -> BottomSheet.NONE
+            }
+        }
+    }
+    return resultSheet
+}
+
 
 val BottomSheet.instance: BottomSheet
     get() = when (this) {

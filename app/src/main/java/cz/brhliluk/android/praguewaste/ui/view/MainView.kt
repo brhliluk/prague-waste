@@ -2,7 +2,6 @@ package cz.brhliluk.android.praguewaste.ui.view
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FilterAlt
@@ -33,6 +32,11 @@ fun MainView(vm: MainViewModel) {
         )
     )
 
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed, confirmStateChange = {
+        if (it == DrawerValue.Closed) vm.activeBottomSheet = BottomSheet.NONE
+        true
+    })
+
     ProvideWindowInsets(windowInsetsAnimationsEnabled = true) {
         Scaffold(
             bottomBar = {
@@ -41,48 +45,37 @@ fun MainView(vm: MainViewModel) {
                         .navigationBarsWithImePadding()
                         .statusBarsPadding(),
                     vm,
-                    scaffoldState
+                    scaffoldState,
+                    drawerState
                 )
             }
         ) {
-            Column(
-                Modifier
-                    .fillMaxSize()
-                    .navigationBarsWithImePadding()
-            ) {
-                BottomSheetScaffold(
-                    sheetContent = {
-                        when (vm.activeBottomSheet) {
-                            BottomSheet.NONE -> Box(Modifier.defaultMinSize(minHeight = 1.dp)) // crashes with null passed
-                            BottomSheet.SEARCH -> BottomSearchView(vm)
-                            BottomSheet.NEAR -> BottomNearView(vm)
-                        }
-                    },
-                    sheetShape = RoundedCornerShape(50.dp, 50.dp),
-                    scaffoldState = scaffoldState,
-                    sheetPeekHeight = 0.dp,
+            // TODO move search up by NavigationHeight
+            // TODO move filter on tablet
+            SheetView(vm, scaffoldState, drawerState) {
+                Box(
+                    Modifier
+                        .navigationBarsWithImePadding()
                 ) {
-                    Box {
-                        GoogleMaps(vm)
-                        FloatingActionButton(
-                            modifier = Modifier
-                                .align(Alignment.TopEnd)
-                                .padding(top = 90.dp, end = 12.dp)
-                                .size(40.dp),
-                            onClick = { vm.trashTypesFilterOpen = !vm.trashTypesFilterOpen },
-                            backgroundColor = PaperBlue,
-                            contentColor = Color.White
+                    GoogleMaps(vm)
+                    FloatingActionButton(
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(top = 90.dp, end = 12.dp)
+                            .size(40.dp),
+                        onClick = { vm.trashTypesFilterOpen = !vm.trashTypesFilterOpen },
+                        backgroundColor = PaperBlue,
+                        contentColor = Color.White
+                    ) {
+                        Icon(Icons.Filled.FilterAlt, "Filter icon")
+                    }
+                    TrashTypeFilterView(vm)
+                    if (vm.loading.value) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
                         ) {
-                            Icon(Icons.Filled.FilterAlt, "Filter icon")
-                        }
-                        TrashTypeFilterView(vm)
-                        if (vm.loading.value) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Center
-                            ) {
-                                CircularProgressIndicator()
-                            }
+                            CircularProgressIndicator()
                         }
                     }
                 }

@@ -29,11 +29,11 @@ import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 @ExperimentalMaterial3Api
 @ExperimentalMaterialApi
 @Composable
-fun Navigation(modifier: Modifier, vm: MainViewModel, sheetScaffoldState: BottomSheetScaffoldState) {
+fun Navigation(modifier: Modifier, vm: MainViewModel, sheetScaffoldState: BottomSheetScaffoldState, drawerState: DrawerState) {
     val configuration = LocalConfiguration.current
 
     when (configuration.orientation) {
-        ORIENTATION_LANDSCAPE -> SideNavigation(modifier, vm, sheetScaffoldState)
+        ORIENTATION_LANDSCAPE -> SideNavigation(modifier, vm, drawerState)
         else -> BottomNavigation(modifier, vm, sheetScaffoldState)
     }
 }
@@ -83,7 +83,7 @@ fun BottomNavigation(modifier: Modifier, vm: MainViewModel, sheetScaffoldState: 
 @ExperimentalMaterial3Api
 @ExperimentalMaterialApi
 @Composable
-fun SideNavigation(modifier: Modifier, vm: MainViewModel, sheetScaffoldState: BottomSheetScaffoldState) {
+fun SideNavigation(modifier: Modifier, vm: MainViewModel, drawerState: DrawerState) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
@@ -93,7 +93,7 @@ fun SideNavigation(modifier: Modifier, vm: MainViewModel, sheetScaffoldState: Bo
             label = { androidx.compose.material3.Text(stringResource(R.string.search)) },
             selected = vm.activeBottomSheet == BottomSheet.SEARCH,
             onClick = {
-                vm.activeBottomSheet = vm.activeBottomSheet.onClick(BottomSheet.SEARCH, coroutineScope, sheetScaffoldState)
+                vm.activeBottomSheet = vm.activeBottomSheet.onClick(BottomSheet.SEARCH, coroutineScope, drawerState)
             }
         )
         NavigationRailItem(
@@ -107,7 +107,7 @@ fun SideNavigation(modifier: Modifier, vm: MainViewModel, sheetScaffoldState: Bo
             label = { androidx.compose.material3.Text(stringResource(R.string.near)) },
             selected = vm.activeBottomSheet == BottomSheet.NEAR,
             onClick = {
-                vm.activeBottomSheet = vm.activeBottomSheet.onClick(BottomSheet.NEAR, coroutineScope, sheetScaffoldState)
+                vm.activeBottomSheet = vm.activeBottomSheet.onClick(BottomSheet.NEAR, coroutineScope, drawerState)
             }
         )
         NavigationRailItem(

@@ -19,7 +19,7 @@ import cz.brhliluk.android.praguewaste.model.Bin
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 
 @Composable
-fun BottomSearchView(vm: MainViewModel) {
+fun SearchView(vm: MainViewModel) {
     val binListItems: LazyPagingItems<Bin> = vm.searchBins.collectAsLazyPagingItems()
     var listVisible by remember { mutableStateOf(false) }
 
@@ -27,7 +27,7 @@ fun BottomSearchView(vm: MainViewModel) {
 
     LaunchedEffect(vm.trashTypesFilter, vm.allParamsRequired, userLocation) { binListItems.refresh() }
 
-    BaseBottomView(
+    BottomOrSheetView(
         items = binListItems,
         listVisible = listVisible,
         itemView = { item -> BinItemView(userLocation = userLocation.value, bin = item, onClick = { vm.selectBin(item) }) }
