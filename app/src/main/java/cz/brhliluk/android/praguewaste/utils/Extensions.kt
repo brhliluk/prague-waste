@@ -39,7 +39,7 @@ fun BottomSheet.onClick(clicked: BottomSheet, coroutineScope: CoroutineScope, sh
 }
 
 @ExperimentalMaterialApi
-fun BottomSheet.onClick(clicked: BottomSheet, coroutineScope: CoroutineScope, drawerState: DrawerState): BottomSheet {
+fun BottomSheet.onClick(clicked: BottomSheet): BottomSheet {
     val resultSheet = when (this) {
         BottomSheet.NONE -> clicked.instance
         // Search is shown

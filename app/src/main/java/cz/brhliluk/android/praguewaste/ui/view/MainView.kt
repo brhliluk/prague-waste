@@ -32,11 +32,6 @@ fun MainView(vm: MainViewModel) {
         )
     )
 
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed, confirmStateChange = {
-        if (it == DrawerValue.Closed) vm.activeBottomSheet = BottomSheet.NONE
-        true
-    })
-
     ProvideWindowInsets(windowInsetsAnimationsEnabled = true) {
         Scaffold(
             bottomBar = {
@@ -45,18 +40,14 @@ fun MainView(vm: MainViewModel) {
                         .navigationBarsWithImePadding()
                         .statusBarsPadding(),
                     vm,
-                    scaffoldState,
-                    drawerState
+                    scaffoldState
                 )
             }
         ) {
             // TODO move search up by NavigationHeight
             // TODO move filter on tablet
-            SheetView(vm, scaffoldState, drawerState) {
-                Box(
-                    Modifier
-                        .navigationBarsWithImePadding()
-                ) {
+            SheetView(vm, scaffoldState) {
+                Box(Modifier.navigationBarsWithImePadding()) {
                     GoogleMaps(vm)
                     FloatingActionButton(
                         modifier = Modifier
