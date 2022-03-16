@@ -1,6 +1,5 @@
 package cz.brhliluk.android.praguewaste.ui.view
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -18,7 +17,6 @@ import cz.brhliluk.android.praguewaste.viewmodel.BottomSheet
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 
 @ExperimentalMaterialApi
-@ExperimentalAnimationApi
 @ExperimentalMaterial3Api
 @Composable
 fun MainView(vm: MainViewModel) {
