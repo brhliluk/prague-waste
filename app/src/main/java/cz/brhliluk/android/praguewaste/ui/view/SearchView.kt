@@ -15,6 +15,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.google.accompanist.insets.navigationBarsWithImePadding
 import cz.brhliluk.android.praguewaste.model.Bin
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 
@@ -56,6 +57,7 @@ fun SearchView(vm: MainViewModel) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 10.dp)
+                .navigationBarsWithImePadding()
         )
     }
 }

@@ -118,7 +118,7 @@ class MainViewModel : ViewModel(), KoinComponent {
         viewModelScope.launch {
             map.awaitAnimateCamera(CameraUpdateFactory.newLatLngZoom(bin.offsetLocation, 20.0f), 1000)
             // Give clusterManager time to load in all the markers if too far away
-            if (clusterManager.markerCollection.markers.isEmpty()) delay(300)
+            delay(200)
             clusterManager.markerCollection.markers.find { it.position == bin.position }?.showInfoWindow()
         }
     }

@@ -21,7 +21,8 @@ fun <T : Any> BaseSheetView(
     Column(
         modifier = Modifier
             .width(400.dp)
-            .padding(horizontal = 15.dp),
+            .padding(horizontal = 15.dp)
+            .padding(top = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         content()

@@ -28,7 +28,7 @@ fun SheetView(vm: MainViewModel, scaffoldState: BottomSheetScaffoldState, conten
     val configuration = LocalConfiguration.current
 
     when (configuration.orientation) {
-        Configuration.ORIENTATION_LANDSCAPE -> SecondSideSheet(vm, content)
+        Configuration.ORIENTATION_LANDSCAPE -> MainSideSheet(vm, content)
         else -> MainBottomSheetScaffold(vm, scaffoldState, content)
     }
 }
@@ -53,7 +53,7 @@ fun MainBottomSheetScaffold(vm: MainViewModel, scaffoldState: BottomSheetScaffol
 }
 
 @Composable
-fun SecondSideSheet(vm: MainViewModel, content: @Composable () -> Unit) {
+fun MainSideSheet(vm: MainViewModel, content: @Composable () -> Unit) {
     ProvideWindowInsets(windowInsetsAnimationsEnabled = true) {
         Box {
             content()
