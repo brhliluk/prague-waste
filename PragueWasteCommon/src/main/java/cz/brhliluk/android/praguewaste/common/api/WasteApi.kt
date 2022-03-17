@@ -4,6 +4,7 @@ package cz.brhliluk.android.praguewaste.common.api
 import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import cz.brhliluk.android.praguewaste.common.model.Bin
+import cz.brhliluk.android.praguewaste.common.model.BinModel
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.features.*
@@ -19,6 +20,7 @@ class WasteApi : KoinComponent {
 
     companion object {
         private const val TIME_OUT = 60_000
+        const val NETWORK_PAGE_SIZE = 15
     }
 
     private val ktorClient = HttpClient(Android) {
@@ -69,7 +71,7 @@ class WasteApi : KoinComponent {
         allRequired: Boolean? = null,
         page: Int? = null,
         perPage: Int? = null
-    ): List<Bin> = ktorClient.get(path = "bins-search") {
+    ): List<BinModel> = ktorClient.get(path = "bins-search") {
         parameter("searchQuery", query)
         parameter("filter", filter?.map { it.id })
         parameter("allRequired", allRequired)
@@ -84,7 +86,7 @@ class WasteApi : KoinComponent {
         allRequired: Boolean? = null,
         page: Int? = null,
         perPage: Int? = null
-    ): List<Bin> = ktorClient.get(path = "bins") {
+    ): List<BinModel> = ktorClient.get(path = "bins") {
         parameter("lat", location.latitude)
         parameter("long", location.longitude)
         parameter("radius", radius)
@@ -94,6 +96,6 @@ class WasteApi : KoinComponent {
         parameter("perPage", perPage)
     }
 
-    suspend fun getAllBins(): List<Bin> = ktorClient.get(path = "bins-all")
+    suspend fun getAllBins(): List<BinModel> = ktorClient.get(path = "bins-all")
 
 }

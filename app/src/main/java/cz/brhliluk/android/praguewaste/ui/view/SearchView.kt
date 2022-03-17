@@ -16,12 +16,12 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.google.accompanist.insets.navigationBarsWithImePadding
-import cz.brhliluk.android.praguewaste.common.model.Bin
+import cz.brhliluk.android.praguewaste.common.model.BinModel
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 
 @Composable
 fun SearchView(vm: MainViewModel) {
-    val binListItems: LazyPagingItems<Bin> = vm.searchBins.collectAsLazyPagingItems()
+    val binListItems: LazyPagingItems<BinModel> = vm.searchBins.collectAsLazyPagingItems()
     var listVisible by remember { mutableStateOf(false) }
 
     val userLocation = vm.location.collectAsState()
@@ -31,7 +31,7 @@ fun SearchView(vm: MainViewModel) {
     BottomOrSheetView(
         items = binListItems,
         listVisible = listVisible,
-        itemView = { item -> BinItemView(userLocation = userLocation.value, bin = item, onClick = { vm.selectBin(item) }) }
+        itemView = { item -> BinItemView(userLocation = userLocation.value, bin = item.toBin(), onClick = { vm.selectBin(item.toBin()) }) }
     ) {
         TextField(
             value = vm.searchQuery,

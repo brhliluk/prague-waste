@@ -21,6 +21,7 @@ import cz.brhliluk.android.praguewaste.common.api.BinNearSource
 import cz.brhliluk.android.praguewaste.common.api.BinSearchSource
 import cz.brhliluk.android.praguewaste.common.api.WasteApi
 import cz.brhliluk.android.praguewaste.common.model.Bin
+import cz.brhliluk.android.praguewaste.common.model.BinModel
 import cz.brhliluk.android.praguewaste.common.repository.BinRepository
 import cz.brhliluk.android.praguewaste.utils.InfoWindowAdapter
 import cz.brhliluk.android.praguewaste.utils.PreferencesManager
@@ -29,6 +30,7 @@ import cz.brhliluk.android.praguewaste.utils.offsetLocation
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.koin.core.component.KoinComponent
@@ -41,11 +43,11 @@ class MainViewModel : ViewModel(), KoinComponent {
     private val infoWindowAdapter: InfoWindowAdapter by inject()
 
     // Paging data sources
-    val searchBins: Flow<PagingData<Bin>> = Pager(PagingConfig(pageSize = 15)) {
+    val searchBins: Flow<PagingData<BinModel>> = Pager(PagingConfig(pageSize = 15)) {
         BinSearchSource(searchQuery, trashTypesFilter, allParamsRequired)
     }.flow.cachedIn(viewModelScope)
 
-    val nearBins: Flow<PagingData<Bin>> = Pager(PagingConfig(pageSize = 15)) {
+    val nearBins: Flow<PagingData<BinModel>> = Pager(PagingConfig(pageSize = 15)) {
         BinNearSource(location.value, radius, trashTypesFilter, allParamsRequired)
     }.flow.cachedIn(viewModelScope)
 
@@ -107,7 +109,7 @@ class MainViewModel : ViewModel(), KoinComponent {
     private suspend fun updateDisplayBins() {
         currentBins.value = binRepository.getFilteredBins(trashTypesFilter, allParamsRequired)
         if (currentBins.value.isEmpty()) {
-            binRepository.insertDataAsync(api.getAllBins())
+            binRepository.insertDataAsync(api.getAllBins().map { it.toBin() })
             currentBins.value = binRepository.getFilteredBins(trashTypesFilter, allParamsRequired)
         }
     }

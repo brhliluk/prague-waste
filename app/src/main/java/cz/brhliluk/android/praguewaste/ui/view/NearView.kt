@@ -14,20 +14,20 @@ import androidx.compose.ui.unit.sp
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import cz.brhliluk.android.praguewaste.R
-import cz.brhliluk.android.praguewaste.common.model.Bin
+import cz.brhliluk.android.praguewaste.common.model.BinModel
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 
 @Composable
 fun NearView(vm: MainViewModel) {
 
-    val binListItems: LazyPagingItems<Bin> = vm.nearBins.collectAsLazyPagingItems()
+    val binListItems: LazyPagingItems<BinModel> = vm.nearBins.collectAsLazyPagingItems()
     val userLocation = vm.location.collectAsState()
 
     LaunchedEffect(vm.trashTypesFilter, vm.allParamsRequired, userLocation) { binListItems.refresh() }
 
     BottomOrSheetView(
         items = binListItems,
-        itemView = { item -> BinItemView(userLocation = userLocation.value, bin = item, onClick = { vm.selectBin(item) }) }
+        itemView = { item -> BinItemView(userLocation = userLocation.value, bin = item.toBin(), onClick = { vm.selectBin(item.toBin()) }) }
     ) {
         Row() {
             Text(stringResource(R.string.proximity), fontSize = 15.sp, fontWeight = FontWeight.Bold)
