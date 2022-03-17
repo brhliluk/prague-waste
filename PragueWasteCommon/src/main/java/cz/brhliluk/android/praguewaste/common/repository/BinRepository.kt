@@ -12,9 +12,6 @@ class BinRepository(private val binDao: BinDao, private val binFtsDao: BinFtsDao
 
     suspend fun getListAsync() = binDao.getAll()
 
-    suspend fun getFilteredBins(types: List<Bin.TrashType>, allRequired: Boolean): List<Bin> {
-        val separator = if (allRequired) " " else " OR "
-        val convertedTypes = types.map { if (it != types.last()) "${it.id}$separator" else "${it.id}" }
-        return binFtsDao.filteredBins(convertedTypes.joinToString("")).map { it.toBin() }
-    }
+    suspend fun getFilteredBins(types: List<Bin.TrashType>, allRequired: Boolean) =
+        binFtsDao.getFilteredBins(types, allRequired).map { it.toBin() }
 }
