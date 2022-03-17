@@ -1,10 +1,10 @@
-package cz.brhliluk.android.praguewaste.database
+package cz.brhliluk.android.praguewaste.common.database
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import cz.brhliluk.android.praguewaste.model.Bin
+import cz.brhliluk.android.praguewaste.common.model.Bin
 
 @Dao
 interface BinDao {

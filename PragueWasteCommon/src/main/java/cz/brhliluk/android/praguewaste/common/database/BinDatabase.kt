@@ -1,11 +1,11 @@
-package cz.brhliluk.android.praguewaste.database
+package cz.brhliluk.android.praguewaste.common.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import cz.brhliluk.android.praguewaste.model.Bin
-import cz.brhliluk.android.praguewaste.model.BinFts
-import cz.brhliluk.android.praguewaste.model.Converters
+import cz.brhliluk.android.praguewaste.common.model.Bin
+import cz.brhliluk.android.praguewaste.common.model.BinFts
+import cz.brhliluk.android.praguewaste.common.model.Converters
 import org.koin.core.component.KoinComponent
 
 @Database(entities = [Bin::class, BinFts::class], version = 3,)

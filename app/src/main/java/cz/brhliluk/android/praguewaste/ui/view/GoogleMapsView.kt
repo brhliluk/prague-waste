@@ -8,11 +8,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.rememberCameraPositionState
 import cz.brhliluk.android.praguewaste.R
-import cz.brhliluk.android.praguewaste.utils.hasLocationPermission
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
 
@@ -22,16 +18,6 @@ fun GoogleMaps(vm: MainViewModel) {
     val localContext = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val locationEnabled = vm.isLocationEnabledFlow().collectAsState(initial = false)
-
-    val currentLocation by vm.location.collectAsState()
-    val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(
-            LatLng(
-                vm.location.value.latitude,
-                vm.location.value.longitude
-            ), 15f
-        )
-    }
 
     AndroidView({ mapView }) {
         val currentBins = vm.currentBins.value

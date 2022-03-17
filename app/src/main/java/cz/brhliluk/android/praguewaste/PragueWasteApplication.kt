@@ -2,9 +2,9 @@ package cz.brhliluk.android.praguewaste
 
 import android.app.Application
 import androidx.room.Room
-import cz.brhliluk.android.praguewaste.api.WasteApi
-import cz.brhliluk.android.praguewaste.database.BinDatabase
-import cz.brhliluk.android.praguewaste.repository.BinRepository
+import cz.brhliluk.android.praguewaste.common.api.WasteApi
+import cz.brhliluk.android.praguewaste.common.database.BinDatabase
+import cz.brhliluk.android.praguewaste.common.repository.BinRepository
 import cz.brhliluk.android.praguewaste.utils.InfoWindowAdapter
 import cz.brhliluk.android.praguewaste.utils.PreferencesManager
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
@@ -29,7 +29,7 @@ class PragueWasteApplication : Application() {
             Room.databaseBuilder(androidApplication(), BinDatabase::class.java, "bin-db")
                 .fallbackToDestructiveMigration().build()
         }
-        // BirdsDAO
+        // BinsDAO
         single { get<BinDatabase>().binDao() }
         single { get<BinDatabase>().binFtsDao() }
         single { BinRepository(binDao = get(), binFtsDao = get()) }

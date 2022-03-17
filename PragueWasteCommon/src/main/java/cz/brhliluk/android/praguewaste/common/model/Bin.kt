@@ -1,4 +1,5 @@
-package cz.brhliluk.android.praguewaste.model
+package cz.brhliluk.android.praguewaste.common.model
+
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
@@ -6,8 +7,8 @@ import androidx.room.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.SphericalUtil
 import com.google.maps.android.clustering.ClusterItem
-import cz.brhliluk.android.praguewaste.R
-import cz.brhliluk.android.praguewaste.ui.theme.*
+import cz.brhliluk.android.praguewaste.common.R
+import cz.brhliluk.android.praguewaste.common.theme.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString

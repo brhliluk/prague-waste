@@ -9,7 +9,7 @@ import androidx.annotation.IdRes
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
 import cz.brhliluk.android.praguewaste.R
-import cz.brhliluk.android.praguewaste.model.Bin
+import cz.brhliluk.android.praguewaste.common.model.Bin
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent

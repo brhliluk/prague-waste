@@ -115,4 +115,7 @@ dependencies {
 
     // Permissions
     implementation 'com.karumi:dexter:6.2.3'
+
+    // Shared code
+    implementation project(':PragueWasteCommon')
 }

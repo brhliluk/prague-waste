@@ -1,11 +1,10 @@
 package cz.brhliluk.android.praguewaste.utils
 
 import androidx.compose.material.BottomSheetScaffoldState
-import androidx.compose.material.DrawerState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.MutableState
 import com.google.android.gms.maps.model.LatLng
-import cz.brhliluk.android.praguewaste.model.Bin
+import cz.brhliluk.android.praguewaste.common.model.Bin
 import cz.brhliluk.android.praguewaste.viewmodel.BottomSheet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

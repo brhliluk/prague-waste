@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.google.accompanist.insets.navigationBarsWithImePadding
-import cz.brhliluk.android.praguewaste.model.Bin
+import cz.brhliluk.android.praguewaste.common.model.Bin
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 
 @Composable

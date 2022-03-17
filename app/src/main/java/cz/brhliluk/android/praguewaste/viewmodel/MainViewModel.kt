@@ -17,16 +17,15 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.ktx.awaitAnimateCamera
 import com.google.maps.android.ktx.awaitMap
-import cz.brhliluk.android.praguewaste.api.BinNearSource
-import cz.brhliluk.android.praguewaste.api.BinSearchSource
-import cz.brhliluk.android.praguewaste.api.WasteApi
-import cz.brhliluk.android.praguewaste.model.Bin
-import cz.brhliluk.android.praguewaste.repository.BinRepository
+import cz.brhliluk.android.praguewaste.common.api.BinNearSource
+import cz.brhliluk.android.praguewaste.common.api.BinSearchSource
+import cz.brhliluk.android.praguewaste.common.api.WasteApi
+import cz.brhliluk.android.praguewaste.common.model.Bin
+import cz.brhliluk.android.praguewaste.common.repository.BinRepository
 import cz.brhliluk.android.praguewaste.utils.InfoWindowAdapter
 import cz.brhliluk.android.praguewaste.utils.PreferencesManager
 import cz.brhliluk.android.praguewaste.utils.load
 import cz.brhliluk.android.praguewaste.utils.offsetLocation
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,7 +33,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import kotlin.time.Duration.Companion.seconds
 
 class MainViewModel : ViewModel(), KoinComponent {
     private val api: WasteApi by inject()

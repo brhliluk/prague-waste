@@ -1,8 +1,9 @@
-package cz.brhliluk.android.praguewaste.api
+package cz.brhliluk.android.praguewaste.common.api
+
 
 import android.util.Log
 import com.google.android.gms.maps.model.LatLng
-import cz.brhliluk.android.praguewaste.model.Bin
+import cz.brhliluk.android.praguewaste.common.model.Bin
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.features.*

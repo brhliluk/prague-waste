@@ -17,7 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.LatLng
 import cz.brhliluk.android.praguewaste.R
-import cz.brhliluk.android.praguewaste.model.Bin
+import cz.brhliluk.android.praguewaste.common.model.Bin
 
 @Composable
 fun BinItemView(userLocation: LatLng, bin: Bin, onClick: (Bin) -> Unit) {
