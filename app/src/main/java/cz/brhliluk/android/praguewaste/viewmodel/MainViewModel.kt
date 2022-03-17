@@ -37,7 +37,6 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class MainViewModel : ViewModel(), KoinComponent {
-    private val api: WasteApi by inject()
     private val binRepository: BinRepository by inject()
     private val preferencesManager: PreferencesManager by inject()
     private val infoWindowAdapter: InfoWindowAdapter by inject()
@@ -109,7 +108,7 @@ class MainViewModel : ViewModel(), KoinComponent {
     private suspend fun updateDisplayBins() {
         currentBins.value = binRepository.getFilteredBins(trashTypesFilter, allParamsRequired)
         if (currentBins.value.isEmpty()) {
-            binRepository.insertDataAsync(api.getAllBins().map { it.toBin() })
+            binRepository.loadAllBins()
             currentBins.value = binRepository.getFilteredBins(trashTypesFilter, allParamsRequired)
         }
     }
