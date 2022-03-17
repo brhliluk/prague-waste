@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -102,13 +101,11 @@ class MainActivity : ComponentActivity() {
         isRequestRequired = false
         applicationContext.withPermission(Manifest.permission.ACCESS_FINE_LOCATION,
             onDenied = {
-                Log.d("Location permission:", "denied")
                 if (vm.isLocationEnabled) {
                     askForLocationDialog()
                 }
             },
             onGranted = {
-                Log.d("Location permission:", "granted")
                 if (hasLocationPermission) {
                     vm.setMyLocationEnabled()
                     startLocationUpdates()
@@ -121,7 +118,6 @@ class MainActivity : ComponentActivity() {
     private fun askForLocationDialog() {
         if (locationDialogShown) return
         MaterialDialog(this).show {
-            Log.d("Location dialog:", "shown")
             locationDialogShown = true
             title(R.string.no_location_title)
             message(R.string.location_required_dialog)
