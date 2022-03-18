@@ -6,7 +6,7 @@ import cz.brhliluk.android.praguewaste.common.api.WasteApi
 import cz.brhliluk.android.praguewaste.common.database.BinDatabase
 import cz.brhliluk.android.praguewaste.common.repository.BinRepository
 import cz.brhliluk.android.praguewaste.utils.InfoWindowAdapter
-import cz.brhliluk.android.praguewaste.utils.PreferencesManager
+import cz.brhliluk.android.praguewaste.common.utils.PreferencesManager
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 import cz.brhliluk.android.praguewaste.viewmodel.SettingsViewModel
 import org.koin.android.ext.koin.androidApplication

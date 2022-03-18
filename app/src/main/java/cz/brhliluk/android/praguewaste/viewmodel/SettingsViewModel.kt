@@ -2,7 +2,7 @@ package cz.brhliluk.android.praguewaste.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import cz.brhliluk.android.praguewaste.utils.PreferencesManager
+import cz.brhliluk.android.praguewaste.common.utils.PreferencesManager
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
