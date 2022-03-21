@@ -3,4 +3,7 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="prague_centre_reference">Jako referenční bod, bude použito centrum Prahy</string>
     <string name="nearest_bins">Nejbližší koše</string>
+    <string name="title_activity_detail">DetailActivity</string>
+    <string name="navigate">Navigovat</string>
+    <string name="no_supported_app">Není nainstalovaná podporovaná aplikace</string>
 </resources>

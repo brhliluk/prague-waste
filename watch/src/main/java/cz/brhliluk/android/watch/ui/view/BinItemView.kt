@@ -13,11 +13,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Chip
 import androidx.wear.compose.material.Text
-import com.google.android.gms.maps.model.LatLng
 import cz.brhliluk.android.praguewaste.common.model.Bin
 
 @Composable
-fun BinItemView(userLocation: LatLng, bin: Bin, onClick: (Bin) -> Unit) {
+fun BinItemView(bin: Bin, onClick: (Bin) -> Unit) {
     Chip(
         icon = {
             Icon(
@@ -26,7 +25,7 @@ fun BinItemView(userLocation: LatLng, bin: Bin, onClick: (Bin) -> Unit) {
                 modifier = Modifier.padding(end = 12.dp)
             )
         },
-        onClick = { TODO() },
+        onClick = { onClick(bin) },
         label = { Text(bin.address, overflow = TextOverflow.Ellipsis, maxLines = 1) },
         secondaryLabel = {
             LazyRow(Modifier.padding(bottom = 10.dp, top = 5.dp)) {

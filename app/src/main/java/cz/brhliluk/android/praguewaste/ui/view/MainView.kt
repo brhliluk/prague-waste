@@ -42,8 +42,6 @@ fun MainView(vm: MainViewModel) {
                 )
             }
         ) {
-            // TODO move search up by NavigationHeight
-            // TODO move filter on tablet
             SheetView(vm, scaffoldState) {
                 Box(Modifier.navigationBarsWithImePadding()) {
                     GoogleMaps(vm)

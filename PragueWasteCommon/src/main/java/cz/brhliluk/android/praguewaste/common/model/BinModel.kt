@@ -11,7 +11,7 @@ class BinModel (
     val address: String,
     @SerialName("trash_types")
     val trashTypes: List<Int>,
-) {
+) : java.io.Serializable {
     companion object {
         fun from(bin: Bin): BinModel {
             return BinModel(bin.id, bin.latitude, bin.longitude, bin.address, bin.trashTypes)

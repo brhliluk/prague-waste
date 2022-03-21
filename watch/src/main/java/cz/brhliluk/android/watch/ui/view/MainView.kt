@@ -1,10 +1,13 @@
 package cz.brhliluk.android.watch.ui.view
 
+import android.app.ListActivity
+import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -15,6 +18,9 @@ import androidx.wear.compose.material.ScalingLazyColumn
 import androidx.wear.compose.material.Text
 import cz.brhliluk.android.praguewaste.common.model.BinModel
 import cz.brhliluk.android.watch.R
+import cz.brhliluk.android.watch.ui.activity.DetailActivity
+import cz.brhliluk.android.watch.ui.activity.MainActivity.Companion.BIN_EXTRA
+import cz.brhliluk.android.watch.ui.activity.MainActivity.Companion.LOCATION_EXTRA
 import cz.brhliluk.android.watch.ui.util.items
 import cz.brhliluk.android.watch.viewmodel.MainViewModel
 
@@ -22,6 +28,7 @@ import cz.brhliluk.android.watch.viewmodel.MainViewModel
 fun MainView(vm: MainViewModel) {
     val binListItems: LazyPagingItems<BinModel> = vm.nearBins.collectAsLazyPagingItems()
     val userLocation = vm.location.collectAsState()
+    val context = LocalContext.current
 
 
     ScalingLazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -31,7 +38,13 @@ fun MainView(vm: MainViewModel) {
 
         items(binListItems) { item ->
             item?.let {
-                BinItemView(userLocation = userLocation.value, bin = item.toBin(), onClick = { TODO() })
+                BinItemView(bin = item.toBin(), onClick = {
+                    val intent = Intent(context, DetailActivity::class.java).apply {
+                        putExtra(BIN_EXTRA, item)
+                        putExtra(LOCATION_EXTRA, userLocation.value)
+                    }
+                    context.startActivity(intent)
+                })
             }
         }
         // Handle Error and Loading states

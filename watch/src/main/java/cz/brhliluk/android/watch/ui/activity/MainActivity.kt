@@ -62,4 +62,9 @@ class MainActivity : ComponentActivity() {
             onGranted = { if (hasLocationPermission) locationHelper.startLocationUpdates() }
         )
     }
+
+    companion object {
+        const val BIN_EXTRA = "cz.brhliluk.android.praguewaste.BIN_MESSAGE"
+        const val LOCATION_EXTRA = "cz.brhliluk.android.praguewaste.LOCATION_MESSAGE"
+    }
 }
