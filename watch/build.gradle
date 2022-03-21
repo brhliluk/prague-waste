@@ -58,9 +58,10 @@ dependencies {
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
     implementation 'androidx.activity:activity-compose:1.4.0'
-    implementation project(path: ':PragueWasteCommon')
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    implementation "androidx.wear.compose:compose-material:1.0.0-alpha18"
+    implementation "androidx.wear.compose:compose-foundation:1.0.0-alpha18"
 
     // Koin dependency injection
     def koin_version= "3.1.5"
@@ -75,6 +76,7 @@ dependencies {
 
     // Base Maps
     implementation 'com.google.android.gms:play-services-maps:18.0.2'
+    implementation 'com.google.maps.android:android-maps-utils:2.3.0'
 
     // Shared code
     implementation project(':PragueWasteCommon')

@@ -66,8 +66,15 @@ dependencies {
     implementation 'com.google.maps.android:maps-ktx:3.3.0'
     implementation 'com.google.maps.android:maps-utils-ktx:3.3.0'
     implementation 'com.google.maps.android:android-maps-utils:2.3.0'
+    implementation 'com.google.android.gms:play-services-location:19.0.1'
 
     // Preferences
     implementation "androidx.datastore:datastore:1.0.0"
     implementation "androidx.datastore:datastore-preferences:1.0.0"
+
+    // Material dialog
+    implementation 'com.afollestad.material-dialogs:core:3.3.0'
+
+    // Permissions
+    implementation 'com.karumi:dexter:6.2.3'
 }

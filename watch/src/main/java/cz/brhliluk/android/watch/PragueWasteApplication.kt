@@ -2,6 +2,7 @@ package cz.brhliluk.android.watch
 
 import android.app.Application
 import cz.brhliluk.android.praguewaste.common.api.WasteApi
+import cz.brhliluk.android.praguewaste.common.utils.LocationHelper
 import cz.brhliluk.android.praguewaste.common.utils.PreferencesManager
 import cz.brhliluk.android.watch.viewmodel.MainViewModel
 import org.koin.android.ext.koin.androidContext
@@ -19,6 +20,8 @@ class PragueWasteApplication : Application() {
         single { WasteApi() }
         // Prefs
         single { PreferencesManager(get()) }
+        // Location
+        single { LocationHelper(get(), MainViewModel()) }
     })
 
     override fun onCreate() {

@@ -1,4 +1,4 @@
-package cz.brhliluk.android.praguewaste.utils
+package cz.brhliluk.android.praguewaste.common.utils
 
 import android.Manifest
 import android.content.Context

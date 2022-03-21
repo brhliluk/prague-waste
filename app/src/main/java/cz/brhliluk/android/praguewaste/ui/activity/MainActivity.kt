@@ -3,7 +3,6 @@ package cz.brhliluk.android.praguewaste.ui.activity
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
-import android.os.Looper
 import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -18,30 +17,27 @@ import androidx.lifecycle.lifecycleScope
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.google.accompanist.insets.ProvideWindowInsets
-import com.google.android.gms.location.*
-import com.google.android.gms.maps.model.LatLng
 import cz.brhliluk.android.praguewaste.R
+import cz.brhliluk.android.praguewaste.common.utils.LocationHelper
 import cz.brhliluk.android.praguewaste.ui.theme.ComposeMapsTheme
 import cz.brhliluk.android.praguewaste.ui.view.MainView
-import cz.brhliluk.android.praguewaste.utils.hasLocationPermission
-import cz.brhliluk.android.praguewaste.utils.withPermission
+import cz.brhliluk.android.praguewaste.common.utils.hasLocationPermission
+import cz.brhliluk.android.praguewaste.common.utils.withPermission
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlin.time.Duration.Companion.seconds
 
 @ExperimentalMaterialApi
 @ExperimentalMaterial3Api
 class MainActivity : ComponentActivity() {
 
     private val vm: MainViewModel by viewModel()
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var locationRequest: LocationRequest
-    private lateinit var locationCallback: LocationCallback
+    private val locationHelper: LocationHelper by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        setupLocationUpdates()
+        locationHelper.setupLocationUpdates()
         setMapsContent()
     }
 
@@ -66,35 +62,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onPause() {
         super.onPause()
-        fusedLocationClient.removeLocationUpdates(locationCallback)
-    }
-
-    private fun setupLocationUpdates() {
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        locationRequest = LocationRequest.create().apply {
-            interval = 5.seconds.inWholeMilliseconds
-            fastestInterval = 0.5.seconds.inWholeMilliseconds
-            priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
-            smallestDisplacement = 10f // 10m
-        }
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult) {
-                if (locationResult.locations.isNotEmpty()) {
-                    // get latest location
-                    val location = locationResult.lastLocation
-                    vm.location.value = LatLng(location.latitude, location.longitude)
-                }
-            }
-        }
-    }
-
-    private fun startLocationUpdates() {
-        //noinspection MissingPermission
-        if (hasLocationPermission) fusedLocationClient.requestLocationUpdates(
-            locationRequest,
-            locationCallback,
-            Looper.getMainLooper()
-        )
+        locationHelper.stopLocationUpdates()
     }
 
     private fun askForLocationPermission() {
@@ -108,7 +76,7 @@ class MainActivity : ComponentActivity() {
             onGranted = {
                 if (hasLocationPermission) {
                     vm.setMyLocationEnabled()
-                    startLocationUpdates()
+                    locationHelper.startLocationUpdates()
                 }
             }
         )
@@ -138,9 +106,9 @@ class MainActivity : ComponentActivity() {
 
     private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if (hasLocationPermission) {
-            startLocationUpdates()
+            locationHelper.startLocationUpdates()
         } else {
-            Toast.makeText(this, "Location permission not granted", Toast.LENGTH_SHORT)
+            Toast.makeText(this, "Location permission not granted", Toast.LENGTH_SHORT).show()
         }
     }
 

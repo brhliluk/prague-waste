@@ -5,6 +5,7 @@ import androidx.room.Room
 import cz.brhliluk.android.praguewaste.common.api.WasteApi
 import cz.brhliluk.android.praguewaste.common.database.BinDatabase
 import cz.brhliluk.android.praguewaste.common.repository.BinRepository
+import cz.brhliluk.android.praguewaste.common.utils.LocationHelper
 import cz.brhliluk.android.praguewaste.utils.InfoWindowAdapter
 import cz.brhliluk.android.praguewaste.common.utils.PreferencesManager
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
@@ -37,6 +38,8 @@ class PragueWasteApplication : Application() {
         single { PreferencesManager(get()) }
         // Google maps
         single { InfoWindowAdapter(get()) }
+        // Location helper
+        single { LocationHelper(get(), MainViewModel()) }
     })
 
     override fun onCreate() {

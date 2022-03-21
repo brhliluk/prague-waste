@@ -13,7 +13,6 @@ import androidx.paging.cachedIn
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.ktx.awaitAnimateCamera
 import com.google.maps.android.ktx.awaitMap
@@ -22,6 +21,8 @@ import cz.brhliluk.android.praguewaste.common.api.BinSearchSource
 import cz.brhliluk.android.praguewaste.common.model.Bin
 import cz.brhliluk.android.praguewaste.common.model.BinModel
 import cz.brhliluk.android.praguewaste.common.repository.BinRepository
+import cz.brhliluk.android.praguewaste.common.utils.LocationViewModel
+import cz.brhliluk.android.praguewaste.common.utils.LocationViewModel.Companion.centrePrague
 import cz.brhliluk.android.praguewaste.utils.InfoWindowAdapter
 import cz.brhliluk.android.praguewaste.common.utils.PreferencesManager
 import cz.brhliluk.android.praguewaste.utils.load
@@ -34,7 +35,7 @@ import kotlinx.coroutines.runBlocking
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class MainViewModel : ViewModel(), KoinComponent {
+class MainViewModel : ViewModel(), KoinComponent, LocationViewModel {
     private val binRepository: BinRepository by inject()
     private val preferencesManager: PreferencesManager by inject()
     private val infoWindowAdapter: InfoWindowAdapter by inject()
@@ -52,7 +53,7 @@ class MainViewModel : ViewModel(), KoinComponent {
     val loading = mutableStateOf(false)
 
     // Current users location
-    val location = MutableStateFlow(centrePrague)
+    override val location = MutableStateFlow(centrePrague)
 
     // Bins filtering
     var allParamsRequired by mutableStateOf(false)
@@ -130,10 +131,6 @@ class MainViewModel : ViewModel(), KoinComponent {
     fun setLocationEnabled(enabled: Boolean) = viewModelScope.launch { preferencesManager.setLocationEnabled(enabled) }
 
     val isLocationEnabled get() = runBlocking { isLocationEnabled() }
-
-    companion object {
-        val centrePrague = LatLng(50.073658, 14.418540)
-    }
 }
 
 enum class BottomSheet {

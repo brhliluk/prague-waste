@@ -9,14 +9,22 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.google.android.gms.maps.model.LatLng
 import cz.brhliluk.android.praguewaste.common.api.BinNearSource
 import cz.brhliluk.android.praguewaste.common.model.Bin
 import cz.brhliluk.android.praguewaste.common.model.BinModel
+import cz.brhliluk.android.praguewaste.common.utils.LocationViewModel
+import cz.brhliluk.android.praguewaste.common.utils.LocationViewModel.Companion.centrePrague
+import cz.brhliluk.android.praguewaste.common.utils.PreferencesManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class MainViewModel: ViewModel() {
+class MainViewModel: ViewModel(), KoinComponent, LocationViewModel {
+
+    private val preferencesManager: PreferencesManager by inject()
 
     val nearBins: Flow<PagingData<BinModel>> = Pager(PagingConfig(pageSize = 15)) {
         BinNearSource(location.value, 30f, trashTypesFilter, allParamsRequired)
@@ -27,9 +35,11 @@ class MainViewModel: ViewModel() {
     var trashTypesFilter by mutableStateOf(Bin.TrashType.all)
 
     // Current users location
-    val location = MutableStateFlow(centrePrague)
+    override val location = MutableStateFlow(centrePrague)
 
-    companion object {
-        val centrePrague = LatLng(50.073658, 14.418540)
-    }
+    suspend fun isLocationEnabled() = preferencesManager.getLocationEnabled()
+    fun isLocationEnabledFlow() = preferencesManager.getLocationEnabledAsFlow()
+    fun setLocationEnabled(enabled: Boolean) = viewModelScope.launch { preferencesManager.setLocationEnabled(enabled) }
+
+    val isLocationEnabled get() = runBlocking { isLocationEnabled() }
 }
