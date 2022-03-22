@@ -1,6 +1,7 @@
 package cz.brhliluk.android.watch.ui.activity
 
 import android.Manifest
+import android.location.Location
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -23,7 +24,7 @@ import org.koin.core.parameter.parametersOf
 
 class MainActivity : ComponentActivity() {
     private val vm: MainViewModel by viewModel()
-    private val locationHelper: LocationHelper by inject { parametersOf(vm) }
+    private val locationHelper: LocationHelper by inject { parametersOf({ location: Location -> vm.saveLocation(location) }) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

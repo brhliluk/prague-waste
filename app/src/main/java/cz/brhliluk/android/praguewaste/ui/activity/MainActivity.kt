@@ -2,6 +2,7 @@ package cz.brhliluk.android.praguewaste.ui.activity
 
 import android.Manifest
 import android.content.Intent
+import android.location.Location
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.Toast
@@ -19,10 +20,10 @@ import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.google.accompanist.insets.ProvideWindowInsets
 import cz.brhliluk.android.praguewaste.R
 import cz.brhliluk.android.praguewaste.common.utils.LocationHelper
-import cz.brhliluk.android.praguewaste.ui.theme.ComposeMapsTheme
-import cz.brhliluk.android.praguewaste.ui.view.MainView
 import cz.brhliluk.android.praguewaste.common.utils.hasLocationPermission
 import cz.brhliluk.android.praguewaste.common.utils.withPermission
+import cz.brhliluk.android.praguewaste.ui.theme.ComposeMapsTheme
+import cz.brhliluk.android.praguewaste.ui.view.MainView
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -33,7 +34,7 @@ import org.koin.core.parameter.parametersOf
 class MainActivity : ComponentActivity() {
 
     private val vm: MainViewModel by viewModel()
-    private val locationHelper: LocationHelper by inject { parametersOf(vm) }
+    private val locationHelper: LocationHelper by inject { parametersOf({ location: Location -> vm.saveLocation(location) }) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

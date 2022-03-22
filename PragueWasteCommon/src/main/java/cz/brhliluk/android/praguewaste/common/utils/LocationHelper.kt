@@ -1,13 +1,13 @@
 package cz.brhliluk.android.praguewaste.common.utils
 
 import android.content.Context
+import android.location.Location
 import android.os.Looper
 import com.google.android.gms.location.*
-import com.google.android.gms.maps.model.LatLng
 import org.koin.core.component.KoinComponent
 import kotlin.time.Duration.Companion.seconds
 
-class LocationHelper(val context: Context,val vm: LocationViewModel) : KoinComponent {
+class LocationHelper(val context: Context, val saveLocation: (Location) -> Unit) : KoinComponent {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
@@ -25,7 +25,8 @@ class LocationHelper(val context: Context,val vm: LocationViewModel) : KoinCompo
                 if (locationResult.locations.isNotEmpty()) {
                     // get latest location
                     val location = locationResult.lastLocation
-                    vm.location.value = LatLng(location.latitude, location.longitude)
+                    saveLocation(location)
+//                    vm.location.value = LatLng(location.latitude, location.longitude)
                 }
             }
         }
