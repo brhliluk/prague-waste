@@ -1,6 +1,5 @@
 package cz.brhliluk.android.watch.ui.view
 
-import android.app.ListActivity
 import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -23,9 +22,10 @@ import cz.brhliluk.android.watch.ui.activity.MainActivity.Companion.BIN_EXTRA
 import cz.brhliluk.android.watch.ui.activity.MainActivity.Companion.LOCATION_EXTRA
 import cz.brhliluk.android.watch.ui.util.items
 import cz.brhliluk.android.watch.viewmodel.MainViewModel
+import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun MainView(vm: MainViewModel) {
+fun MainView(vm: MainViewModel = getViewModel()) {
     val binListItems: LazyPagingItems<BinModel> = vm.nearBins.collectAsLazyPagingItems()
     val userLocation = vm.location.collectAsState()
     val context = LocalContext.current

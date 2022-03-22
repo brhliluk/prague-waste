@@ -25,23 +25,24 @@ import cz.brhliluk.android.praguewaste.ui.activity.SettingsActivity
 import cz.brhliluk.android.praguewaste.utils.onClick
 import cz.brhliluk.android.praguewaste.viewmodel.BottomSheet
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
+import org.koin.androidx.compose.getViewModel
 
 @ExperimentalMaterial3Api
 @ExperimentalMaterialApi
 @Composable
-fun Navigation(modifier: Modifier, vm: MainViewModel, sheetScaffoldState: BottomSheetScaffoldState) {
+fun Navigation(modifier: Modifier, sheetScaffoldState: BottomSheetScaffoldState) {
     val configuration = LocalConfiguration.current
 
     when (configuration.orientation) {
-        ORIENTATION_LANDSCAPE -> SideNavigation(modifier, vm)
-        else -> BottomNavigation(modifier, vm, sheetScaffoldState)
+        ORIENTATION_LANDSCAPE -> SideNavigation(modifier)
+        else -> BottomNavigation(modifier, sheetScaffoldState)
     }
 }
 
 @ExperimentalMaterial3Api
 @ExperimentalMaterialApi
 @Composable
-fun BottomNavigation(modifier: Modifier, vm: MainViewModel, sheetScaffoldState: BottomSheetScaffoldState) {
+fun BottomNavigation(modifier: Modifier, sheetScaffoldState: BottomSheetScaffoldState, vm: MainViewModel = getViewModel()) {
 
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
@@ -83,7 +84,7 @@ fun BottomNavigation(modifier: Modifier, vm: MainViewModel, sheetScaffoldState: 
 @ExperimentalMaterial3Api
 @ExperimentalMaterialApi
 @Composable
-fun SideNavigation(modifier: Modifier, vm: MainViewModel) {
+fun SideNavigation(modifier: Modifier, vm: MainViewModel = getViewModel()) {
     val context = LocalContext.current
 
     NavigationRail(modifier = modifier, contentColor = Color.Black, containerColor = Color.LightGray) {

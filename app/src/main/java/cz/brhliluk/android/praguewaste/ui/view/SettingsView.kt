@@ -24,10 +24,11 @@ import androidx.compose.ui.unit.sp
 import cz.brhliluk.android.praguewaste.R
 import cz.brhliluk.android.praguewaste.common.model.Bin
 import cz.brhliluk.android.praguewaste.viewmodel.SettingsViewModel
+import org.koin.androidx.compose.getViewModel
 
 @ExperimentalMaterial3Api
 @Composable
-fun SettingsView(vm: SettingsViewModel) {
+fun SettingsView(vm: SettingsViewModel = getViewModel()) {
 
     val locationEnabled = vm.isLocationEnabledAsFlow().collectAsState(initial = true)
     val dispatcher = LocalOnBackPressedDispatcherOwner.current!!.onBackPressedDispatcher

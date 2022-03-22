@@ -20,9 +20,10 @@ import cz.brhliluk.android.praguewaste.R
 import cz.brhliluk.android.praguewaste.common.model.Bin
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun TrashTypeFilterView(vm: MainViewModel) {
+fun TrashTypeFilterView(vm: MainViewModel = getViewModel()) {
     val coroutineScope = rememberCoroutineScope()
     val allRequired = vm.isAllRequiredEnabledFlow().collectAsState(initial = false).value
 
@@ -47,7 +48,7 @@ fun TrashTypeFilterView(vm: MainViewModel) {
                     }
                     LazyColumn {
                         items(items = Bin.TrashType.all, itemContent = { trashType ->
-                            TrashTypeFilterItemView(vm, trashType)
+                            TrashTypeFilterItemView(trashType)
                         })
                     }
                 }

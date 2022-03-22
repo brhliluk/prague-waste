@@ -16,9 +16,10 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import cz.brhliluk.android.praguewaste.R
 import cz.brhliluk.android.praguewaste.common.model.BinModel
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
+import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun NearView(vm: MainViewModel) {
+fun NearView(vm: MainViewModel = getViewModel()) {
 
     val binListItems: LazyPagingItems<BinModel> = vm.nearBins.collectAsLazyPagingItems()
     val userLocation = vm.location.collectAsState()

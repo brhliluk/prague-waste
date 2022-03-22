@@ -21,27 +21,28 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.ProvideWindowInsets
 import cz.brhliluk.android.praguewaste.viewmodel.BottomSheet
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
+import org.koin.androidx.compose.getViewModel
 
 @ExperimentalMaterialApi
 @Composable
-fun SheetView(vm: MainViewModel, scaffoldState: BottomSheetScaffoldState, content: @Composable () -> Unit) {
+fun SheetView(scaffoldState: BottomSheetScaffoldState, content: @Composable () -> Unit) {
     val configuration = LocalConfiguration.current
 
     when (configuration.orientation) {
-        Configuration.ORIENTATION_LANDSCAPE -> MainSideSheet(vm, content)
-        else -> MainBottomSheetScaffold(vm, scaffoldState, content)
+        Configuration.ORIENTATION_LANDSCAPE -> MainSideSheet { content() }
+        else -> MainBottomSheetScaffold(scaffoldState) { content() }
     }
 }
 
 @ExperimentalMaterialApi
 @Composable
-fun MainBottomSheetScaffold(vm: MainViewModel, scaffoldState: BottomSheetScaffoldState, content: @Composable () -> Unit) {
+fun MainBottomSheetScaffold(scaffoldState: BottomSheetScaffoldState, vm: MainViewModel = getViewModel(), content: @Composable () -> Unit) {
     BottomSheetScaffold(
         sheetContent = {
             when (vm.activeBottomSheet) {
                 BottomSheet.NONE -> Box(Modifier.defaultMinSize(minHeight = 1.dp)) // crashes with null passed
-                BottomSheet.SEARCH -> SearchView(vm)
-                BottomSheet.NEAR -> NearView(vm)
+                BottomSheet.SEARCH -> SearchView()
+                BottomSheet.NEAR -> NearView()
             }
         },
         sheetShape = RoundedCornerShape(50.dp, 50.dp),
@@ -53,7 +54,7 @@ fun MainBottomSheetScaffold(vm: MainViewModel, scaffoldState: BottomSheetScaffol
 }
 
 @Composable
-fun MainSideSheet(vm: MainViewModel, content: @Composable () -> Unit) {
+fun MainSideSheet(vm: MainViewModel = getViewModel(), content: @Composable () -> Unit) {
     ProvideWindowInsets(windowInsetsAnimationsEnabled = true) {
         Box {
             content()
@@ -82,8 +83,8 @@ fun MainSideSheet(vm: MainViewModel, content: @Composable () -> Unit) {
                     ) {
                         when (vm.activeBottomSheet) {
                             BottomSheet.NONE -> {}
-                            BottomSheet.SEARCH -> SearchView(vm)
-                            BottomSheet.NEAR -> NearView(vm)
+                            BottomSheet.SEARCH -> SearchView()
+                            BottomSheet.NEAR -> NearView()
                         }
                     }
                 }

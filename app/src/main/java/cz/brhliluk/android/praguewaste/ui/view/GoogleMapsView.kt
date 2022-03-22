@@ -11,9 +11,10 @@ import com.google.android.gms.maps.MapView
 import cz.brhliluk.android.praguewaste.R
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun GoogleMaps(vm: MainViewModel) {
+fun GoogleMaps(vm: MainViewModel = getViewModel()) {
     val mapView = rememberMapViewWithLifeCycle()
     val localContext = LocalContext.current
     val coroutineScope = rememberCoroutineScope()

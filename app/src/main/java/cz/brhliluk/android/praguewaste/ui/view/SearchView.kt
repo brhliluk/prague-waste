@@ -18,9 +18,10 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.google.accompanist.insets.navigationBarsWithImePadding
 import cz.brhliluk.android.praguewaste.common.model.BinModel
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
+import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun SearchView(vm: MainViewModel) {
+fun SearchView(vm: MainViewModel = getViewModel()) {
     val binListItems: LazyPagingItems<BinModel> = vm.searchBins.collectAsLazyPagingItems()
     var listVisible by remember { mutableStateOf(false) }
 

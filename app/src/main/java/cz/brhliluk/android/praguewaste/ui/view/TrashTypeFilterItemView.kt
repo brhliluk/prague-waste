@@ -13,9 +13,10 @@ import androidx.compose.ui.res.stringResource
 import cz.brhliluk.android.praguewaste.common.model.Bin
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun TrashTypeFilterItemView(vm: MainViewModel, trashType: Bin.TrashType) {
+fun TrashTypeFilterItemView(trashType: Bin.TrashType, vm: MainViewModel = getViewModel()) {
     val coroutineScope = rememberCoroutineScope()
     val trashTypeState = vm.isTrashTypeEnabledFlow(trashType).collectAsState(initial = true).value
 

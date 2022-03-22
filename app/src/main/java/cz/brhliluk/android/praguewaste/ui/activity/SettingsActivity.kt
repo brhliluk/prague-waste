@@ -11,13 +11,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @ExperimentalMaterial3Api
 class SettingsActivity : ComponentActivity() {
-    private val vm: SettingsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeMapsTheme {
-                SettingsView(vm)
+                SettingsView()
             }
         }
     }

@@ -38,14 +38,13 @@ fun MainView(vm: MainViewModel = getViewModel()) {
                     Modifier
                         .navigationBarsWithImePadding()
                         .statusBarsPadding(),
-                    vm,
-                    scaffoldState
+                    scaffoldState,
                 )
             }
         ) {
-            SheetView(vm, scaffoldState) {
+            SheetView(scaffoldState) {
                 Box(Modifier.navigationBarsWithImePadding()) {
-                    GoogleMaps(vm)
+                    GoogleMaps()
                     FloatingActionButton(
                         modifier = Modifier
                             .align(Alignment.TopEnd)
@@ -57,7 +56,7 @@ fun MainView(vm: MainViewModel = getViewModel()) {
                     ) {
                         Icon(Icons.Filled.FilterAlt, "Filter icon")
                     }
-                    TrashTypeFilterView(vm)
+                    TrashTypeFilterView()
                     if (vm.loading.value) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
