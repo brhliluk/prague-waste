@@ -15,11 +15,12 @@ import com.google.accompanist.insets.navigationBarsWithImePadding
 import cz.brhliluk.android.praguewaste.ui.theme.PaperBlue
 import cz.brhliluk.android.praguewaste.viewmodel.BottomSheet
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
+import org.koin.androidx.compose.getViewModel
 
 @ExperimentalMaterialApi
 @ExperimentalMaterial3Api
 @Composable
-fun MainView(vm: MainViewModel) {
+fun MainView(vm: MainViewModel = getViewModel()) {
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberBottomSheetState(
             initialValue = BottomSheetValue.Collapsed,

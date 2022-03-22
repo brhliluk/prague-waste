@@ -39,7 +39,7 @@ class PragueWasteApplication : Application() {
         // Google maps
         single { InfoWindowAdapter(get()) }
         // Location helper
-        single { LocationHelper(get(), MainViewModel()) }
+        single { params -> LocationHelper(get(), params.get()) }
     })
 
     override fun onCreate() {

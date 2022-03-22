@@ -21,7 +21,7 @@ class PragueWasteApplication : Application() {
         // Prefs
         single { PreferencesManager(get()) }
         // Location
-        single { LocationHelper(get(), MainViewModel()) }
+        single { parameters -> LocationHelper(get(), parameters.get()) }
     })
 
     override fun onCreate() {
