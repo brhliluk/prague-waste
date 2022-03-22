@@ -60,6 +60,7 @@ class MainViewModel : ViewModel(), KoinComponent, LocationViewModel {
     var activeBottomSheet by mutableStateOf(BottomSheet.NONE)
     var trashTypesFilterOpen by mutableStateOf(false)
 
+    // Google Maps
     suspend fun initGoogleMaps(mapView: MapView) = googleMapsHelper.initGoogleMaps(mapView)
     fun setMyLocationEnabled() = viewModelScope.launch { googleMapsHelper.setMyLocationEnabled() }
     fun selectBin(bin: Bin) = viewModelScope.launch { googleMapsHelper.selectBin(bin) }

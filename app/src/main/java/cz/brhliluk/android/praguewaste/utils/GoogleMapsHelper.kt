@@ -40,7 +40,7 @@ class GoogleMapsHelper(private val context: Context) : KoinComponent {
 
     suspend fun setMyLocationEnabled() {
         if (this::map.isInitialized)
-        //noinspection MissingPermission
+            //noinspection MissingPermission
             map.isMyLocationEnabled = preferencesManager.getLocationEnabled() && preferencesManager.hasLocationPermission
     }
 
