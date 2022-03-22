@@ -8,6 +8,7 @@ import cz.brhliluk.android.praguewaste.common.repository.BinRepository
 import cz.brhliluk.android.praguewaste.common.utils.LocationHelper
 import cz.brhliluk.android.praguewaste.utils.InfoWindowAdapter
 import cz.brhliluk.android.praguewaste.common.utils.PreferencesManager
+import cz.brhliluk.android.praguewaste.utils.GoogleMapsHelper
 import cz.brhliluk.android.praguewaste.viewmodel.MainViewModel
 import cz.brhliluk.android.praguewaste.viewmodel.SettingsViewModel
 import org.koin.android.ext.koin.androidApplication
@@ -38,6 +39,7 @@ class PragueWasteApplication : Application() {
         single { PreferencesManager(get()) }
         // Google maps
         single { InfoWindowAdapter(get()) }
+        single { GoogleMapsHelper(get()) }
         // Location helper
         single { params -> LocationHelper(get(), params.get()) }
     })

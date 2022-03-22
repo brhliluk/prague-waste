@@ -25,11 +25,9 @@ fun GoogleMaps(vm: MainViewModel = getViewModel()) {
         val localLocationEnabled = locationEnabled.value
 
         coroutineScope.launch {
-            vm.initGoogleMaps(localContext, mapView)
+            vm.initGoogleMaps(mapView)
             vm.setMyLocationEnabled()
-            vm.clusterManager.clearItems()
-            vm.clusterManager.addItems(currentBins)
-            vm.clusterManager.cluster()
+            vm.replaceBins()
         }
     }
 }

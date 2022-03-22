@@ -1,6 +1,5 @@
 package cz.brhliluk.android.praguewaste.viewmodel
 
-import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,12 +9,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
-import com.google.maps.android.clustering.ClusterManager
-import com.google.maps.android.ktx.awaitAnimateCamera
-import com.google.maps.android.ktx.awaitMap
 import cz.brhliluk.android.praguewaste.common.api.BinNearSource
 import cz.brhliluk.android.praguewaste.common.api.BinSearchSource
 import cz.brhliluk.android.praguewaste.common.model.Bin
@@ -23,11 +17,9 @@ import cz.brhliluk.android.praguewaste.common.model.BinModel
 import cz.brhliluk.android.praguewaste.common.repository.BinRepository
 import cz.brhliluk.android.praguewaste.common.utils.LocationViewModel
 import cz.brhliluk.android.praguewaste.common.utils.LocationViewModel.Companion.centrePrague
-import cz.brhliluk.android.praguewaste.utils.InfoWindowAdapter
 import cz.brhliluk.android.praguewaste.common.utils.PreferencesManager
+import cz.brhliluk.android.praguewaste.utils.GoogleMapsHelper
 import cz.brhliluk.android.praguewaste.utils.load
-import cz.brhliluk.android.praguewaste.utils.offsetLocation
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -38,7 +30,7 @@ import org.koin.core.component.inject
 class MainViewModel : ViewModel(), KoinComponent, LocationViewModel {
     private val binRepository: BinRepository by inject()
     private val preferencesManager: PreferencesManager by inject()
-    private val infoWindowAdapter: InfoWindowAdapter by inject()
+    private val googleMapsHelper: GoogleMapsHelper by inject()
 
     // Paging data sources
     val searchBins: Flow<PagingData<BinModel>> = Pager(PagingConfig(pageSize = 15)) {
@@ -68,33 +60,10 @@ class MainViewModel : ViewModel(), KoinComponent, LocationViewModel {
     var activeBottomSheet by mutableStateOf(BottomSheet.NONE)
     var trashTypesFilterOpen by mutableStateOf(false)
 
-    // Solves clustering and map issues related to lifecycle and unnecessary recompositions
-    lateinit var clusterManager: ClusterManager<Bin>
-    private lateinit var map: GoogleMap
-    private var mapViewHashCode = 0
-
-    suspend fun initGoogleMaps(context: Context, mapView: MapView) {
-        // No unnecessary new initializations on recomposition
-        if (mapView.hashCode() == mapViewHashCode) return
-        mapViewHashCode = mapView.hashCode()
-        map = mapView.awaitMap()
-        map.setPadding(0,100, 0, 200)
-        clusterManager = ClusterManager(context, map)
-        map.setOnCameraIdleListener(clusterManager)
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(centrePrague, 10f))
-        clusterManager.markerCollection.setInfoWindowAdapter(infoWindowAdapter)
-        clusterManager.setOnClusterClickListener {
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(it.position, map.cameraPosition.zoom + 1), 500, null)
-            true
-        }
-    }
-
-    fun setMyLocationEnabled() {
-        if (this::map.isInitialized) viewModelScope.launch {
-            //noinspection MissingPermission
-            map.isMyLocationEnabled = preferencesManager.getLocationEnabled() && preferencesManager.hasLocationPermission
-        }
-    }
+    suspend fun initGoogleMaps(mapView: MapView) = googleMapsHelper.initGoogleMaps(mapView)
+    fun setMyLocationEnabled() = viewModelScope.launch { googleMapsHelper.setMyLocationEnabled() }
+    fun selectBin(bin: Bin) = viewModelScope.launch { googleMapsHelper.selectBin(bin) }
+    fun replaceBins() = googleMapsHelper.replaceItems(currentBins.value)
 
     fun updateFilters() = loading.load {
         viewModelScope.launch {
@@ -109,15 +78,6 @@ class MainViewModel : ViewModel(), KoinComponent, LocationViewModel {
         if (currentBins.value.isEmpty()) {
             binRepository.loadAllBins()
             currentBins.value = binRepository.getFilteredBins(trashTypesFilter, allParamsRequired)
-        }
-    }
-
-    fun selectBin(bin: Bin) {
-        viewModelScope.launch {
-            map.awaitAnimateCamera(CameraUpdateFactory.newLatLngZoom(bin.offsetLocation, 20.0f), 1000)
-            // Give clusterManager time to load in all the markers if too far away
-            delay(200)
-            clusterManager.markerCollection.markers.find { it.position == bin.position }?.showInfoWindow()
         }
     }
 
