@@ -61,10 +61,10 @@ class MainViewModel : ViewModel(), KoinComponent, LocationViewModel {
     var trashTypesFilterOpen by mutableStateOf(false)
 
     // Google Maps
-    suspend fun initGoogleMaps(mapView: MapView) = googleMapsHelper.initGoogleMaps(mapView)
+    suspend fun initGoogleMaps(mapView: MapView) = loading.load { googleMapsHelper.initGoogleMaps(mapView) }
     fun setMyLocationEnabled() = viewModelScope.launch { googleMapsHelper.setMyLocationEnabled() }
     fun selectBin(bin: Bin) = viewModelScope.launch { googleMapsHelper.selectBin(bin) }
-    fun replaceBins() = googleMapsHelper.replaceItems(currentBins.value)
+    fun replaceBins() = loading.load { googleMapsHelper.replaceItems(currentBins.value) }
 
     fun updateFilters() = loading.load {
         viewModelScope.launch {

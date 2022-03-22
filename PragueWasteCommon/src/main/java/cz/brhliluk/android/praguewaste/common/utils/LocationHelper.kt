@@ -26,7 +26,6 @@ class LocationHelper(val context: Context, val saveLocation: (Location) -> Unit)
                     // get latest location
                     val location = locationResult.lastLocation
                     saveLocation(location)
-//                    vm.location.value = LatLng(location.latitude, location.longitude)
                 }
             }
         }

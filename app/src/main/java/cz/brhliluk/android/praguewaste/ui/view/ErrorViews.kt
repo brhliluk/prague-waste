@@ -9,7 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import cz.brhliluk.android.praguewaste.R
 
 @Composable
 fun LoadingView(
@@ -52,7 +54,7 @@ fun ErrorItem(
             color = Color.Red
         )
         OutlinedButton(onClick = onClickRetry) {
-            Text(text = "Try again")
+            Text(text = stringResource(R.string.try_again))
         }
     }
 }

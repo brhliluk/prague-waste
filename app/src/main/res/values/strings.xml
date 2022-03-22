@@ -31,4 +31,6 @@
     <string name="location">Poloha</string>
     <string name="search">Vyhledat</string>
     <string name="near">Nejbližší</string>
+    <string name="try_again">Zkusit znovu</string>
+    <string name="no_results">Parametrům hledání neodpovídají žádné výsledky</string>
 </resources>

@@ -41,6 +41,7 @@ data class Bin(
     }
 
     val location: LatLng get() = LatLng(latitude, longitude)
+    val offsetLocation: LatLng get() = LatLng(position.latitude - 0.00012, position.longitude)
 
     fun distanceFrom(location: LatLng) = SphericalUtil.computeDistanceBetween(location, this.location)
 }
