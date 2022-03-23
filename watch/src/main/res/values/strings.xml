@@ -6,4 +6,6 @@
     <string name="title_activity_detail">DetailActivity</string>
     <string name="navigate">Navigovat</string>
     <string name="no_supported_app">Není nainstalovaná podporovaná aplikace</string>
+    <string name="no_bins">V okolí 30km nejsou žádné dostupné koše</string>
+    <string name="try_again">Zkusit znovu</string>
 </resources>

@@ -31,4 +31,5 @@
     <string name="location">Poloha</string>
     <string name="search">Vyhledat</string>
     <string name="near">Nejbližší</string>
+    <string name="no_bins">V okolí 30km nejsou žádné dostupné koše</string>
 </resources>

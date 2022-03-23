@@ -38,8 +38,4 @@ class MainViewModel: ViewModel(), KoinComponent, LocationViewModel {
     override val location = MutableStateFlow(centrePrague)
 
     suspend fun isLocationEnabled() = preferencesManager.getLocationEnabled()
-    fun isLocationEnabledFlow() = preferencesManager.getLocationEnabledAsFlow()
-    fun setLocationEnabled(enabled: Boolean) = viewModelScope.launch { preferencesManager.setLocationEnabled(enabled) }
-
-    val isLocationEnabled get() = runBlocking { isLocationEnabled() }
 }

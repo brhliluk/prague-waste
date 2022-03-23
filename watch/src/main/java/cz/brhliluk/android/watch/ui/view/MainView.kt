@@ -47,6 +47,10 @@ fun MainView(vm: MainViewModel = getViewModel()) {
                 })
             }
         }
+
+        if (binListItems.itemCount == 0 && binListItems.loadState.append !is LoadState.Loading && binListItems.loadState.refresh !is LoadState.Loading) {
+            item { Text(stringResource(R.string.no_bins), textAlign = TextAlign.Center) }
+        }
         // Handle Error and Loading states
         binListItems.apply {
             when {

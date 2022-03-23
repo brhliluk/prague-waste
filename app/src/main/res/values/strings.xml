@@ -1,22 +1,11 @@
 <resources>
     <string name="app_name">Prague Waste</string>
-    <string name="title_activity_main">MainActivity</string>
-    
-    <string name="no_location">Aplikace nyní nebude moci využívat vaši polohu</string>
+
     <string name="no_location_title">Poloha je vypnutá</string>
     <string name="location_required_dialog">Dle vašich preferenci byste chtěli využívat vaši polohu. Zapněte ji pokud si přejete pokračovat. Nebo své rozhodnutí změňte. Pokud zamítnete využívání vaší polohy, jako referenčí bod bude použit střed Prahy.</string>
     <string name="turn_on">Zapnout</string>
     <string name="location_cancel">Nepoužívat polohu</string>
-    <string name="exit">Odejít</string>
     <string name="proximity">Vzdálenost</string>
-    <string name="use_dark_mode">Použít tmavý režim:</string>
-    <string name="paper">Papír</string>
-    <string name="plastic">Plast</string>
-    <string name="beverage_cartons">Nápojové kartony</string>
-    <string name="colored_glass">Barevné sklo</string>
-    <string name="clear_glass">Čiré sklo</string>
-    <string name="metal">Kovy</string>
-    <string name="e_waste">Elektrozařízení</string>
     <string name="legend">Legenda</string>
     <string name="trash_type_selection">Výběr druhů odpadu</string>
     <string name="ok">OK</string>
