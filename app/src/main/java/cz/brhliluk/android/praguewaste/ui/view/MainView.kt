@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.TopEnd
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -45,17 +46,7 @@ fun MainView(vm: MainViewModel = getViewModel()) {
             SheetView(scaffoldState) {
                 Box(Modifier.navigationBarsWithImePadding()) {
                     GoogleMaps()
-                    FloatingActionButton(
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .padding(top = 90.dp, end = 12.dp)
-                            .size(40.dp),
-                        onClick = { vm.trashTypesFilterOpen = !vm.trashTypesFilterOpen },
-                        backgroundColor = PaperBlue,
-                        contentColor = Color.White
-                    ) {
-                        Icon(Icons.Filled.FilterAlt, "Filter icon")
-                    }
+                    RotatingFabIconView(Modifier.align(TopEnd)) { vm.trashTypesFilterOpen = !vm.trashTypesFilterOpen }
                     TrashTypeFilterView()
                     if (vm.loading.value) {
                         Row(

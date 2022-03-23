@@ -101,6 +101,7 @@ dependencies {
     // Preferences
     implementation "androidx.datastore:datastore:1.0.0"
     implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation "dev.burnoo:compose-remember-preference:0.3.4"
 
     // Koin dependency injection
     def koin_version= "3.1.5"
