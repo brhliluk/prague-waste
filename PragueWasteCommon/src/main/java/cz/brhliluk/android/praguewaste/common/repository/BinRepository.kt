@@ -11,7 +11,7 @@ import org.koin.core.component.inject
 class BinRepository(private val binDao: BinDao, private val binFtsDao: BinFtsDao) : KoinComponent {
     private val api: WasteApi by inject()
 
-    suspend fun insertDataAsync(bins: List<Bin>) = binDao.insertAll(bins.map { BinEntity.from(it) })
+    private suspend fun insertDataAsync(bins: List<Bin>) = binDao.insertAll(bins.map { BinEntity.from(it) })
 
     suspend fun getListAsync() = binDao.getAll()
 

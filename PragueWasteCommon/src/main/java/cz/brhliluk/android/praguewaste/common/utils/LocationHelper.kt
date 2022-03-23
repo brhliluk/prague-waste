@@ -40,7 +40,5 @@ class LocationHelper(val context: Context, val saveLocation: (Location) -> Unit)
         )
     }
 
-    fun stopLocationUpdates() {
-        fusedLocationClient.removeLocationUpdates(locationCallback)
-    }
+    fun stopLocationUpdates() = fusedLocationClient.removeLocationUpdates(locationCallback)
 }

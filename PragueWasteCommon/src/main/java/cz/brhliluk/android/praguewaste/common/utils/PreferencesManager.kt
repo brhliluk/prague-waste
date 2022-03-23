@@ -16,6 +16,8 @@ import org.koin.core.component.KoinComponent
 
 class PreferencesManager(private val context: Context) : KoinComponent {
 
+    private val Context.settingsDatastore by preferencesDataStore(name = "settings")
+
     private fun <T> getKeyAsFlow(key: Preferences.Key<T>, default: T): Flow<T> =
         context.settingsDatastore.data.map { preferences ->
             preferences[key] ?: default
@@ -50,7 +52,6 @@ class PreferencesManager(private val context: Context) : KoinComponent {
         ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
 
     companion object {
-        private val Context.settingsDatastore by preferencesDataStore(name = "settings")
         val allRequiredKey = booleanPreferencesKey("all_required")
         val locationEnabledKey = booleanPreferencesKey("location_enabled")
     }
