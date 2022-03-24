@@ -11,6 +11,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,7 +26,7 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun TrashTypeFilterView(vm: MainViewModel = getViewModel()) {
     val coroutineScope = rememberCoroutineScope()
-    val allRequired = vm.isAllRequiredEnabledFlow().collectAsState(initial = false).value
+    val allRequired by vm.isAllRequiredEnabledFlow().collectAsState(initial = false)
 
     // Update markers only after filter is closed
     fun onClose() {

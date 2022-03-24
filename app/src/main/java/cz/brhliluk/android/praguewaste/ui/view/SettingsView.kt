@@ -13,6 +13,7 @@ import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,7 +31,7 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun SettingsView(vm: SettingsViewModel = getViewModel()) {
 
-    val locationEnabled = vm.isLocationEnabledAsFlow().collectAsState(initial = true)
+    val locationEnabled by vm.isLocationEnabledAsFlow().collectAsState(initial = true)
     val dispatcher = LocalOnBackPressedDispatcherOwner.current!!.onBackPressedDispatcher
     val decayAnimationSpec = rememberSplineBasedDecay<Float>()
     val scrollBehavior = remember(decayAnimationSpec) {
@@ -78,7 +79,7 @@ fun SettingsView(vm: SettingsViewModel = getViewModel()) {
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(bottom = 6.dp)) {
                 Text(text = stringResource(R.string.use_location))
                 Spacer(modifier = Modifier.weight(1f))
-                Switch(checked = locationEnabled.value, onCheckedChange = { vm.setLocationEnabled(it) })
+                Switch(checked = locationEnabled, onCheckedChange = { vm.setLocationEnabled(it) })
             }
             Text(stringResource(R.string.prague_centre_default), modifier = Modifier.padding(bottom = 12.dp))
 

@@ -18,11 +18,11 @@ fun GoogleMaps(vm: MainViewModel = getViewModel()) {
     val mapView = rememberMapViewWithLifeCycle()
     val localContext = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    val locationEnabled = vm.isLocationEnabledFlow().collectAsState(initial = false)
+    val locationEnabled by vm.isLocationEnabledFlow().collectAsState(initial = false)
 
     AndroidView({ mapView }) {
         val currentBins = vm.currentBins.value
-        val localLocationEnabled = locationEnabled.value
+        val localLocationEnabled = locationEnabled
 
         coroutineScope.launch {
             vm.initGoogleMaps(mapView)

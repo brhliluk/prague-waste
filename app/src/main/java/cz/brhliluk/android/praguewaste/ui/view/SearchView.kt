@@ -25,14 +25,14 @@ fun SearchView(vm: MainViewModel = getViewModel()) {
     val binListItems: LazyPagingItems<BinModel> = vm.searchBins.collectAsLazyPagingItems()
     var listVisible by remember { mutableStateOf(false) }
 
-    val userLocation = vm.location.collectAsState()
+    val userLocation by vm.location.collectAsState()
 
     LaunchedEffect(vm.trashTypesFilter, vm.allParamsRequired, userLocation) { binListItems.refresh() }
 
     BottomOrSheetView(
         items = binListItems,
         listVisible = listVisible,
-        itemView = { item -> BinItemView(userLocation = userLocation.value, bin = item.toBin(), onClick = { vm.selectBin(item.toBin()) }) }
+        itemView = { item -> BinItemView(userLocation = userLocation, bin = item.toBin(), onClick = { vm.selectBin(item.toBin()) }) }
     ) {
         TextField(
             value = vm.searchQuery,

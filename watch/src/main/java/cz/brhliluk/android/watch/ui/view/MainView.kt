@@ -3,6 +3,7 @@ package cz.brhliluk.android.watch.ui.view
 import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,7 +28,7 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun MainView(vm: MainViewModel = getViewModel()) {
     val binListItems: LazyPagingItems<BinModel> = vm.nearBins.collectAsLazyPagingItems()
-    val userLocation = vm.location.collectAsState()
+    val userLocation by vm.location.collectAsState()
     val context = LocalContext.current
 
 
@@ -41,7 +42,7 @@ fun MainView(vm: MainViewModel = getViewModel()) {
                 BinItemView(bin = item.toBin(), onClick = {
                     val intent = Intent(context, DetailActivity::class.java).apply {
                         putExtra(BIN_EXTRA, item)
-                        putExtra(LOCATION_EXTRA, userLocation.value)
+                        putExtra(LOCATION_EXTRA, userLocation)
                     }
                     context.startActivity(intent)
                 })

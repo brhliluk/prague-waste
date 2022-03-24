@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,10 +20,10 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun TrashTypeFilterItemView(trashType: Bin.TrashType, vm: MainViewModel = getViewModel()) {
     val coroutineScope = rememberCoroutineScope()
-    val trashTypeState = vm.isTrashTypeEnabledFlow(trashType).collectAsState(initial = true).value
+    val trashTypeState by vm.isTrashTypeEnabledFlow(trashType).collectAsState(initial = true)
 
     Row(verticalAlignment = Alignment.CenterVertically) {
-        androidx.compose.material3.Text(stringResource(trashType.title))
+        Text(stringResource(trashType.title))
         Spacer(modifier = Modifier.weight(1f))
         Checkbox(
             checked = trashTypeState,
