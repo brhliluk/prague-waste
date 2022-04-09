@@ -1,12 +1,16 @@
 package cz.brhliluk.android.praguewaste.utils
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.ktx.awaitAnimateCamera
 import com.google.maps.android.ktx.awaitMap
+import cz.brhliluk.android.praguewaste.R
 import cz.brhliluk.android.praguewaste.common.model.Bin
 import cz.brhliluk.android.praguewaste.common.utils.LocationViewModel
 import cz.brhliluk.android.praguewaste.common.utils.PreferencesManager
@@ -31,6 +35,15 @@ class GoogleMapsHelper(private val context: Context) : KoinComponent {
         clusterManager = ClusterManager(context, map)
         map.setOnCameraIdleListener(clusterManager)
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(LocationViewModel.centrePrague, 10f))
+        // Start navigation
+        clusterManager.markerCollection.setOnInfoWindowClickListener { marker ->
+            val mapIntent = Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=${marker.position.latitude},${marker.position.longitude}"))
+            mapIntent.setPackage("com.google.android.apps.maps")
+            mapIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            if (mapIntent.resolveActivity(context.packageManager) != null) {
+                context.startActivity(mapIntent)
+            }
+        }
         clusterManager.markerCollection.setInfoWindowAdapter(infoWindowAdapter)
         clusterManager.setOnClusterClickListener {
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(it.position, map.cameraPosition.zoom + 1), 500, null)
