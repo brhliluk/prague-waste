@@ -22,18 +22,20 @@ import org.koin.dsl.module
 class PragueWasteApplication : Application() {
 
     val appModules = listOf(module {
-        // ViewModel for Detail View
+        // ViewModels
         viewModel { MainViewModel() }
         viewModel { SettingsViewModel() }
+        // API
         single { WasteApi() }
         // Room Database
         single {
             Room.databaseBuilder(androidApplication(), BinDatabase::class.java, "bin-db")
                 .fallbackToDestructiveMigration().build()
         }
-        // BinsDAO
+        // DAOs
         single { get<BinDatabase>().binDao() }
         single { get<BinDatabase>().binFtsDao() }
+        // Repository
         single { BinRepository(binDao = get(), binFtsDao = get()) }
         // Prefs
         single { PreferencesManager(get()) }

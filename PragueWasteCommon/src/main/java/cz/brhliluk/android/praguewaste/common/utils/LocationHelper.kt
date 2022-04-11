@@ -7,6 +7,11 @@ import com.google.android.gms.location.*
 import org.koin.core.component.KoinComponent
 import kotlin.time.Duration.Companion.seconds
 
+/**
+ * Utility class to help saving current location
+ * @param context context
+ * @param saveLocation function/lambda that saves location to desired place
+ */
 class LocationHelper(val context: Context, val saveLocation: (Location) -> Unit) : KoinComponent {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest

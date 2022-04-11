@@ -89,7 +89,7 @@ class WasteApi : KoinComponent {
     }
 
     /**
-     * Gets nearest from API
+     * Gets nearest bins from API
      * @param location reference location where distance is calculated from
      * @param radius limitation for searching, in kms
      * @param filter TrashType filter

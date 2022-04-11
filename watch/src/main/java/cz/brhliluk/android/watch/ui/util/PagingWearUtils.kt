@@ -6,7 +6,10 @@ import androidx.compose.runtime.Composable
 import androidx.paging.compose.LazyPagingItems
 import androidx.wear.compose.material.ScalingLazyListScope
 
-// From paging library and its extension for LazyColumn/Row user for ScalingLazyColumn
+/**
+ * Extension for Paging library´s PagingPlaceHolderKey used for ScalingLazyColumn
+ * originally it only includes implementations for LazyColumn and LazyRow
+ */
 internal data class PagingPlaceholderKey(private val index: Int) : Parcelable {
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(index)

@@ -15,8 +15,16 @@ class BinRepository(private val binDao: BinDao, private val binFtsDao: BinFtsDao
 
     suspend fun getListAsync() = binDao.getAll()
 
+    /**
+     * Returns bins corresponding to selected filters
+     * @param types required TrashTypes
+     * @param allRequired whether all required TrashTypes need to be present
+     */
     suspend fun getFilteredBins(types: List<Bin.TrashType>, allRequired: Boolean) =
         binFtsDao.getFilteredBins(types, allRequired).map { it.toBin() }
 
+    /**
+     * Loads all bins from API and stores them into the database
+     */
     suspend fun loadAllBins() = insertDataAsync(api.getAllBins().map { it.toBin() })
 }

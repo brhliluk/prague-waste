@@ -10,6 +10,12 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.IOException
 
+/**
+ * Helper class for paging bins with search endpoint
+ * @param query address search query
+ * @param filter TrashType filter
+ * @param allRequired whether all items from filter are required
+ */
 class BinSearchSource(
     private val query: String,
     private val filter: List<Bin.TrashType>,

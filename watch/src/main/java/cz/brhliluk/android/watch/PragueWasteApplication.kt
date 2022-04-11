@@ -15,7 +15,7 @@ import org.koin.dsl.module
 class PragueWasteApplication : Application() {
 
     val appModules = listOf(module {
-        // ViewModel for Detail View
+        // ViewModel for Main View
         viewModel { MainViewModel() }
         single { WasteApi() }
         // Prefs

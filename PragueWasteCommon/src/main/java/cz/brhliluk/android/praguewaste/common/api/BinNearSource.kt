@@ -11,6 +11,13 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.IOException
 
+/**
+ * Helper class for paging bins with near bins endpoint
+ * @param location reference location where distance is calculated from
+ * @param radius limitation for searching, in kms
+ * @param filter TrashType filter
+ * @param allRequired whether all items from filter are required
+ */
 class BinNearSource(
     private val location: LatLng,
     private val radius: Float,
