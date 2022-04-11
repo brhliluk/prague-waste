@@ -65,6 +65,15 @@ class WasteApi : KoinComponent {
         }
     }
 
+    /**
+     * Gets bins by address string similarity from API
+     * @param query search query
+     * @param filter TrashType filter
+     * @param allRequired whether all items from filter are required
+     * @param page results page
+     * @param perPage how many results per page
+     * @return bins by address string similarity, matching filters
+     */
     suspend fun getBins(
         query: String,
         filter: List<Bin.TrashType>? = null,
@@ -79,6 +88,16 @@ class WasteApi : KoinComponent {
         parameter("perPage", perPage)
     }
 
+    /**
+     * Gets nearest from API
+     * @param location reference location where distance is calculated from
+     * @param radius limitation for searching, in kms
+     * @param filter TrashType filter
+     * @param allRequired whether all items from filter are required
+     * @param page results page
+     * @param perPage how many results per page
+     * @return nearest bins, matching filters
+     */
     suspend fun getBins(
         location: LatLng,
         radius: Float? = null,
@@ -96,6 +115,10 @@ class WasteApi : KoinComponent {
         parameter("perPage", perPage)
     }
 
+    /**
+     * Returns all bins in API database
+     * @return all bins
+     */
     suspend fun getAllBins(): List<BinModel> = ktorClient.get(path = "bins-all")
 
 }
