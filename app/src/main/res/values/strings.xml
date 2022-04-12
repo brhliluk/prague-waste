@@ -22,4 +22,5 @@
     <string name="near">Nejbližší</string>
     <string name="try_again">Zkusit znovu</string>
     <string name="no_results">Parametrům hledání neodpovídají žádné výsledky</string>
+    <string name="navigate">Navigovat</string>
 </resources>
